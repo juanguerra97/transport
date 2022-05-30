@@ -1,5 +1,4 @@
 ﻿using seminario.Domain.Entities;
-using seminario.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -25,7 +24,7 @@ public class ApplicationDbContextInitialiser
     {
         try
         {
-            if (_context.Database.IsSqlServer())
+            if (_context.Database.IsMySql())
             {
                 await _context.Database.MigrateAsync();
             }
@@ -61,7 +60,7 @@ public class ApplicationDbContextInitialiser
         }
 
         // Default users
-        var administrator = new ApplicationUser { UserName = "administrator@localhost", Email = "administrator@localhost" };
+        var administrator = new ApplicationUser { UserName = "administrator@localhost", Email = "administrator@localhost", FirstName = "Admin", LastName = "Umg" };
 
         if (_userManager.Users.All(u => u.UserName != administrator.UserName))
         {

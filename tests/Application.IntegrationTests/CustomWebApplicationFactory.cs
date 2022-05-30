@@ -34,9 +34,9 @@ public partial class Testing
                 services
                     .Remove<DbContextOptions<ApplicationDbContext>>()
                     .AddDbContext<ApplicationDbContext>(options =>
-                        options.UseSqlServer(
+                        options.UseMySql(
                             builder.Configuration.GetConnectionString("DefaultConnection"),
-                            b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+                            ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))));
             });
         }
     }

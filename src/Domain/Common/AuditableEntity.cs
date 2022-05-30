@@ -2,7 +2,10 @@
 
 public abstract class AuditableEntity
 {
-    public DateTime Created { get; set; }
+
+    public string? Status { get; set; } = "A";
+
+    public DateTime? Created { get; set; }
 
     public string? CreatedBy { get; set; }
 

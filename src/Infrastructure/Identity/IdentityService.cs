@@ -3,6 +3,7 @@ using seminario.Application.Common.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using seminario.Domain.Entities;
 
 namespace seminario.Infrastructure.Identity;
 

@@ -2,7 +2,6 @@
 using seminario.Application.Common.Interfaces;
 using seminario.Domain.Common;
 using seminario.Domain.Entities;
-using seminario.Infrastructure.Identity;
 using Duende.IdentityServer.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
@@ -32,6 +31,48 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
 
     public DbSet<TodoItem> TodoItems => Set<TodoItem>();
 
+
+    public DbSet<ApplicationUser> ApplicationUsers => Set<ApplicationUser>();
+
+    public DbSet<AdminBodega> AdminBodegas => Set<AdminBodega>();
+    public DbSet<AdminEmpresa> AdminEmpresas => Set<AdminEmpresa>();
+    public DbSet<AdminPlanta> AdminPlantas => Set<AdminPlanta>();
+    public DbSet<AlgoritmoMinimizacion> AlgoritmosMinimizacion => Set<AlgoritmoMinimizacion>();
+    public DbSet<BitacoraEstadoMovimientoBodega> BitacoraEstadoMovimientoBodegas => Set<BitacoraEstadoMovimientoBodega>();
+    public DbSet<BitacoraEstadoPedidoMaterial> BitacoraEstadoPedidoMateriales => Set<BitacoraEstadoPedidoMaterial>();
+    public DbSet<BitacoraEstadoSolicitudTransporteCarga> BitacoraEstadoSolicitudTransporteCargas => Set<BitacoraEstadoSolicitudTransporteCarga>();
+    public DbSet<BitacoraEstadoTransporteCarga> BitacoraEstadoTransporteCargas => Set<BitacoraEstadoTransporteCarga>();
+    public DbSet<Bodega> Bodegas => Set<Bodega>();
+    public DbSet<Conductor> Conductores => Set<Conductor>();
+    public DbSet<Departamento> Departamentos => Set<Departamento>();
+    public DbSet<DetalleTransporteCarga> DetalleTransporteCargas => Set<DetalleTransporteCarga>();
+    public DbSet<Empresa> Empresas => Set<Empresa>();
+    public DbSet<EstadoMovimientoBodega> EstadosMovimientoBodega => Set<EstadoMovimientoBodega>();
+    public DbSet<EstadoPedidoMaterial> EstadosPedidoMaterial => Set<EstadoPedidoMaterial>();
+    public DbSet<EstadoSolicitudTransporteCarga> EstadosSolicitiudTransporteCarga => Set<EstadoSolicitudTransporteCarga>();
+    public DbSet<EstadoTransporteCarga> EstadosTransporteCarga => Set<EstadoTransporteCarga>();
+    public DbSet<IngresoMaterial> IngresoMaterials => Set<IngresoMaterial>();
+    public DbSet<InventarioBodega> InventarioBodegas => Set<InventarioBodega>();
+    public DbSet<Material> Materiales => Set<Material>();
+    public DbSet<MovimientoBodega> MovimientoBodegas => Set<MovimientoBodega>();
+    public DbSet<Municipio> Municipios => Set<Municipio>();
+    public DbSet<Pais> Paises => Set<Pais>();
+    public DbSet<PedidoMaterial> PedidoMateriales => Set<PedidoMaterial>();
+    public DbSet<Planta> Plantas => Set<Planta>();
+    public DbSet<ProveedorMaterial> ProveedorMateriales => Set<ProveedorMaterial>();
+    public DbSet<Ruta> Rutas => Set<Ruta>();
+    public DbSet<SolicitudTransporteCarga> SolicitudTransporteCargas => Set<SolicitudTransporteCarga>();
+    public DbSet<TipoEmpresa> TipoEmpresas => Set<TipoEmpresa>();
+    public DbSet<TipoMaterial> TipoMateriales => Set<TipoMaterial>();
+    public DbSet<TipoPlanta> TipoPlantas => Set<TipoPlanta>();
+    public DbSet<TipoRuta> TipoRutas => Set<TipoRuta>();
+    public DbSet<TipoUbicacion> TipoUbicaciones => Set<TipoUbicacion>();
+    public DbSet<Ubicacion> Ubicaciones => Set<Ubicacion>();
+    public DbSet<UbicacionEmpresa> UbicacionEmpresas => Set<UbicacionEmpresa>();
+    public DbSet<UnidadMedida> UnidadMedidas => Set<UnidadMedida>();
+    public DbSet<Vehiculo> Vehiculos => Set<Vehiculo>();
+    public DbSet<VehiculoConductor> VehiculoConductores => Set<VehiculoConductor>();
+
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {
         foreach (var entry in ChangeTracker.Entries<AuditableEntity>())
@@ -39,6 +80,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
             switch (entry.State)
             {
                 case EntityState.Added:
+                    entry.Entity.Status = "A";
                     entry.Entity.CreatedBy = _currentUserService.UserId;
                     entry.Entity.Created = _dateTime.Now;
                     break;
@@ -65,9 +107,21 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
+        base.OnModelCreating(builder);
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-        base.OnModelCreating(builder);
+       
+        builder.Entity<ApplicationUser>(userBuilder =>
+        {
+            userBuilder.Property(u => u.FirstName)
+                .HasMaxLength(ApplicationUser.MAX_FIRSTNAME_LENGTH)
+                .IsRequired();
+
+            userBuilder.Property(u => u.LastName)
+                .HasMaxLength(ApplicationUser.MAX_LASTNAME_LENGTH)
+                .IsRequired();
+
+        });
     }
 
     private async Task DispatchEvents(DomainEvent[] events)
