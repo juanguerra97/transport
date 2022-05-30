@@ -3,7 +3,7 @@
     class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3"
   >
     <div class="container">
-      <a class="navbar-brand" [routerLink]="['/']">seminario.WebUI</a>
+      <a class="navbar-brand" [routerLink]="['/']">TransPort</a>
       <button
         class="navbar-toggler"
         type="button"
@@ -19,7 +19,7 @@
         class="navbar-collapse collapse d-sm-inline-flex justify-content-end"
         [ngClass]="{ show: isExpanded }"
       >
-        <ul class="navbar-nav flex-grow">
+        <!--<ul class="navbar-nav flex-grow">
           <li class="nav-item"
               [routerLinkActive]="['link-active']"
               [routerLinkActiveOptions]="{ exact: true }">
@@ -40,7 +40,7 @@
           <li class="nav-item">
             <a class="nav-link text-dark" href="/api" target="_blank">API</a>
           </li>
-        </ul>
+        </ul>-->
         <app-login-menu></app-login-menu>
       </div>
     </div>
