@@ -8,4 +8,4 @@ DROP USER IF EXISTS umgadmin;
 
 CREATE USER 'umgadmin'@'%' IDENTIFIED BY 'UmgAdmin$123';
 
-GRANT ALL PRIVILEGES ON rentasgt.* TO 'umgadmin'@'%';
+GRANT ALL PRIVILEGES ON seminarioumg.* TO 'umgadmin'@'%';
