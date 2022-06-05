@@ -17,7 +17,7 @@
     </tr>
     <tr>
       <th></th>
-      <th>
+      <th style="max-width: 6rem;">
         <p-columnFilter field="tipoPlanta.descripcion" matchMode="equals" [showMenu]="false" [showClearButton]="false">
           <ng-template pTemplate="filter" let-value let-filter="filterCallback">
             <p-dropdown [options]="tiposPlanta" (onChange)="filter($event.value?.descripcion)" optionLabel="descripcion" placeholder="Seleccionar" [showClear]="true" styleClass="w-100"></p-dropdown>
@@ -47,6 +47,13 @@
           <button [routerLink]="['editar', planta.id]" pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-warning p-button-text"></button>
           <button (click)="confirmarEliminar(planta)" pButton pRipple type="button" icon="pi pi-times" class="p-button-rounded p-button-danger p-button-text"></button>
         </div>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="6" class="tp-font-small">
+        No se han agregado plantas.
       </td>
     </tr>
   </ng-template>
