@@ -11,7 +11,7 @@ public class MunicipioConfiguration : IEntityTypeConfiguration<Municipio>
         builder.HasKey(m => m.Id);
 
         builder.Property(m => m.Id)
-            .ValueGeneratedOnAdd();
+            .ValueGeneratedNever();
 
         builder.HasIndex(m => m.Descripcion);
 

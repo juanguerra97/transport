@@ -10,7 +10,7 @@ public class PaisConfiguration : IEntityTypeConfiguration<Pais>
         builder.HasKey(p => p.Id);
 
         builder.Property(p => p.Id)
-            .ValueGeneratedOnAdd();
+            .ValueGeneratedNever();
 
         builder.HasIndex(p => p.Descripcion).IsUnique();
 
