@@ -23,11 +23,8 @@ public class UbicacionConfiguration : IEntityTypeConfiguration<Ubicacion>
             .HasMaxLength(Ubicacion.MAX_DIRECCION_LENGTH)
             .IsRequired();
 
-        builder.HasOne(e => e.TipoUbicacion)
-            .WithMany()
-            .HasForeignKey(e => e.TipoUbicacionId)
-            .IsRequired()
-            .OnDelete(DeleteBehavior.Restrict);
+        builder.Property(e => e.TipoUbicacion)
+            .IsRequired();
 
         builder.HasOne(e => e.Municipio)
             .WithMany()

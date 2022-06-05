@@ -10,7 +10,7 @@ public class TipoPlantaConfiguration : IEntityTypeConfiguration<TipoPlanta>
         builder.HasKey(t => t.Id);
 
         builder.Property(t => t.Id)
-            .ValueGeneratedOnAdd();
+            .ValueGeneratedNever();
 
         builder.Property(t => t.Descripcion)
             .HasMaxLength(TipoPlanta.MAX_DESCRIPCION_LENGTH)

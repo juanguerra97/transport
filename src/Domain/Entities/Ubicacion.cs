@@ -6,10 +6,8 @@ public class Ubicacion
     public static readonly int MAX_DETALLE_LENGTH = 1024;
     public static readonly int MAX_DIRECCION_LENGTH = 256;
 
-    public int? Id { get; set; }
-
-    public int? TipoUbicacionId { get; set; }
-    public TipoUbicacion? TipoUbicacion { get; set; }
+    public int? Id { get; set; } 
+    public TipoUbicacion TipoUbicacion { get; set; }
 
     public string? Descripcion { get; set; }
 

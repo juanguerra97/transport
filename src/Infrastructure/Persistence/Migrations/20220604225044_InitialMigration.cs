@@ -368,8 +368,7 @@ namespace seminario.Infrastructure.Persistence.Migrations
                 name: "TipoPlantas",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     Descripcion = table.Column<string>(type: "varchar(64)", maxLength: 64, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Status = table.Column<string>(type: "longtext", nullable: true)
@@ -409,29 +408,6 @@ namespace seminario.Infrastructure.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TipoRutas", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "TipoUbicaciones",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Descripcion = table.Column<string>(type: "varchar(64)", maxLength: 64, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Status = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TipoUbicaciones", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -917,7 +893,7 @@ namespace seminario.Infrastructure.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    TipoUbicacionId = table.Column<int>(type: "int", nullable: false),
+                    TipoUbicacion = table.Column<int>(type: "int", nullable: false),
                     Descripcion = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Detalle = table.Column<string>(type: "varchar(1024)", maxLength: 1024, nullable: true)
@@ -935,12 +911,6 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         name: "FK_Ubicaciones_Municipios_MunicipioId",
                         column: x => x.MunicipioId,
                         principalTable: "Municipios",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Ubicaciones_TipoUbicaciones_TipoUbicacionId",
-                        column: x => x.TipoUbicacionId,
-                        principalTable: "TipoUbicaciones",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 })
@@ -1960,11 +1930,6 @@ namespace seminario.Infrastructure.Persistence.Migrations
                 column: "MunicipioId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ubicaciones_TipoUbicacionId",
-                table: "Ubicaciones",
-                column: "TipoUbicacionId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_VehiculoConductores_ConductorId",
                 table: "VehiculoConductores",
                 column: "ConductorId");
@@ -2112,9 +2077,6 @@ namespace seminario.Infrastructure.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "Municipios");
-
-            migrationBuilder.DropTable(
-                name: "TipoUbicaciones");
 
             migrationBuilder.DropTable(
                 name: "Departamentos");

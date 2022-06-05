@@ -1621,7 +1621,6 @@ namespace seminario.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("seminario.Domain.Entities.TipoPlanta", b =>
                 {
                     b.Property<int?>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("Created")
@@ -1683,37 +1682,6 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TipoRutas");
-                });
-
-            modelBuilder.Entity("seminario.Domain.Entities.TipoUbicacion", b =>
-                {
-                    b.Property<int?>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Descripcion")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("varchar(64)");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Status")
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TipoUbicaciones");
                 });
 
             modelBuilder.Entity("seminario.Domain.Entities.TodoItem", b =>
@@ -1825,15 +1793,12 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("int");
 
-                    b.Property<int?>("TipoUbicacionId")
-                        .IsRequired()
+                    b.Property<int>("TipoUbicacion")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("MunicipioId");
-
-                    b.HasIndex("TipoUbicacionId");
 
                     b.ToTable("Ubicaciones");
                 });
@@ -2556,15 +2521,7 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("seminario.Domain.Entities.TipoUbicacion", "TipoUbicacion")
-                        .WithMany()
-                        .HasForeignKey("TipoUbicacionId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.Navigation("Municipio");
-
-                    b.Navigation("TipoUbicacion");
                 });
 
             modelBuilder.Entity("seminario.Domain.Entities.UbicacionEmpresa", b =>

@@ -66,7 +66,6 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
     public DbSet<TipoMaterial> TipoMateriales => Set<TipoMaterial>();
     public DbSet<TipoPlanta> TipoPlantas => Set<TipoPlanta>();
     public DbSet<TipoRuta> TipoRutas => Set<TipoRuta>();
-    public DbSet<TipoUbicacion> TipoUbicaciones => Set<TipoUbicacion>();
     public DbSet<Ubicacion> Ubicaciones => Set<Ubicacion>();
     public DbSet<UbicacionEmpresa> UbicacionEmpresas => Set<UbicacionEmpresa>();
     public DbSet<UnidadMedida> UnidadMedidas => Set<UnidadMedida>();
