@@ -7,6 +7,8 @@ public class Bodega : AuditableEntity
 
     public int? Id { get; set; }
 
+    public TipoBodega TipoBodega { get; set; }
+
     public string? Descripcion { get; set; }
 
     public string? Detalle { get; set; }

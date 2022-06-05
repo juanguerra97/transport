@@ -919,6 +919,7 @@ namespace seminario.Infrastructure.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    TipoBodega = table.Column<int>(type: "int", nullable: false),
                     Descripcion = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Detalle = table.Column<string>(type: "varchar(1024)", maxLength: 1024, nullable: true)

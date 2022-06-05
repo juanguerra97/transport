@@ -11,7 +11,7 @@ using seminario.Infrastructure.Persistence;
 namespace seminario.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220605002514_InitialMigration")]
+    [Migration("20220605233808_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -670,6 +670,9 @@ namespace seminario.Infrastructure.Persistence.Migrations
 
                     b.Property<string>("Status")
                         .HasColumnType("longtext");
+
+                    b.Property<int>("TipoBodega")
+                        .HasColumnType("int");
 
                     b.Property<int?>("UbicacionId")
                         .IsRequired()

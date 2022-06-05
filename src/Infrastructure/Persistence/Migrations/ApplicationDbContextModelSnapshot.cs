@@ -669,6 +669,9 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     b.Property<string>("Status")
                         .HasColumnType("longtext");
 
+                    b.Property<int>("TipoBodega")
+                        .HasColumnType("int");
+
                     b.Property<int?>("UbicacionId")
                         .IsRequired()
                         .HasColumnType("int");

@@ -890,6 +890,9 @@
             "format": "int32",
             "nullable": true
           },
+          "tipoBodega": {
+            "$ref": "#/components/schemas/TipoBodega"
+          },
           "descripcion": {
             "type": "string",
             "nullable": true
@@ -907,6 +910,18 @@
             ]
           }
         }
+      },
+      "TipoBodega": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "BODEGA",
+          "PLANTA"
+        ],
+        "enum": [
+          0,
+          1
+        ]
       },
       "UbicacionDto": {
         "type": "object",

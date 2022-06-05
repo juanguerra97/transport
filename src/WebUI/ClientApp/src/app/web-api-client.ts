@@ -1458,6 +1458,7 @@ export interface ITipoPlantaDto {
 
 export class BodegaDto implements IBodegaDto {
     id?: number | undefined;
+    tipoBodega?: TipoBodega;
     descripcion?: string | undefined;
     detalle?: string | undefined;
     ubicacion?: UbicacionDto | undefined;
@@ -1474,6 +1475,7 @@ export class BodegaDto implements IBodegaDto {
     init(_data?: any) {
         if (_data) {
             this.id = _data["id"];
+            this.tipoBodega = _data["tipoBodega"];
             this.descripcion = _data["descripcion"];
             this.detalle = _data["detalle"];
             this.ubicacion = _data["ubicacion"] ? UbicacionDto.fromJS(_data["ubicacion"]) : <any>undefined;
@@ -1490,6 +1492,7 @@ export class BodegaDto implements IBodegaDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
+        data["tipoBodega"] = this.tipoBodega;
         data["descripcion"] = this.descripcion;
         data["detalle"] = this.detalle;
         data["ubicacion"] = this.ubicacion ? this.ubicacion.toJSON() : <any>undefined;
@@ -1499,9 +1502,15 @@ export class BodegaDto implements IBodegaDto {
 
 export interface IBodegaDto {
     id?: number | undefined;
+    tipoBodega?: TipoBodega;
     descripcion?: string | undefined;
     detalle?: string | undefined;
     ubicacion?: UbicacionDto | undefined;
+}
+
+export enum TipoBodega {
+    BODEGA = 0,
+    PLANTA = 1,
 }
 
 export class UbicacionDto implements IUbicacionDto {

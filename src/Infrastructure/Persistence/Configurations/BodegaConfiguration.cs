@@ -13,6 +13,9 @@ public class BodegaConfiguration : IEntityTypeConfiguration<Bodega>
         builder.Property(e => e.Id)
             .ValueGeneratedOnAdd();
 
+        builder.Property(e => e.TipoBodega)
+            .IsRequired();
+
         builder.Property(e => e.Descripcion)
             .HasMaxLength(Bodega.MAX_DESCRIPCION_LENGTH)
             .IsRequired();
