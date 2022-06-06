@@ -15,6 +15,291 @@ import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angula
 
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
+export interface IBodegasClient {
+    getBodegas(): Observable<BodegaDto[]>;
+    create(command: CreateBodegaCommand): Observable<number>;
+    getBodegaById(id: number): Observable<BodegaDto>;
+    update(id: number, command: UpdateBodegaCommand): Observable<BodegaDto>;
+    delete(id: number): Observable<FileResponse>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class BodegasClient implements IBodegasClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    getBodegas(): Observable<BodegaDto[]> {
+        let url_ = this.baseUrl + "/api/Bodegas";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetBodegas(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetBodegas(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<BodegaDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<BodegaDto[]>;
+        }));
+    }
+
+    protected processGetBodegas(response: HttpResponseBase): Observable<BodegaDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(BodegaDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<BodegaDto[]>(null as any);
+    }
+
+    create(command: CreateBodegaCommand): Observable<number> {
+        let url_ = this.baseUrl + "/api/Bodegas";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<number>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<number>;
+        }));
+    }
+
+    protected processCreate(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<number>(null as any);
+    }
+
+    getBodegaById(id: number): Observable<BodegaDto> {
+        let url_ = this.baseUrl + "/api/Bodegas/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetBodegaById(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetBodegaById(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<BodegaDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<BodegaDto>;
+        }));
+    }
+
+    protected processGetBodegaById(response: HttpResponseBase): Observable<BodegaDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BodegaDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<BodegaDto>(null as any);
+    }
+
+    update(id: number, command: UpdateBodegaCommand): Observable<BodegaDto> {
+        let url_ = this.baseUrl + "/api/Bodegas/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<BodegaDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<BodegaDto>;
+        }));
+    }
+
+    protected processUpdate(response: HttpResponseBase): Observable<BodegaDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BodegaDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<BodegaDto>(null as any);
+    }
+
+    delete(id: number): Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/Bodegas/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileResponse>;
+        }));
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: responseBlob as any, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileResponse>(null as any);
+    }
+}
+
 export interface IDepartamentosClient {
     getDepartamentos(paisId: number | null | undefined): Observable<DepartamentoDto[]>;
 }
@@ -1236,226 +1521,6 @@ export class WeatherForecastClient implements IWeatherForecastClient {
     }
 }
 
-export class DepartamentoDto implements IDepartamentoDto {
-    id?: number | undefined;
-    descripcion?: string | undefined;
-    pais?: PaisDto | undefined;
-
-    constructor(data?: IDepartamentoDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.descripcion = _data["descripcion"];
-            this.pais = _data["pais"] ? PaisDto.fromJS(_data["pais"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): DepartamentoDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new DepartamentoDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["descripcion"] = this.descripcion;
-        data["pais"] = this.pais ? this.pais.toJSON() : <any>undefined;
-        return data;
-    }
-}
-
-export interface IDepartamentoDto {
-    id?: number | undefined;
-    descripcion?: string | undefined;
-    pais?: PaisDto | undefined;
-}
-
-export class PaisDto implements IPaisDto {
-    id?: number | undefined;
-    descripcion?: string | undefined;
-
-    constructor(data?: IPaisDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.descripcion = _data["descripcion"];
-        }
-    }
-
-    static fromJS(data: any): PaisDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new PaisDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["descripcion"] = this.descripcion;
-        return data;
-    }
-}
-
-export interface IPaisDto {
-    id?: number | undefined;
-    descripcion?: string | undefined;
-}
-
-export class MunicipioDto implements IMunicipioDto {
-    id?: number | undefined;
-    descripcion?: string | undefined;
-    departamento?: DepartamentoDto | undefined;
-
-    constructor(data?: IMunicipioDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.descripcion = _data["descripcion"];
-            this.departamento = _data["departamento"] ? DepartamentoDto.fromJS(_data["departamento"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): MunicipioDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new MunicipioDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["descripcion"] = this.descripcion;
-        data["departamento"] = this.departamento ? this.departamento.toJSON() : <any>undefined;
-        return data;
-    }
-}
-
-export interface IMunicipioDto {
-    id?: number | undefined;
-    descripcion?: string | undefined;
-    departamento?: DepartamentoDto | undefined;
-}
-
-export class PlantaDto implements IPlantaDto {
-    id?: number | undefined;
-    tipoPlanta?: TipoPlantaDto | undefined;
-    descripcion?: string | undefined;
-    detalle?: string | undefined;
-    bodega?: BodegaDto | undefined;
-
-    constructor(data?: IPlantaDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.tipoPlanta = _data["tipoPlanta"] ? TipoPlantaDto.fromJS(_data["tipoPlanta"]) : <any>undefined;
-            this.descripcion = _data["descripcion"];
-            this.detalle = _data["detalle"];
-            this.bodega = _data["bodega"] ? BodegaDto.fromJS(_data["bodega"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): PlantaDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new PlantaDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["tipoPlanta"] = this.tipoPlanta ? this.tipoPlanta.toJSON() : <any>undefined;
-        data["descripcion"] = this.descripcion;
-        data["detalle"] = this.detalle;
-        data["bodega"] = this.bodega ? this.bodega.toJSON() : <any>undefined;
-        return data;
-    }
-}
-
-export interface IPlantaDto {
-    id?: number | undefined;
-    tipoPlanta?: TipoPlantaDto | undefined;
-    descripcion?: string | undefined;
-    detalle?: string | undefined;
-    bodega?: BodegaDto | undefined;
-}
-
-export class TipoPlantaDto implements ITipoPlantaDto {
-    id?: number | undefined;
-    descripcion?: string | undefined;
-
-    constructor(data?: ITipoPlantaDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.descripcion = _data["descripcion"];
-        }
-    }
-
-    static fromJS(data: any): TipoPlantaDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new TipoPlantaDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["descripcion"] = this.descripcion;
-        return data;
-    }
-}
-
-export interface ITipoPlantaDto {
-    id?: number | undefined;
-    descripcion?: string | undefined;
-}
-
 export class BodegaDto implements IBodegaDto {
     id?: number | undefined;
     tipoBodega?: TipoBodega;
@@ -1584,6 +1649,334 @@ export enum TipoUbicacion {
     FRONTERA = 3,
     BODEGA_TERCERO = 4,
     PLANTA = 5,
+}
+
+export class MunicipioDto implements IMunicipioDto {
+    id?: number | undefined;
+    descripcion?: string | undefined;
+    departamento?: DepartamentoDto | undefined;
+
+    constructor(data?: IMunicipioDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.descripcion = _data["descripcion"];
+            this.departamento = _data["departamento"] ? DepartamentoDto.fromJS(_data["departamento"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): MunicipioDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MunicipioDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["descripcion"] = this.descripcion;
+        data["departamento"] = this.departamento ? this.departamento.toJSON() : <any>undefined;
+        return data;
+    }
+}
+
+export interface IMunicipioDto {
+    id?: number | undefined;
+    descripcion?: string | undefined;
+    departamento?: DepartamentoDto | undefined;
+}
+
+export class DepartamentoDto implements IDepartamentoDto {
+    id?: number | undefined;
+    descripcion?: string | undefined;
+    pais?: PaisDto | undefined;
+
+    constructor(data?: IDepartamentoDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.descripcion = _data["descripcion"];
+            this.pais = _data["pais"] ? PaisDto.fromJS(_data["pais"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): DepartamentoDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new DepartamentoDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["descripcion"] = this.descripcion;
+        data["pais"] = this.pais ? this.pais.toJSON() : <any>undefined;
+        return data;
+    }
+}
+
+export interface IDepartamentoDto {
+    id?: number | undefined;
+    descripcion?: string | undefined;
+    pais?: PaisDto | undefined;
+}
+
+export class PaisDto implements IPaisDto {
+    id?: number | undefined;
+    descripcion?: string | undefined;
+
+    constructor(data?: IPaisDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.descripcion = _data["descripcion"];
+        }
+    }
+
+    static fromJS(data: any): PaisDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PaisDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["descripcion"] = this.descripcion;
+        return data;
+    }
+}
+
+export interface IPaisDto {
+    id?: number | undefined;
+    descripcion?: string | undefined;
+}
+
+export class CreateBodegaCommand implements ICreateBodegaCommand {
+    tipoBodega?: TipoBodega;
+    descripcion?: string | undefined;
+    detalle?: string | undefined;
+    municipioId?: number | undefined;
+    direccion?: string | undefined;
+
+    constructor(data?: ICreateBodegaCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.tipoBodega = _data["tipoBodega"];
+            this.descripcion = _data["descripcion"];
+            this.detalle = _data["detalle"];
+            this.municipioId = _data["municipioId"];
+            this.direccion = _data["direccion"];
+        }
+    }
+
+    static fromJS(data: any): CreateBodegaCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateBodegaCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["tipoBodega"] = this.tipoBodega;
+        data["descripcion"] = this.descripcion;
+        data["detalle"] = this.detalle;
+        data["municipioId"] = this.municipioId;
+        data["direccion"] = this.direccion;
+        return data;
+    }
+}
+
+export interface ICreateBodegaCommand {
+    tipoBodega?: TipoBodega;
+    descripcion?: string | undefined;
+    detalle?: string | undefined;
+    municipioId?: number | undefined;
+    direccion?: string | undefined;
+}
+
+export class UpdateBodegaCommand implements IUpdateBodegaCommand {
+    bodegaId?: number | undefined;
+    tipoBodega?: TipoBodega;
+    descripcion?: string | undefined;
+    detalle?: string | undefined;
+    municipioId?: number | undefined;
+    direccion?: string | undefined;
+
+    constructor(data?: IUpdateBodegaCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.bodegaId = _data["bodegaId"];
+            this.tipoBodega = _data["tipoBodega"];
+            this.descripcion = _data["descripcion"];
+            this.detalle = _data["detalle"];
+            this.municipioId = _data["municipioId"];
+            this.direccion = _data["direccion"];
+        }
+    }
+
+    static fromJS(data: any): UpdateBodegaCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateBodegaCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["bodegaId"] = this.bodegaId;
+        data["tipoBodega"] = this.tipoBodega;
+        data["descripcion"] = this.descripcion;
+        data["detalle"] = this.detalle;
+        data["municipioId"] = this.municipioId;
+        data["direccion"] = this.direccion;
+        return data;
+    }
+}
+
+export interface IUpdateBodegaCommand {
+    bodegaId?: number | undefined;
+    tipoBodega?: TipoBodega;
+    descripcion?: string | undefined;
+    detalle?: string | undefined;
+    municipioId?: number | undefined;
+    direccion?: string | undefined;
+}
+
+export class PlantaDto implements IPlantaDto {
+    id?: number | undefined;
+    tipoPlanta?: TipoPlantaDto | undefined;
+    descripcion?: string | undefined;
+    detalle?: string | undefined;
+    bodega?: BodegaDto | undefined;
+
+    constructor(data?: IPlantaDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.tipoPlanta = _data["tipoPlanta"] ? TipoPlantaDto.fromJS(_data["tipoPlanta"]) : <any>undefined;
+            this.descripcion = _data["descripcion"];
+            this.detalle = _data["detalle"];
+            this.bodega = _data["bodega"] ? BodegaDto.fromJS(_data["bodega"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): PlantaDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PlantaDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["tipoPlanta"] = this.tipoPlanta ? this.tipoPlanta.toJSON() : <any>undefined;
+        data["descripcion"] = this.descripcion;
+        data["detalle"] = this.detalle;
+        data["bodega"] = this.bodega ? this.bodega.toJSON() : <any>undefined;
+        return data;
+    }
+}
+
+export interface IPlantaDto {
+    id?: number | undefined;
+    tipoPlanta?: TipoPlantaDto | undefined;
+    descripcion?: string | undefined;
+    detalle?: string | undefined;
+    bodega?: BodegaDto | undefined;
+}
+
+export class TipoPlantaDto implements ITipoPlantaDto {
+    id?: number | undefined;
+    descripcion?: string | undefined;
+
+    constructor(data?: ITipoPlantaDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.descripcion = _data["descripcion"];
+        }
+    }
+
+    static fromJS(data: any): TipoPlantaDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TipoPlantaDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["descripcion"] = this.descripcion;
+        return data;
+    }
+}
+
+export interface ITipoPlantaDto {
+    id?: number | undefined;
+    descripcion?: string | undefined;
 }
 
 export class CreatePlantaCommand implements ICreatePlantaCommand {
