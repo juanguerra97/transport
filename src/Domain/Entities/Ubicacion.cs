@@ -1,6 +1,6 @@
 ﻿
 namespace seminario.Domain.Entities;
-public class Ubicacion
+public class Ubicacion : AuditableEntity
 {
     public static readonly int MAX_DESCRIPCION_LENGTH = 256;
     public static readonly int MAX_DETALLE_LENGTH = 1024;

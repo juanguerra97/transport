@@ -11,7 +11,7 @@ using seminario.Infrastructure.Persistence;
 namespace seminario.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220605233808_InitialMigration")]
+    [Migration("20220606001350_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1771,6 +1771,12 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("Created")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("longtext");
+
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasMaxLength(256)
@@ -1785,6 +1791,12 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("varchar(256)");
 
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("longtext");
+
                     b.Property<double?>("Latitud")
                         .HasColumnType("double");
 
@@ -1794,6 +1806,9 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     b.Property<int?>("MunicipioId")
                         .IsRequired()
                         .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("longtext");
 
                     b.Property<int>("TipoUbicacion")
                         .HasColumnType("int");
