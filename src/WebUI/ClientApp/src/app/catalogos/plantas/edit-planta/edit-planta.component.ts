@@ -185,11 +185,13 @@ export class EditPlantaComponent implements OnInit {
       .subscribe({
         next: res => {
           this.toastService.success('Se guardaron los datos.', { position: 'bottom-center'});
+          this.form.enable();
           this.guardando = false;
         },
         error: error => {
           console.error(error);
           this.toastService.error(getErrorMessage(error), { autoClose: false, dismissible: true, position: "bottom-center"});
+          this.form.enable();
           this.guardando = false;
         }
       });
