@@ -188,7 +188,7 @@ export class EditPlantaComponent implements OnInit {
           this.guardando = false;
         },
         error: error => {
-          console.log(JSON.stringify(error));
+          console.error(error);
           this.toastService.error(getErrorMessage(error), { autoClose: false, dismissible: true, position: "bottom-center"});
           this.guardando = false;
         }
