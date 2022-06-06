@@ -26,6 +26,6 @@ public class GetPlantasQueryHandler : IRequestHandler<GetPlantasQuery, List<Plan
             .Where(p => p.Status == "A")
             .OrderBy(p => p.Descripcion).ThenBy(p => p.Id)
             .ProjectTo<PlantaDto>(_mapper.ConfigurationProvider)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 }
