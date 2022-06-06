@@ -975,14 +975,16 @@
           "PUERTO",
           "AEROPUERTO",
           "FRONTERA",
-          "BODEGA_TERCERO"
+          "BODEGA_TERCERO",
+          "PLANTA"
         ],
         "enum": [
           0,
           1,
           2,
           3,
-          4
+          4,
+          5
         ]
       },
       "CreatePlantaCommand": {

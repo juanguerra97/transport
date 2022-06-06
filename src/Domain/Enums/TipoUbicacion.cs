@@ -7,4 +7,5 @@ public enum TipoUbicacion
     AEROPUERTO = 2,
     FRONTERA = 3,
     BODEGA_TERCERO = 4,
+    PLANTA = 5,
 }

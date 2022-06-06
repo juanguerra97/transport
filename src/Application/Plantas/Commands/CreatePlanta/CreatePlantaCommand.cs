@@ -26,7 +26,7 @@ public class CreatePlantaCommandHandler : IRequestHandler<CreatePlantaCommand, i
 
         var ubicacion = new Ubicacion
         {
-            TipoUbicacion = TipoUbicacion.BODEGA,
+            TipoUbicacion = TipoUbicacion.PLANTA,
             Descripcion = request.Descripcion,
             Detalle = request.Detalle,
             Direccion = request.Direccion,
