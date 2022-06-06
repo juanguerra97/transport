@@ -1,0 +1,131 @@
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {
+  BodegasClient,
+  DepartamentoDto,
+  DepartamentosClient,
+  MunicipioDto, MunicipiosClient
+} from "../../../web-api-client";
+import {HotToastService} from "@ngneat/hot-toast";
+import {Router} from "@angular/router";
+import {Paises} from "../../../utils/constants";
+import {getErrorMessage} from "../../../utils/errors";
+
+@Component({
+  selector: 'app-new-bodega',
+  templateUrl: './new-bodega.component.html',
+  styleUrls: ['./new-bodega.component.scss']
+})
+export class NewBodegaComponent implements OnInit {
+
+  form = new FormGroup({
+    descripcion: new FormControl(null, [Validators.required, Validators.maxLength(256)]),
+    detalle: new FormControl(null, [Validators.required, Validators.maxLength(1024)]),
+    direccion: new FormControl(null, [Validators.required, Validators.maxLength(256)]),
+    departamento: new FormControl(null, [Validators.required]),
+    municipio: new FormControl(null, [Validators.required]),
+  });
+
+  departamentos: DepartamentoDto[] = [];
+  municipios: MunicipioDto[] = [];
+
+  guardando = false;
+
+  constructor(
+    private bodegasClient: BodegasClient,
+    private departamentosClient: DepartamentosClient,
+    private municipiosClient: MunicipiosClient,
+    private toastService: HotToastService,
+    private router: Router,
+  ) {
+  }
+
+  get descripcion() {
+    return this.form.get('descripcion');
+  }
+
+  get detalle() {
+    return this.form.get('detalle');
+  }
+
+  get direccion() {
+    return this.form.get('direccion');
+  }
+
+  get departamento() {
+    return this.form.get('departamento');
+  }
+
+  get municipio() {
+    return this.form.get('municipio');
+  }
+
+  ngOnInit(): void {
+    this.cargarDepartamentos(Paises.GUATEMALA_ID);
+  }
+
+  private cargarDepartamentos(paisId?: number) {
+    this.municipios = [];
+    this.departamentosClient.getDepartamentos(paisId)
+      .subscribe({
+        next: res => {
+          this.departamentos = res;
+        },
+        error: error => {
+          console.error(error);
+        }
+      });
+  }
+
+  onChangeDepartamento($event: any) {
+    const value = $event.value as DepartamentoDto | undefined;
+    if (!value) {
+      this.municipios = [];
+    } else {
+      this.cargarMunicipios(value.id);
+    }
+    this.municipio?.reset();
+  }
+
+  private cargarMunicipios(departamentoId?: number) {
+    this.municipiosClient.getMunicipios(undefined, departamentoId)
+      .subscribe({
+        next: res => {
+          this.municipios = res;
+        },
+        error: error => {
+          console.error(error);
+        }
+      });
+  }
+
+  guardar() {
+    if (!this.form.valid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+    this.guardando = true;
+    this.form.disable();
+    const datos = Object.assign({}, this.form.value);
+    datos.municipioId = datos.municipio.id;
+    delete datos.departamento;
+    delete datos.municipio;
+    this.bodegasClient.create(datos)
+      .subscribe({
+        next: res => {
+          this.toastService.success('Se guardaron los datos.', {position: 'bottom-center'});
+          this.guardando = false;
+          this.router.navigateByUrl('/admin/catalogo/bodegas');
+        },
+        error: error => {
+          console.error(error);
+          this.toastService.error(getErrorMessage(error), {
+            autoClose: false,
+            dismissible: true,
+            position: "bottom-center"
+          });
+          this.guardando = false;
+        }
+      });
+  }
+}
