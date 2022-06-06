@@ -26,6 +26,12 @@ public class DeletePlantaCommandHandler : IRequestHandler<DeletePlantaCommand, P
     public async Task<PlantaDto> Handle(DeletePlantaCommand request, CancellationToken cancellationToken)
     {
         var entity = await _context.Plantas
+            .Include(p => p.TipoPlanta)
+            .Include(p => p.Bodega)
+            .ThenInclude(b => b.Ubicacion)
+            .ThenInclude(u => u.Municipio)
+            .ThenInclude(m => m.Departamento)
+            .ThenInclude(d => d.Pais)
             .FirstOrDefaultAsync(p => p.Id == request.PlantaId, cancellationToken);
         if (entity == null)
         {
@@ -33,6 +39,8 @@ public class DeletePlantaCommandHandler : IRequestHandler<DeletePlantaCommand, P
         }
 
         entity.Status = "X";
+        entity.Bodega.Status = "X";
+        entity.Bodega.Ubicacion.Status = "X";
 
         await _context.SaveChangesAsync(cancellationToken);
 
