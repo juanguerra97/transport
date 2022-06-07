@@ -982,6 +982,42 @@
             "JWT": []
           }
         ]
+      },
+      "post": {
+        "tags": [
+          "UnidadMedida"
+        ],
+        "operationId": "UnidadMedida_Create",
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUnidadMedidaCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       }
     },
     "/api/UnidadMedida/{id}": {
@@ -1009,6 +1045,89 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/UnidadMedidaDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "UnidadMedida"
+        ],
+        "operationId": "UnidadMedida_Update",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUnidadMedidaCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnidadMedidaDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "UnidadMedida"
+        ],
+        "operationId": "UnidadMedida_Delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -1630,6 +1749,47 @@
         "additionalProperties": false,
         "properties": {
           "id": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "descripcion": {
+            "type": "string",
+            "nullable": true
+          },
+          "descripcionPlural": {
+            "type": "string",
+            "nullable": true
+          },
+          "descripcionCorta": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "CreateUnidadMedidaCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "descripcion": {
+            "type": "string",
+            "nullable": true
+          },
+          "descripcionPlural": {
+            "type": "string",
+            "nullable": true
+          },
+          "descripcionCorta": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateUnidadMedidaCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "unidadMedidaId": {
             "type": "integer",
             "format": "int32",
             "nullable": true
