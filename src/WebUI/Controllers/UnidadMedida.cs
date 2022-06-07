@@ -10,13 +10,13 @@ namespace seminario.WebUI.Controllers;
 public class UnidadMedida : ApiControllerBase
 {
     [HttpGet]
-    public async Task<ActionResult<List<UnidadMedidaDto>>> GetPlantas()
+    public async Task<ActionResult<List<UnidadMedidaDto>>> GetUnidadesMedida()
     {
         return await Mediator.Send(new GetUnidadesMedidaQuery());
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<UnidadMedidaDto>> GetPlantaById(int id)
+    public async Task<ActionResult<UnidadMedidaDto>> GetUnidadMedidaById(int id)
     {
         return await Mediator.Send(new GetUnidadMedidaByIdQuery
         {
