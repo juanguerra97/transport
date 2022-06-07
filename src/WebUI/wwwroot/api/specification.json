@@ -492,6 +492,34 @@
         ]
       }
     },
+    "/api/TipoMaterial": {
+      "get": {
+        "tags": [
+          "TipoMaterial"
+        ],
+        "operationId": "TipoMaterial_GetTipoMateriales",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TipoMaterialDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
     "/api/TipoPlanta": {
       "get": {
         "tags": [
@@ -928,6 +956,71 @@
         ]
       }
     },
+    "/api/UnidadMedida": {
+      "get": {
+        "tags": [
+          "UnidadMedida"
+        ],
+        "operationId": "UnidadMedida_GetUnidadesMedida",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UnidadMedidaDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/UnidadMedida/{id}": {
+      "get": {
+        "tags": [
+          "UnidadMedida"
+        ],
+        "operationId": "UnidadMedida_GetUnidadMedidaById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnidadMedidaDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
     "/api/WeatherForecast": {
       "get": {
         "tags": [
@@ -1289,6 +1382,21 @@
           }
         }
       },
+      "TipoMaterialDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "descripcion": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
       "PaginatedListOfTodoItemBriefDto": {
         "type": "object",
         "additionalProperties": false,
@@ -1512,6 +1620,29 @@
             "format": "int32"
           },
           "title": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "UnidadMedidaDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "descripcion": {
+            "type": "string",
+            "nullable": true
+          },
+          "descripcionPlural": {
+            "type": "string",
+            "nullable": true
+          },
+          "descripcionCorta": {
             "type": "string",
             "nullable": true
           }

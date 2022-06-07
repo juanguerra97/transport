@@ -810,6 +810,79 @@ export class PlantasClient implements IPlantasClient {
     }
 }
 
+export interface ITipoMaterialClient {
+    getTipoMateriales(): Observable<TipoMaterialDto[]>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class TipoMaterialClient implements ITipoMaterialClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    getTipoMateriales(): Observable<TipoMaterialDto[]> {
+        let url_ = this.baseUrl + "/api/TipoMaterial";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTipoMateriales(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTipoMateriales(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<TipoMaterialDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<TipoMaterialDto[]>;
+        }));
+    }
+
+    protected processGetTipoMateriales(response: HttpResponseBase): Observable<TipoMaterialDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(TipoMaterialDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<TipoMaterialDto[]>(null as any);
+    }
+}
+
 export interface ITipoPlantaClient {
     getTipoPlantas(): Observable<TipoPlantaDto[]>;
 }
@@ -1445,6 +1518,131 @@ export class TodoListsClient implements ITodoListsClient {
             }));
         }
         return _observableOf<FileResponse>(null as any);
+    }
+}
+
+export interface IUnidadMedidaClient {
+    getUnidadesMedida(): Observable<UnidadMedidaDto[]>;
+    getUnidadMedidaById(id: number): Observable<UnidadMedidaDto>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class UnidadMedidaClient implements IUnidadMedidaClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    getUnidadesMedida(): Observable<UnidadMedidaDto[]> {
+        let url_ = this.baseUrl + "/api/UnidadMedida";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetUnidadesMedida(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetUnidadesMedida(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<UnidadMedidaDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<UnidadMedidaDto[]>;
+        }));
+    }
+
+    protected processGetUnidadesMedida(response: HttpResponseBase): Observable<UnidadMedidaDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(UnidadMedidaDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<UnidadMedidaDto[]>(null as any);
+    }
+
+    getUnidadMedidaById(id: number): Observable<UnidadMedidaDto> {
+        let url_ = this.baseUrl + "/api/UnidadMedida/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetUnidadMedidaById(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetUnidadMedidaById(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<UnidadMedidaDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<UnidadMedidaDto>;
+        }));
+    }
+
+    protected processGetUnidadMedidaById(response: HttpResponseBase): Observable<UnidadMedidaDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = UnidadMedidaDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<UnidadMedidaDto>(null as any);
     }
 }
 
@@ -2087,6 +2285,46 @@ export interface IUpdatePlantaCommand {
     direccion?: string | undefined;
 }
 
+export class TipoMaterialDto implements ITipoMaterialDto {
+    id?: number | undefined;
+    descripcion?: string | undefined;
+
+    constructor(data?: ITipoMaterialDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.descripcion = _data["descripcion"];
+        }
+    }
+
+    static fromJS(data: any): TipoMaterialDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TipoMaterialDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["descripcion"] = this.descripcion;
+        return data;
+    }
+}
+
+export interface ITipoMaterialDto {
+    id?: number | undefined;
+    descripcion?: string | undefined;
+}
+
 export class PaginatedListOfTodoItemBriefDto implements IPaginatedListOfTodoItemBriefDto {
     items?: TodoItemBriefDto[];
     pageNumber?: number;
@@ -2620,6 +2858,54 @@ export class UpdateTodoListCommand implements IUpdateTodoListCommand {
 export interface IUpdateTodoListCommand {
     id?: number;
     title?: string | undefined;
+}
+
+export class UnidadMedidaDto implements IUnidadMedidaDto {
+    id?: number | undefined;
+    descripcion?: string | undefined;
+    descripcionPlural?: string | undefined;
+    descripcionCorta?: string | undefined;
+
+    constructor(data?: IUnidadMedidaDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.descripcion = _data["descripcion"];
+            this.descripcionPlural = _data["descripcionPlural"];
+            this.descripcionCorta = _data["descripcionCorta"];
+        }
+    }
+
+    static fromJS(data: any): UnidadMedidaDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new UnidadMedidaDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["descripcion"] = this.descripcion;
+        data["descripcionPlural"] = this.descripcionPlural;
+        data["descripcionCorta"] = this.descripcionCorta;
+        return data;
+    }
+}
+
+export interface IUnidadMedidaDto {
+    id?: number | undefined;
+    descripcion?: string | undefined;
+    descripcionPlural?: string | undefined;
+    descripcionCorta?: string | undefined;
 }
 
 export class WeatherForecast implements IWeatherForecast {
