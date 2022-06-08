@@ -375,6 +375,294 @@ export class DepartamentosClient implements IDepartamentosClient {
     }
 }
 
+export interface IMaterialClient {
+    getMateriales(pageSize: number | undefined, pageNumber: number | undefined, tipoMaterialId: number | null | undefined): Observable<PaginatedListOfMaterialDto>;
+    create(command: CreateMaterialCommand): Observable<number>;
+    getMaterialById(id: number): Observable<MaterialDto>;
+    update(id: number, command: UpdateMaterialCommand): Observable<MaterialDto>;
+    delete(id: number): Observable<FileResponse>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class MaterialClient implements IMaterialClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    getMateriales(pageSize: number | undefined, pageNumber: number | undefined, tipoMaterialId: number | null | undefined): Observable<PaginatedListOfMaterialDto> {
+        let url_ = this.baseUrl + "/api/Material?";
+        if (pageSize === null)
+            throw new Error("The parameter 'pageSize' cannot be null.");
+        else if (pageSize !== undefined)
+            url_ += "pageSize=" + encodeURIComponent("" + pageSize) + "&";
+        if (pageNumber === null)
+            throw new Error("The parameter 'pageNumber' cannot be null.");
+        else if (pageNumber !== undefined)
+            url_ += "pageNumber=" + encodeURIComponent("" + pageNumber) + "&";
+        if (tipoMaterialId !== undefined && tipoMaterialId !== null)
+            url_ += "tipoMaterialId=" + encodeURIComponent("" + tipoMaterialId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMateriales(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMateriales(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PaginatedListOfMaterialDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PaginatedListOfMaterialDto>;
+        }));
+    }
+
+    protected processGetMateriales(response: HttpResponseBase): Observable<PaginatedListOfMaterialDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PaginatedListOfMaterialDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PaginatedListOfMaterialDto>(null as any);
+    }
+
+    create(command: CreateMaterialCommand): Observable<number> {
+        let url_ = this.baseUrl + "/api/Material";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<number>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<number>;
+        }));
+    }
+
+    protected processCreate(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<number>(null as any);
+    }
+
+    getMaterialById(id: number): Observable<MaterialDto> {
+        let url_ = this.baseUrl + "/api/Material/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMaterialById(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMaterialById(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MaterialDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MaterialDto>;
+        }));
+    }
+
+    protected processGetMaterialById(response: HttpResponseBase): Observable<MaterialDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MaterialDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<MaterialDto>(null as any);
+    }
+
+    update(id: number, command: UpdateMaterialCommand): Observable<MaterialDto> {
+        let url_ = this.baseUrl + "/api/Material/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MaterialDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MaterialDto>;
+        }));
+    }
+
+    protected processUpdate(response: HttpResponseBase): Observable<MaterialDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MaterialDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<MaterialDto>(null as any);
+    }
+
+    delete(id: number): Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/Material/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileResponse>;
+        }));
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: responseBlob as any, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileResponse>(null as any);
+    }
+}
+
 export interface IMunicipiosClient {
     getMunicipios(paisId: number | null | undefined, departamentoId: number | null | undefined): Observable<MunicipioDto[]>;
 }
@@ -2245,6 +2533,322 @@ export interface IUpdateBodegaCommand {
     direccion?: string | undefined;
 }
 
+export class PaginatedListOfMaterialDto implements IPaginatedListOfMaterialDto {
+    items?: MaterialDto[];
+    pageNumber?: number;
+    totalPages?: number;
+    totalCount?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
+
+    constructor(data?: IPaginatedListOfMaterialDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(MaterialDto.fromJS(item));
+            }
+            this.pageNumber = _data["pageNumber"];
+            this.totalPages = _data["totalPages"];
+            this.totalCount = _data["totalCount"];
+            this.hasPreviousPage = _data["hasPreviousPage"];
+            this.hasNextPage = _data["hasNextPage"];
+        }
+    }
+
+    static fromJS(data: any): PaginatedListOfMaterialDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PaginatedListOfMaterialDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        data["pageNumber"] = this.pageNumber;
+        data["totalPages"] = this.totalPages;
+        data["totalCount"] = this.totalCount;
+        data["hasPreviousPage"] = this.hasPreviousPage;
+        data["hasNextPage"] = this.hasNextPage;
+        return data;
+    }
+}
+
+export interface IPaginatedListOfMaterialDto {
+    items?: MaterialDto[];
+    pageNumber?: number;
+    totalPages?: number;
+    totalCount?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
+}
+
+export class MaterialDto implements IMaterialDto {
+    id?: number | undefined;
+    tipoMaterial?: TipoMaterialDto | undefined;
+    descripcion?: string | undefined;
+    detalle?: string | undefined;
+    unidadMedida?: UnidadMedidaDto;
+    peso?: number | undefined;
+
+    constructor(data?: IMaterialDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.tipoMaterial = _data["tipoMaterial"] ? TipoMaterialDto.fromJS(_data["tipoMaterial"]) : <any>undefined;
+            this.descripcion = _data["descripcion"];
+            this.detalle = _data["detalle"];
+            this.unidadMedida = _data["unidadMedida"] ? UnidadMedidaDto.fromJS(_data["unidadMedida"]) : <any>undefined;
+            this.peso = _data["peso"];
+        }
+    }
+
+    static fromJS(data: any): MaterialDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MaterialDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["tipoMaterial"] = this.tipoMaterial ? this.tipoMaterial.toJSON() : <any>undefined;
+        data["descripcion"] = this.descripcion;
+        data["detalle"] = this.detalle;
+        data["unidadMedida"] = this.unidadMedida ? this.unidadMedida.toJSON() : <any>undefined;
+        data["peso"] = this.peso;
+        return data;
+    }
+}
+
+export interface IMaterialDto {
+    id?: number | undefined;
+    tipoMaterial?: TipoMaterialDto | undefined;
+    descripcion?: string | undefined;
+    detalle?: string | undefined;
+    unidadMedida?: UnidadMedidaDto;
+    peso?: number | undefined;
+}
+
+export class TipoMaterialDto implements ITipoMaterialDto {
+    id?: number | undefined;
+    descripcion?: string | undefined;
+
+    constructor(data?: ITipoMaterialDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.descripcion = _data["descripcion"];
+        }
+    }
+
+    static fromJS(data: any): TipoMaterialDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TipoMaterialDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["descripcion"] = this.descripcion;
+        return data;
+    }
+}
+
+export interface ITipoMaterialDto {
+    id?: number | undefined;
+    descripcion?: string | undefined;
+}
+
+export class UnidadMedidaDto implements IUnidadMedidaDto {
+    id?: number | undefined;
+    descripcion?: string | undefined;
+    descripcionPlural?: string | undefined;
+    descripcionCorta?: string | undefined;
+
+    constructor(data?: IUnidadMedidaDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.descripcion = _data["descripcion"];
+            this.descripcionPlural = _data["descripcionPlural"];
+            this.descripcionCorta = _data["descripcionCorta"];
+        }
+    }
+
+    static fromJS(data: any): UnidadMedidaDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new UnidadMedidaDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["descripcion"] = this.descripcion;
+        data["descripcionPlural"] = this.descripcionPlural;
+        data["descripcionCorta"] = this.descripcionCorta;
+        return data;
+    }
+}
+
+export interface IUnidadMedidaDto {
+    id?: number | undefined;
+    descripcion?: string | undefined;
+    descripcionPlural?: string | undefined;
+    descripcionCorta?: string | undefined;
+}
+
+export class CreateMaterialCommand implements ICreateMaterialCommand {
+    tipoMaterialId?: number | undefined;
+    descripcion?: string | undefined;
+    detalle?: string | undefined;
+    unidadMedidaId?: number | undefined;
+    peso?: number | undefined;
+
+    constructor(data?: ICreateMaterialCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.tipoMaterialId = _data["tipoMaterialId"];
+            this.descripcion = _data["descripcion"];
+            this.detalle = _data["detalle"];
+            this.unidadMedidaId = _data["unidadMedidaId"];
+            this.peso = _data["peso"];
+        }
+    }
+
+    static fromJS(data: any): CreateMaterialCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateMaterialCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["tipoMaterialId"] = this.tipoMaterialId;
+        data["descripcion"] = this.descripcion;
+        data["detalle"] = this.detalle;
+        data["unidadMedidaId"] = this.unidadMedidaId;
+        data["peso"] = this.peso;
+        return data;
+    }
+}
+
+export interface ICreateMaterialCommand {
+    tipoMaterialId?: number | undefined;
+    descripcion?: string | undefined;
+    detalle?: string | undefined;
+    unidadMedidaId?: number | undefined;
+    peso?: number | undefined;
+}
+
+export class UpdateMaterialCommand implements IUpdateMaterialCommand {
+    materialId?: number | undefined;
+    tipoMaterialId?: number | undefined;
+    descripcion?: string | undefined;
+    detalle?: string | undefined;
+    unidadMedidaId?: number | undefined;
+    peso?: number | undefined;
+
+    constructor(data?: IUpdateMaterialCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.materialId = _data["materialId"];
+            this.tipoMaterialId = _data["tipoMaterialId"];
+            this.descripcion = _data["descripcion"];
+            this.detalle = _data["detalle"];
+            this.unidadMedidaId = _data["unidadMedidaId"];
+            this.peso = _data["peso"];
+        }
+    }
+
+    static fromJS(data: any): UpdateMaterialCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateMaterialCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["materialId"] = this.materialId;
+        data["tipoMaterialId"] = this.tipoMaterialId;
+        data["descripcion"] = this.descripcion;
+        data["detalle"] = this.detalle;
+        data["unidadMedidaId"] = this.unidadMedidaId;
+        data["peso"] = this.peso;
+        return data;
+    }
+}
+
+export interface IUpdateMaterialCommand {
+    materialId?: number | undefined;
+    tipoMaterialId?: number | undefined;
+    descripcion?: string | undefined;
+    detalle?: string | undefined;
+    unidadMedidaId?: number | undefined;
+    peso?: number | undefined;
+}
+
 export class PlantaDto implements IPlantaDto {
     id?: number | undefined;
     tipoPlanta?: TipoPlantaDto | undefined;
@@ -2443,46 +3047,6 @@ export interface IUpdatePlantaCommand {
     detalle?: string | undefined;
     municipioId?: number | undefined;
     direccion?: string | undefined;
-}
-
-export class TipoMaterialDto implements ITipoMaterialDto {
-    id?: number | undefined;
-    descripcion?: string | undefined;
-
-    constructor(data?: ITipoMaterialDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.descripcion = _data["descripcion"];
-        }
-    }
-
-    static fromJS(data: any): TipoMaterialDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new TipoMaterialDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["descripcion"] = this.descripcion;
-        return data;
-    }
-}
-
-export interface ITipoMaterialDto {
-    id?: number | undefined;
-    descripcion?: string | undefined;
 }
 
 export class PaginatedListOfTodoItemBriefDto implements IPaginatedListOfTodoItemBriefDto {
@@ -3018,54 +3582,6 @@ export class UpdateTodoListCommand implements IUpdateTodoListCommand {
 export interface IUpdateTodoListCommand {
     id?: number;
     title?: string | undefined;
-}
-
-export class UnidadMedidaDto implements IUnidadMedidaDto {
-    id?: number | undefined;
-    descripcion?: string | undefined;
-    descripcionPlural?: string | undefined;
-    descripcionCorta?: string | undefined;
-
-    constructor(data?: IUnidadMedidaDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.descripcion = _data["descripcion"];
-            this.descripcionPlural = _data["descripcionPlural"];
-            this.descripcionCorta = _data["descripcionCorta"];
-        }
-    }
-
-    static fromJS(data: any): UnidadMedidaDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new UnidadMedidaDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["descripcion"] = this.descripcion;
-        data["descripcionPlural"] = this.descripcionPlural;
-        data["descripcionCorta"] = this.descripcionCorta;
-        return data;
-    }
-}
-
-export interface IUnidadMedidaDto {
-    id?: number | undefined;
-    descripcion?: string | undefined;
-    descripcionPlural?: string | undefined;
-    descripcionCorta?: string | undefined;
 }
 
 export class CreateUnidadMedidaCommand implements ICreateUnidadMedidaCommand {
