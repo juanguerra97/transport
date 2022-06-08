@@ -1617,6 +1617,10 @@
             "type": "integer",
             "format": "int32"
           },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
           "totalPages": {
             "type": "integer",
             "format": "int32"
@@ -1891,6 +1895,10 @@
             }
           },
           "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
             "type": "integer",
             "format": "int32"
           },

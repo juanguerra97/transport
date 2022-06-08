@@ -2536,6 +2536,7 @@ export interface IUpdateBodegaCommand {
 export class PaginatedListOfMaterialDto implements IPaginatedListOfMaterialDto {
     items?: MaterialDto[];
     pageNumber?: number;
+    pageSize?: number;
     totalPages?: number;
     totalCount?: number;
     hasPreviousPage?: boolean;
@@ -2558,6 +2559,7 @@ export class PaginatedListOfMaterialDto implements IPaginatedListOfMaterialDto {
                     this.items!.push(MaterialDto.fromJS(item));
             }
             this.pageNumber = _data["pageNumber"];
+            this.pageSize = _data["pageSize"];
             this.totalPages = _data["totalPages"];
             this.totalCount = _data["totalCount"];
             this.hasPreviousPage = _data["hasPreviousPage"];
@@ -2580,6 +2582,7 @@ export class PaginatedListOfMaterialDto implements IPaginatedListOfMaterialDto {
                 data["items"].push(item.toJSON());
         }
         data["pageNumber"] = this.pageNumber;
+        data["pageSize"] = this.pageSize;
         data["totalPages"] = this.totalPages;
         data["totalCount"] = this.totalCount;
         data["hasPreviousPage"] = this.hasPreviousPage;
@@ -2591,6 +2594,7 @@ export class PaginatedListOfMaterialDto implements IPaginatedListOfMaterialDto {
 export interface IPaginatedListOfMaterialDto {
     items?: MaterialDto[];
     pageNumber?: number;
+    pageSize?: number;
     totalPages?: number;
     totalCount?: number;
     hasPreviousPage?: boolean;
@@ -3052,6 +3056,7 @@ export interface IUpdatePlantaCommand {
 export class PaginatedListOfTodoItemBriefDto implements IPaginatedListOfTodoItemBriefDto {
     items?: TodoItemBriefDto[];
     pageNumber?: number;
+    pageSize?: number;
     totalPages?: number;
     totalCount?: number;
     hasPreviousPage?: boolean;
@@ -3074,6 +3079,7 @@ export class PaginatedListOfTodoItemBriefDto implements IPaginatedListOfTodoItem
                     this.items!.push(TodoItemBriefDto.fromJS(item));
             }
             this.pageNumber = _data["pageNumber"];
+            this.pageSize = _data["pageSize"];
             this.totalPages = _data["totalPages"];
             this.totalCount = _data["totalCount"];
             this.hasPreviousPage = _data["hasPreviousPage"];
@@ -3096,6 +3102,7 @@ export class PaginatedListOfTodoItemBriefDto implements IPaginatedListOfTodoItem
                 data["items"].push(item.toJSON());
         }
         data["pageNumber"] = this.pageNumber;
+        data["pageSize"] = this.pageSize;
         data["totalPages"] = this.totalPages;
         data["totalCount"] = this.totalCount;
         data["hasPreviousPage"] = this.hasPreviousPage;
@@ -3107,6 +3114,7 @@ export class PaginatedListOfTodoItemBriefDto implements IPaginatedListOfTodoItem
 export interface IPaginatedListOfTodoItemBriefDto {
     items?: TodoItemBriefDto[];
     pageNumber?: number;
+    pageSize?: number;
     totalPages?: number;
     totalCount?: number;
     hasPreviousPage?: boolean;
