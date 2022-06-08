@@ -10,7 +10,7 @@ using seminario.Application.UnidadesMedida.Queries.GetUnidadMedidaById;
 namespace seminario.WebUI.Controllers;
 
 [Authorize]
-public class UnidadMedida : ApiControllerBase
+public class UnidadMedidaController : ApiControllerBase
 {
     [HttpGet]
     public async Task<ActionResult<List<UnidadMedidaDto>>> GetUnidadesMedida()
