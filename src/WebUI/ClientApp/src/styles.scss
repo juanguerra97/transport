@@ -25,3 +25,40 @@ code {
   font-size: 0.8rem;
   line-height: 0.85;
 }
+
+.modal-catalogo {
+  width: 95%;
+}
+
+// Small devices (landscape phones, 576px and up)
+@media (min-width: 576px) {
+  .modal-catalogo {
+    width: 85%;
+  }
+}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) {
+  .modal-catalogo {
+    width: 70%;
+  }
+}
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) {
+  .modal-catalogo {
+    width: 50%;
+  }
+}
+
+// X-Large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) {
+
+}
+
+// XX-Large devices (larger desktops, 1400px and up)
+@media (min-width: 1400px) {
+  .modal-catalogo {
+    width: 40%;
+  }
+}

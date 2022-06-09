@@ -1,0 +1,31 @@
+<form [formGroup]="form">
+  <div class="form-group">
+    <label for="descripcion">Descripci&oacute;n</label>
+    <input formControlName="descripcion" pInputText type="text" id="descripcion" class="form-control">
+    <ng-container *ngIf="descripcion?.invalid && (descripcion?.touched || descripcion?.dirty)">
+      <span *ngIf="descripcion?.hasError('required')" class="text-error">Campo requerido.</span>
+      <span *ngIf="descripcion?.hasError('maxlength')" class="text-error">El m&aacute;ximo de caracteres permitido es 128.</span>
+    </ng-container>
+  </div>
+  <div class="form-group mt-1">
+    <label for="descripcionCorta">Descripci&oacute;n Corta</label>
+    <input formControlName="descripcionCorta" pInputText type="text" id="descripcionCorta" class="form-control">
+    <ng-container *ngIf="descripcionCorta?.invalid && (descripcionCorta?.touched || descripcionCorta?.dirty)">
+      <span *ngIf="descripcionCorta?.hasError('required')" class="text-error">Campo requerido.</span>
+      <span *ngIf="descripcionCorta?.hasError('maxlength')" class="text-error">El m&aacute;ximo de caracteres permitido es 128.</span>
+    </ng-container>
+  </div>
+  <div class="form-group mt-1">
+    <label for="descripcionPlural">Descripci&oacute;n en Plural</label>
+    <input formControlName="descripcionPlural" pInputText type="text" id="descripcionPlural" class="form-control">
+    <ng-container *ngIf="descripcionPlural?.invalid && (descripcionPlural?.touched || descripcionPlural?.dirty)">
+      <span *ngIf="descripcionPlural?.hasError('required')" class="text-error">Campo requerido.</span>
+      <span *ngIf="descripcionPlural?.hasError('maxlength')" class="text-error">El m&aacute;ximo de caracteres permitido es 128.</span>
+    </ng-container>
+  </div>
+</form>
+
+<div class="d-flex justify-content-start gap-2 mt-3">
+  <button (click)="guardar()" [disabled]="guardando" pButton type="button" label="Guardar" [icon]="guardando ? 'pi pi-spin pi-spinner' : 'pi pi-save'" class="p-button-raised p-button-sm"></button>
+  <button (click)="cancelar()" [disabled]="guardando" pButton type="button" label="Cancelar" icon="pi pi-times" class="p-button-raised p-button-danger p-button-sm"></button>
+</div>

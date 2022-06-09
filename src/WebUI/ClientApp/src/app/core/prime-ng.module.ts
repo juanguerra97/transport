@@ -9,6 +9,7 @@ import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {PaginatorModule} from 'primeng/paginator';
 import {InputNumberModule} from 'primeng/inputnumber';
 import {KeyFilterModule} from 'primeng/keyfilter';
+import {DialogService, DynamicDialogModule} from 'primeng/dynamicdialog';
 
 @NgModule({
   declarations: [],
@@ -23,9 +24,11 @@ import {KeyFilterModule} from 'primeng/keyfilter';
     PaginatorModule,
     InputNumberModule,
     KeyFilterModule,
+    DynamicDialogModule,
   ],
   providers: [
     ConfirmationService,
+    DialogService,
   ]
 })
 export class PrimeNgModule {
