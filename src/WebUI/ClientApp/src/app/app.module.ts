@@ -14,6 +14,7 @@ import {AuthorizeInterceptor} from 'src/api-authorization/authorize.interceptor'
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 import {HotToastModule} from '@ngneat/hot-toast';
+import {CoreModule} from "./core/core.module";
 
 
 @NgModule({
@@ -26,6 +27,7 @@ import {HotToastModule} from '@ngneat/hot-toast';
   imports: [
     BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),
     BrowserAnimationsModule,
+    CoreModule,
     HttpClientModule,
     FormsModule,
     ApiAuthorizationModule,

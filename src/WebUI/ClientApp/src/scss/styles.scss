@@ -1,5 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
 
+$enable-ltr: true;
+$enable-rtl: true;
+
+@import "~@coreui/coreui/scss/coreui";
+@import "layout";
+@import "fixes";
+@import "custom";
+
 /* Provide sufficient contrast against white background */
 a {
   color: #0366d6;

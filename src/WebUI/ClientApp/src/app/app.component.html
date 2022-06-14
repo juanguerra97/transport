@@ -1,6 +1,48 @@
-<body>
-  <app-nav-menu></app-nav-menu>
-  <div class="container-fluid">
+<!--
+<c-sidebar #sidebar="cSidebar" class="d-print-none sidebar sidebar-fixed" id="sidebar">
+  <c-sidebar-brand>Sidebar Brand</c-sidebar-brand>
+  &lt;!&ndash;<c-sidebar-nav [navItems]="navItems"></c-sidebar-nav>&ndash;&gt;
+  <c-sidebar-toggler cSidebarToggle="sidebar"></c-sidebar-toggler>
+</c-sidebar>
+
+  <div class="wrapper d-flex flex-column min-vh-100 bg-light dark:bg-transparent">
+    <app-nav-menu class="d-print-none header header-sticky"></app-nav-menu>
     <router-outlet></router-outlet>
   </div>
-</body>
+
+
+-->
+
+<c-sidebar #sidebar="cSidebar" class="d-print-none sidebar sidebar-fixed" id="sidebar">
+  <c-sidebar-brand
+    [brandFull]="{
+      src: 'assets/img/brand/coreui-angular.svg',
+      width: 200,
+      height: 46,
+      alt: 'CoreUI Logo'
+    }"
+    [brandNarrow]="{
+      src: 'assets/img/brand/coreui-signet-white.svg',
+      width: 46,
+      height: 46,
+      alt: 'CoreUI Logo'
+    }" routerLink="./">
+  </c-sidebar-brand>
+  <perfect-scrollbar [config]="perfectScrollbarConfig">
+    <c-sidebar-nav
+      [navItems]="navItems">
+    </c-sidebar-nav>
+  </perfect-scrollbar>
+  <c-sidebar-toggler
+    *ngIf="!sidebar.narrow"
+    toggle="unfoldable"
+    cSidebarToggle="sidebar"
+  ></c-sidebar-toggler>
+</c-sidebar>
+
+<div class="wrapper d-flex flex-column min-vh-100 ">
+  <app-nav-menu class=""></app-nav-menu>
+  <div class="container-fluid flex-grow-1">
+    <router-outlet></router-outlet>
+  </div>
+</div>
