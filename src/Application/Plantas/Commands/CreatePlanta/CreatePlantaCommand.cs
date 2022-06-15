@@ -35,7 +35,11 @@ public class CreatePlantaCommandHandler : IRequestHandler<CreatePlantaCommand, i
         {
             await _userManager.AddToRoleAsync(user, "AdminPlanta");
         }
-        
+
+        if (!(await _userManager.IsInRoleAsync(user, "AdminBodega")))
+        {
+            await _userManager.AddToRoleAsync(user, "AdminBodega");
+        }
 
         var ubicacion = new Ubicacion
         {
@@ -52,7 +56,11 @@ public class CreatePlantaCommandHandler : IRequestHandler<CreatePlantaCommand, i
             TipoBodega = TipoBodega.PLANTA,
             Descripcion = request.Descripcion,
             Detalle = request.Detalle,
-            Ubicacion = ubicacion
+            Ubicacion = ubicacion,
+            AdminBodega = new AdminBodega
+            {
+                User = user
+            }
         };
         _context.Bodegas.Add(bodega);
 
