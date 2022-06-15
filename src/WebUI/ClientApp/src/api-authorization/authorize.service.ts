@@ -30,6 +30,11 @@ export enum AuthenticationResultStatus {
 }
 
 export interface IUser {
+  userId?: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  role?: string;
   name?: string;
 }
 

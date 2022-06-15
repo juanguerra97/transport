@@ -10,6 +10,7 @@ import {PaginatorModule} from 'primeng/paginator';
 import {InputNumberModule} from 'primeng/inputnumber';
 import {KeyFilterModule} from 'primeng/keyfilter';
 import {DialogService, DynamicDialogModule} from 'primeng/dynamicdialog';
+import {AutoCompleteModule} from 'primeng/autocomplete';
 
 @NgModule({
   declarations: [],
@@ -25,6 +26,7 @@ import {DialogService, DynamicDialogModule} from 'primeng/dynamicdialog';
     InputNumberModule,
     KeyFilterModule,
     DynamicDialogModule,
+    AutoCompleteModule,
   ],
   providers: [
     ConfirmationService,

@@ -9,7 +9,7 @@ using seminario.Application.UnidadesMedida.Queries.GetUnidadMedidaById;
 
 namespace seminario.WebUI.Controllers;
 
-[Authorize]
+[Authorize(Policy = "AdminCatalogo")]
 public class UnidadMedidaController : ApiControllerBase
 {
     [HttpGet]

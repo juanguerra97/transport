@@ -9,6 +9,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using seminario.Domain.Entities;
+using System.Security.Claims;
+using IdentityModel;
+using Microsoft.IdentityModel.Tokens;
 
 namespace seminario.Infrastructure;
 
@@ -40,7 +43,8 @@ public static class DependencyInjection
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
         services.AddIdentityServer()
-            .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
+            .AddApiAuthorization<ApplicationUser, ApplicationDbContext>()
+            .AddProfileService<CustomProfileService>();
 
         services.AddTransient<IDateTime, DateTimeService>();
         services.AddTransient<IIdentityService, IdentityService>();
@@ -49,8 +53,14 @@ public static class DependencyInjection
         services.AddAuthentication()
             .AddIdentityServerJwt();
 
-        services.AddAuthorization(options => 
-            options.AddPolicy("CanPurge", policy => policy.RequireRole("Administrator")));
+        services.AddAuthorization(options =>
+        {
+            options.AddPolicy("AdminCatalogo", policy => policy.RequireAssertion(context =>
+            {
+                return context.User.HasClaim(c => (c.Type == ClaimTypes.Role || c.Type == JwtClaimTypes.Role) && c.Value == "Administrator");
+            }));
+            options.AddPolicy("CanPurge", policy => policy.RequireRole("Administrator"));
+        });
 
         return services;
     }

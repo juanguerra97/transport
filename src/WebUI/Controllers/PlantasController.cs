@@ -9,7 +9,7 @@ using seminario.Application.Plantas.Queries.GetPlantas;
 
 namespace seminario.WebUI.Controllers;
 
-[Authorize]
+[Authorize(Policy = "AdminCatalogo")]
 public class PlantasController : ApiControllerBase
 {
 

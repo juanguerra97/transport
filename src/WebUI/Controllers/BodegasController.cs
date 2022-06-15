@@ -8,7 +8,7 @@ using seminario.Application.Bodegas.Queries.GetBodegaById;
 using seminario.Application.Bodegas.Queries.GetBodegas;
 
 namespace seminario.WebUI.Controllers;
-[Authorize]
+[Authorize(Policy = "AdminCatalogo")]
 public class BodegasController : ApiControllerBase
 {
     [HttpGet]

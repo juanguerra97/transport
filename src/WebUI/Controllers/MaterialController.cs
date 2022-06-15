@@ -9,7 +9,7 @@ using seminario.Application.Materiales.Queries.GetMaterialById;
 using seminario.Application.Materiales.Queries.GetMateriales;
 
 namespace seminario.WebUI.Controllers;
-[Authorize]
+[Authorize(Policy = "AdminCatalogo")]
 public class MaterialController : ApiControllerBase
 {
 
