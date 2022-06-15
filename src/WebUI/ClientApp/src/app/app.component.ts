@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {INavData} from "@coreui/angular";
+import {MenuService} from "./services/menu.service";
 
 @Component({
   selector: 'app-root',
@@ -28,4 +29,8 @@ export class AppComponent {
   public perfectScrollbarConfig = {
     suppressScrollX: true,
   };
+
+  constructor(public menuService: MenuService) {
+  }
+
 }

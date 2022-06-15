@@ -16,7 +16,7 @@
 <c-sidebar #sidebar="cSidebar" class="d-print-none sidebar sidebar-fixed" id="sidebar">
   <perfect-scrollbar [config]="perfectScrollbarConfig">
     <c-sidebar-nav
-      [navItems]="navItems">
+      [navItems]="menuService.menuData | async">
     </c-sidebar-nav>
   </perfect-scrollbar>
   <c-sidebar-toggler

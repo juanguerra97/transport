@@ -34,8 +34,14 @@ export interface IUser {
   firstName?: string;
   lastName?: string;
   email?: string;
-  role?: string;
+  role?: string|string[];
   name?: string;
+}
+
+export abstract class Roles {
+  static ADMINISTRATOR = "Administrator";
+  static ADMIN_PLANTA = "AdminPlanta";
+  static ADMIN_BODEGA = "AdminBodega";
 }
 
 @Injectable({
@@ -200,5 +206,26 @@ export class AuthorizeService {
       .pipe(
         mergeMap(() => this.userManager!.getUser()),
         map(u => u && u.profile));
+  }
+
+  public isAdmin(): Observable<boolean> {
+    return this.hasRole(Roles.ADMINISTRATOR);
+  }
+
+  public isAdminPlanta(): Observable<boolean> {
+    return this.hasRole(Roles.ADMIN_PLANTA);
+  }
+
+  public isAdminBodega(): Observable<boolean> {
+    return this.hasRole(Roles.ADMIN_BODEGA);
+  }
+
+  public hasRole(role: string): Observable<boolean> {
+    return this.getUser().pipe(map(u => {
+      if (u == null || !u.role) {
+        return false;
+      }
+      return u.role.includes(role);
+    }));
   }
 }
