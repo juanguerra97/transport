@@ -317,7 +317,8 @@ namespace seminario.Infrastructure.Persistence.Migrations
 
                     b.HasKey("UserId", "BodegaId");
 
-                    b.HasIndex("BodegaId");
+                    b.HasIndex("BodegaId")
+                        .IsUnique();
 
                     b.ToTable("AdminBodegas");
                 });
@@ -2028,8 +2029,8 @@ namespace seminario.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("seminario.Domain.Entities.AdminBodega", b =>
                 {
                     b.HasOne("seminario.Domain.Entities.Bodega", "Bodega")
-                        .WithMany()
-                        .HasForeignKey("BodegaId")
+                        .WithOne("AdminBodega")
+                        .HasForeignKey("seminario.Domain.Entities.AdminBodega", "BodegaId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -2576,6 +2577,12 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     b.Navigation("Conductor");
 
                     b.Navigation("Vehiculo");
+                });
+
+            modelBuilder.Entity("seminario.Domain.Entities.Bodega", b =>
+                {
+                    b.Navigation("AdminBodega")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("seminario.Domain.Entities.Planta", b =>

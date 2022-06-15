@@ -16,8 +16,8 @@ public class AdminBodegaConfiguration : IEntityTypeConfiguration<AdminBodega>
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(a => a.Bodega)
-            .WithMany()
-            .HasForeignKey(a => a.BodegaId)
+            .WithOne(ad => ad.AdminBodega)
+            .HasForeignKey((AdminBodega ad) => ad.BodegaId)
             .IsRequired()
             .OnDelete(DeleteBehavior.Restrict);
     }

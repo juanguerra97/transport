@@ -16,5 +16,6 @@ public class Bodega : AuditableEntity
     public int? UbicacionId { get; set; }
     public Ubicacion? Ubicacion { get; set; }
 
+    public AdminBodega AdminBodega { get; set; } 
 
 }

@@ -1,10 +1,13 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {
   BodegasClient,
   DepartamentoDto,
   DepartamentosClient,
-  MunicipioDto, MunicipiosClient
+  MunicipioDto,
+  MunicipiosClient,
+  UsuarioClient,
+  UsuarioDto
 } from "../../../web-api-client";
 import {HotToastService} from "@ngneat/hot-toast";
 import {Router} from "@angular/router";
@@ -14,7 +17,7 @@ import {getErrorMessage} from "../../../utils/errors";
 @Component({
   selector: 'app-new-bodega',
   templateUrl: './new-bodega.component.html',
-  styleUrls: ['./new-bodega.component.scss']
+  styleUrls: ['./new-bodega.component.scss'],
 })
 export class NewBodegaComponent implements OnInit {
 
@@ -24,10 +27,13 @@ export class NewBodegaComponent implements OnInit {
     direccion: new FormControl(null, [Validators.required, Validators.maxLength(256)]),
     departamento: new FormControl(null, [Validators.required]),
     municipio: new FormControl(null, [Validators.required]),
+    encargado: new FormControl(null, [Validators.required])
   });
 
   departamentos: DepartamentoDto[] = [];
   municipios: MunicipioDto[] = [];
+
+  suggestionsEncargado: UsuarioDto[] = [];
 
   guardando = false;
 
@@ -35,6 +41,7 @@ export class NewBodegaComponent implements OnInit {
     private bodegasClient: BodegasClient,
     private departamentosClient: DepartamentosClient,
     private municipiosClient: MunicipiosClient,
+    private usuarioClient: UsuarioClient,
     private toastService: HotToastService,
     private router: Router,
   ) {
@@ -58,6 +65,10 @@ export class NewBodegaComponent implements OnInit {
 
   get municipio() {
     return this.form.get('municipio');
+  }
+
+  get encargado() {
+    return this.form.get('encargado');
   }
 
   ngOnInit(): void {
@@ -108,8 +119,10 @@ export class NewBodegaComponent implements OnInit {
     this.form.disable();
     const datos = Object.assign({}, this.form.value);
     datos.municipioId = datos.municipio.id;
+    datos.encargadoId = datos.encargado.id;
     delete datos.departamento;
     delete datos.municipio;
+    delete datos.encargado;
     this.bodegasClient.create(datos)
       .subscribe({
         next: res => {
@@ -127,5 +140,22 @@ export class NewBodegaComponent implements OnInit {
           this.guardando = false;
         }
       });
+  }
+
+  searchEncargado($event: any) {
+    this.usuarioClient.searchUsuariosByName($event.query, 5)
+      .subscribe({
+        next: res => {
+          this.suggestionsEncargado = res;
+        },
+        error: error => {
+          console.error(error);
+          this.toastService.error(getErrorMessage(error), { autoClose: false, dismissible: true, position: "bottom-center"});
+        }
+      });
+  }
+
+  getEncargado(usuario: UsuarioDto) {
+    return `${usuario.firstName} ${usuario.lastName}(${usuario.userName})`;
   }
 }

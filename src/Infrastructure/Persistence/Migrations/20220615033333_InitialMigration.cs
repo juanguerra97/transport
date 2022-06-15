@@ -1599,7 +1599,8 @@ namespace seminario.Infrastructure.Persistence.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_AdminBodegas_BodegaId",
                 table: "AdminBodegas",
-                column: "BodegaId");
+                column: "BodegaId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AdminEmpresas_EmpresaId",

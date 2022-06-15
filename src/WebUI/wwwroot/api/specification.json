@@ -1455,6 +1455,14 @@
                 "$ref": "#/components/schemas/UbicacionDto"
               }
             ]
+          },
+          "encargado": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/UsuarioDto"
+              }
+            ]
           }
         }
       },
@@ -1595,6 +1603,29 @@
           }
         }
       },
+      "UsuarioDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "userName": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string"
+          }
+        }
+      },
       "CreateBodegaCommand": {
         "type": "object",
         "additionalProperties": false,
@@ -1618,6 +1649,9 @@
           "direccion": {
             "type": "string",
             "nullable": true
+          },
+          "encargadoId": {
+            "type": "string"
           }
         }
       },
@@ -1649,6 +1683,9 @@
           "direccion": {
             "type": "string",
             "nullable": true
+          },
+          "encargadoId": {
+            "type": "string"
           }
         }
       },
@@ -1877,29 +1914,6 @@
           "descripcion": {
             "type": "string",
             "nullable": true
-          }
-        }
-      },
-      "UsuarioDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "userName": {
-            "type": "string"
-          },
-          "firstName": {
-            "type": "string",
-            "nullable": true
-          },
-          "lastName": {
-            "type": "string",
-            "nullable": true
-          },
-          "email": {
-            "type": "string"
           }
         }
       },

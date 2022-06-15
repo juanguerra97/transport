@@ -1,5 +1,6 @@
-﻿
-using MediatR;
+﻿using MediatR;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using seminario.Application.Common.Interfaces;
 using seminario.Domain.Entities;
 using seminario.Domain.Enums;
@@ -12,19 +13,31 @@ public record CreateBodegaCommand : IRequest<int?>
     public string? Detalle { get; init; }
     public int? MunicipioId { get; init; }
     public string? Direccion { get; init; }
+    public string EncargadoId { get; set; }
 }
 
 public class CreateBodegaCommandHandler : IRequestHandler<CreateBodegaCommand, int?>
 {
     private readonly IApplicationDbContext _context;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public CreateBodegaCommandHandler(IApplicationDbContext context)
+    public CreateBodegaCommandHandler(IApplicationDbContext context, UserManager<ApplicationUser> userManager)
     {
         _context = context;
+        _userManager = userManager;
     }
 
     public async Task<int?> Handle(CreateBodegaCommand request, CancellationToken cancellationToken)
     {
+
+        var user = await _context.ApplicationUsers
+            .FirstOrDefaultAsync(u => u.Id == request.EncargadoId, cancellationToken);
+
+        if (!(await _userManager.IsInRoleAsync(user, "AdminBodega")))
+        {
+            await _userManager.AddToRoleAsync(user, "AdminBodega");
+        }
+
         var ubicacion = new Ubicacion
         {
             TipoUbicacion = TipoUbicacion.BODEGA,
@@ -40,7 +53,11 @@ public class CreateBodegaCommandHandler : IRequestHandler<CreateBodegaCommand, i
             TipoBodega = request.TipoBodega,
             Descripcion = request.Descripcion,
             Detalle = request.Detalle,
-            Ubicacion = ubicacion
+            Ubicacion = ubicacion,
+            AdminBodega = new AdminBodega
+            {
+                User = user
+            }
         };
         _context.Bodegas.Add(bodega);
 

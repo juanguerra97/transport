@@ -31,10 +31,19 @@ public class UpdateBodegaCommandValidator : AbstractValidator<UpdateBodegaComman
         RuleFor(v => v.MunicipioId)
             .NotNull().WithMessage("El campo municipioId es obligatorio.")
             .MustAsync(MunicipioExists).WithMessage($"No existe un municipio con el id proporcionado.");
+
+        RuleFor(v => v.EncargadoId)
+            .NotNull().WithMessage("El campo encargadoId es obligatorio.")
+            .MustAsync(EncargadoExists).WithMessage($"No existe un usuario con el encargadoId proporcionado.");
     }
 
     public async Task<bool> MunicipioExists(int? municipioId, CancellationToken cancellationToken)
     {
         return await _context.Municipios.AnyAsync(m => m.Id == municipioId);
+    }
+
+    public async Task<bool> EncargadoExists(string encargadoId, CancellationToken cancellationToken)
+    {
+        return await _context.ApplicationUsers.AnyAsync(u => u.Id == encargadoId);
     }
 }

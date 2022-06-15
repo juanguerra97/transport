@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using seminario.Application.Bodegas.Queries;
 using seminario.Application.Common.Exceptions;
@@ -16,22 +17,27 @@ public record UpdateBodegaCommand : IRequest<BodegaDto>
     public string? Detalle { get; init; }
     public int? MunicipioId { get; init; }
     public string? Direccion { get; init; }
+    public string EncargadoId { get; init; }
 }
 
 public class UpdateBodegaCommandHandler : IRequestHandler<UpdateBodegaCommand, BodegaDto>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public UpdateBodegaCommandHandler(IApplicationDbContext context, IMapper mapper)
+    public UpdateBodegaCommandHandler(IApplicationDbContext context, IMapper mapper, UserManager<ApplicationUser> userManager)
     {
         _context = context;
         _mapper = mapper;
+        _userManager = userManager;
     }
 
     public async Task<BodegaDto> Handle(UpdateBodegaCommand request, CancellationToken cancellationToken)
     {
         var entity = await _context.Bodegas
+            .Include(b => b.AdminBodega)
+            .ThenInclude(ad => ad.User)
             .Include(b => b.Ubicacion)
             .ThenInclude(u => u.Municipio)
             .ThenInclude(m => m.Departamento)
@@ -53,6 +59,31 @@ public class UpdateBodegaCommandHandler : IRequestHandler<UpdateBodegaCommand, B
 
         entity.Ubicacion.Direccion = request.Direccion;
         entity.Ubicacion.MunicipioId = request.MunicipioId;
+
+        if (request.EncargadoId != entity.AdminBodega?.UserId)
+        {
+            var oldAdmin = entity.AdminBodega;
+            if ((await _context.AdminBodegas.CountAsync(ad => ad.Status == "A" && ad.UserId == oldAdmin.UserId, cancellationToken)) <= 1)
+            {
+                if ((await _userManager.IsInRoleAsync(oldAdmin.User, "AdminBodega")))
+                {
+                    await _userManager.RemoveFromRoleAsync(oldAdmin.User, "AdminBodega");
+                }
+            }
+
+            var user = await _context.ApplicationUsers
+                .FirstOrDefaultAsync(u => u.Id == request.EncargadoId, cancellationToken);
+
+            if (!(await _userManager.IsInRoleAsync(user, "AdminBodega")))
+            {
+                await _userManager.AddToRoleAsync(user, "AdminBodega");
+            }
+
+            entity.AdminBodega = new AdminBodega
+            {
+                User = user
+            };
+        }
 
         await _context.SaveChangesAsync(cancellationToken);
 

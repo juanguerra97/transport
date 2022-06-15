@@ -2252,6 +2252,7 @@ export class BodegaDto implements IBodegaDto {
     descripcion?: string | undefined;
     detalle?: string | undefined;
     ubicacion?: UbicacionDto | undefined;
+    encargado?: UsuarioDto | undefined;
 
     constructor(data?: IBodegaDto) {
         if (data) {
@@ -2269,6 +2270,7 @@ export class BodegaDto implements IBodegaDto {
             this.descripcion = _data["descripcion"];
             this.detalle = _data["detalle"];
             this.ubicacion = _data["ubicacion"] ? UbicacionDto.fromJS(_data["ubicacion"]) : <any>undefined;
+            this.encargado = _data["encargado"] ? UsuarioDto.fromJS(_data["encargado"]) : <any>undefined;
         }
     }
 
@@ -2286,6 +2288,7 @@ export class BodegaDto implements IBodegaDto {
         data["descripcion"] = this.descripcion;
         data["detalle"] = this.detalle;
         data["ubicacion"] = this.ubicacion ? this.ubicacion.toJSON() : <any>undefined;
+        data["encargado"] = this.encargado ? this.encargado.toJSON() : <any>undefined;
         return data;
     }
 }
@@ -2296,6 +2299,7 @@ export interface IBodegaDto {
     descripcion?: string | undefined;
     detalle?: string | undefined;
     ubicacion?: UbicacionDto | undefined;
+    encargado?: UsuarioDto | undefined;
 }
 
 export enum TipoBodega {
@@ -2504,12 +2508,65 @@ export interface IPaisDto {
     descripcion?: string | undefined;
 }
 
+export class UsuarioDto implements IUsuarioDto {
+    id?: string;
+    userName?: string;
+    firstName?: string | undefined;
+    lastName?: string | undefined;
+    email?: string;
+
+    constructor(data?: IUsuarioDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.userName = _data["userName"];
+            this.firstName = _data["firstName"];
+            this.lastName = _data["lastName"];
+            this.email = _data["email"];
+        }
+    }
+
+    static fromJS(data: any): UsuarioDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new UsuarioDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["userName"] = this.userName;
+        data["firstName"] = this.firstName;
+        data["lastName"] = this.lastName;
+        data["email"] = this.email;
+        return data;
+    }
+}
+
+export interface IUsuarioDto {
+    id?: string;
+    userName?: string;
+    firstName?: string | undefined;
+    lastName?: string | undefined;
+    email?: string;
+}
+
 export class CreateBodegaCommand implements ICreateBodegaCommand {
     tipoBodega?: TipoBodega;
     descripcion?: string | undefined;
     detalle?: string | undefined;
     municipioId?: number | undefined;
     direccion?: string | undefined;
+    encargadoId?: string;
 
     constructor(data?: ICreateBodegaCommand) {
         if (data) {
@@ -2527,6 +2584,7 @@ export class CreateBodegaCommand implements ICreateBodegaCommand {
             this.detalle = _data["detalle"];
             this.municipioId = _data["municipioId"];
             this.direccion = _data["direccion"];
+            this.encargadoId = _data["encargadoId"];
         }
     }
 
@@ -2544,6 +2602,7 @@ export class CreateBodegaCommand implements ICreateBodegaCommand {
         data["detalle"] = this.detalle;
         data["municipioId"] = this.municipioId;
         data["direccion"] = this.direccion;
+        data["encargadoId"] = this.encargadoId;
         return data;
     }
 }
@@ -2554,6 +2613,7 @@ export interface ICreateBodegaCommand {
     detalle?: string | undefined;
     municipioId?: number | undefined;
     direccion?: string | undefined;
+    encargadoId?: string;
 }
 
 export class UpdateBodegaCommand implements IUpdateBodegaCommand {
@@ -2563,6 +2623,7 @@ export class UpdateBodegaCommand implements IUpdateBodegaCommand {
     detalle?: string | undefined;
     municipioId?: number | undefined;
     direccion?: string | undefined;
+    encargadoId?: string;
 
     constructor(data?: IUpdateBodegaCommand) {
         if (data) {
@@ -2581,6 +2642,7 @@ export class UpdateBodegaCommand implements IUpdateBodegaCommand {
             this.detalle = _data["detalle"];
             this.municipioId = _data["municipioId"];
             this.direccion = _data["direccion"];
+            this.encargadoId = _data["encargadoId"];
         }
     }
 
@@ -2599,6 +2661,7 @@ export class UpdateBodegaCommand implements IUpdateBodegaCommand {
         data["detalle"] = this.detalle;
         data["municipioId"] = this.municipioId;
         data["direccion"] = this.direccion;
+        data["encargadoId"] = this.encargadoId;
         return data;
     }
 }
@@ -2610,6 +2673,7 @@ export interface IUpdateBodegaCommand {
     detalle?: string | undefined;
     municipioId?: number | undefined;
     direccion?: string | undefined;
+    encargadoId?: string;
 }
 
 export class PaginatedListOfMaterialDto implements IPaginatedListOfMaterialDto {
@@ -3026,58 +3090,6 @@ export class TipoPlantaDto implements ITipoPlantaDto {
 export interface ITipoPlantaDto {
     id?: number | undefined;
     descripcion?: string | undefined;
-}
-
-export class UsuarioDto implements IUsuarioDto {
-    id?: string;
-    userName?: string;
-    firstName?: string | undefined;
-    lastName?: string | undefined;
-    email?: string;
-
-    constructor(data?: IUsuarioDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.userName = _data["userName"];
-            this.firstName = _data["firstName"];
-            this.lastName = _data["lastName"];
-            this.email = _data["email"];
-        }
-    }
-
-    static fromJS(data: any): UsuarioDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new UsuarioDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["userName"] = this.userName;
-        data["firstName"] = this.firstName;
-        data["lastName"] = this.lastName;
-        data["email"] = this.email;
-        return data;
-    }
-}
-
-export interface IUsuarioDto {
-    id?: string;
-    userName?: string;
-    firstName?: string | undefined;
-    lastName?: string | undefined;
-    email?: string;
 }
 
 export class CreatePlantaCommand implements ICreatePlantaCommand {

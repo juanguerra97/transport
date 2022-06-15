@@ -25,6 +25,8 @@ public class GetBodegaByIdQueryHandler : IRequestHandler<GetBodegaByIdQuery, Bod
     public async Task<BodegaDto> Handle(GetBodegaByIdQuery request, CancellationToken cancellationToken)
     {
         var entity = await _context.Bodegas
+            .Include(b => b.AdminBodega)
+            .ThenInclude(ad => ad.User)
             .Include(b => b.Ubicacion)
             .ThenInclude(u => u.Municipio)
             .ThenInclude(m => m.Departamento)
