@@ -18,6 +18,7 @@ export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 export interface IBodegasClient {
     getBodegas(): Observable<BodegaDto[]>;
     create(command: CreateBodegaCommand): Observable<number>;
+    getBodegasByEncargado(pageSize: number | undefined, pageNumber: number | undefined): Observable<PaginatedListOfBodegaDto>;
     getBodegaById(id: number): Observable<BodegaDto>;
     update(id: number, command: UpdateBodegaCommand): Observable<BodegaDto>;
     delete(id: number): Observable<FileResponse>;
@@ -142,6 +143,62 @@ export class BodegasClient implements IBodegasClient {
             }));
         }
         return _observableOf<number>(null as any);
+    }
+
+    getBodegasByEncargado(pageSize: number | undefined, pageNumber: number | undefined): Observable<PaginatedListOfBodegaDto> {
+        let url_ = this.baseUrl + "/api/Bodegas/ByEncargado?";
+        if (pageSize === null)
+            throw new Error("The parameter 'pageSize' cannot be null.");
+        else if (pageSize !== undefined)
+            url_ += "pageSize=" + encodeURIComponent("" + pageSize) + "&";
+        if (pageNumber === null)
+            throw new Error("The parameter 'pageNumber' cannot be null.");
+        else if (pageNumber !== undefined)
+            url_ += "pageNumber=" + encodeURIComponent("" + pageNumber) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetBodegasByEncargado(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetBodegasByEncargado(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PaginatedListOfBodegaDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PaginatedListOfBodegaDto>;
+        }));
+    }
+
+    protected processGetBodegasByEncargado(response: HttpResponseBase): Observable<PaginatedListOfBodegaDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PaginatedListOfBodegaDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PaginatedListOfBodegaDto>(null as any);
     }
 
     getBodegaById(id: number): Observable<BodegaDto> {
@@ -2558,6 +2615,74 @@ export interface IUsuarioDto {
     firstName?: string | undefined;
     lastName?: string | undefined;
     email?: string;
+}
+
+export class PaginatedListOfBodegaDto implements IPaginatedListOfBodegaDto {
+    items?: BodegaDto[];
+    pageNumber?: number;
+    pageSize?: number;
+    totalPages?: number;
+    totalCount?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
+
+    constructor(data?: IPaginatedListOfBodegaDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(BodegaDto.fromJS(item));
+            }
+            this.pageNumber = _data["pageNumber"];
+            this.pageSize = _data["pageSize"];
+            this.totalPages = _data["totalPages"];
+            this.totalCount = _data["totalCount"];
+            this.hasPreviousPage = _data["hasPreviousPage"];
+            this.hasNextPage = _data["hasNextPage"];
+        }
+    }
+
+    static fromJS(data: any): PaginatedListOfBodegaDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PaginatedListOfBodegaDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        data["pageNumber"] = this.pageNumber;
+        data["pageSize"] = this.pageSize;
+        data["totalPages"] = this.totalPages;
+        data["totalCount"] = this.totalCount;
+        data["hasPreviousPage"] = this.hasPreviousPage;
+        data["hasNextPage"] = this.hasNextPage;
+        return data;
+    }
+}
+
+export interface IPaginatedListOfBodegaDto {
+    items?: BodegaDto[];
+    pageNumber?: number;
+    pageSize?: number;
+    totalPages?: number;
+    totalCount?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
 }
 
 export class CreateBodegaCommand implements ICreateBodegaCommand {

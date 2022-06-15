@@ -70,6 +70,48 @@
         ]
       }
     },
+    "/api/Bodegas/ByEncargado": {
+      "get": {
+        "tags": [
+          "Bodegas"
+        ],
+        "operationId": "Bodegas_GetBodegasByEncargado",
+        "parameters": [
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            },
+            "x-position": 1
+          },
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedListOfBodegaDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Bodegas/{id}": {
       "get": {
         "tags": [
@@ -1623,6 +1665,40 @@
           },
           "email": {
             "type": "string"
+          }
+        }
+      },
+      "PaginatedListOfBodegaDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BodegaDto"
+            }
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hasPreviousPage": {
+            "type": "boolean"
+          },
+          "hasNextPage": {
+            "type": "boolean"
           }
         }
       },
