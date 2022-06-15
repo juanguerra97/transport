@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {INavData} from "@coreui/angular";
 import {MenuService} from "./services/menu.service";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-root',
@@ -30,7 +31,11 @@ export class AppComponent {
     suppressScrollX: true,
   };
 
-  constructor(public menuService: MenuService) {
+  constructor(
+    public menuService: MenuService,
+    private titleService: Title
+  ) {
+    this.titleService.setTitle('TransPort');
   }
 
 }
