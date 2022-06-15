@@ -15,29 +15,41 @@ export class MenuService {
     private authorizeService: AuthorizeService,
   ) {
     this.authorizeService.getUser().subscribe({
-      next:  user => {
-       if (!user) {
-         this._menuSubject.next([]);
-       } else {
-         const menu: INavData[] = [];
-         if (user.role?.includes(Roles.ADMINISTRATOR)) {
-           menu.push({
-               title: true,
-               name: 'Administración'
-             },
-             {
-               name: 'Catálogos',
-               icon: 'fa fa-solid fa-table',
-               children: [
-                 { name: 'Plantas', url: '/admin/catalogo/plantas' },
-                 { name: 'Bodegas', url: '/admin/catalogo/bodegas' },
-                 { name: 'Materiales', url: '/admin/catalogo/materiales'},
-                 { name: 'Medidas', url: '/admin/catalogo/medidas'}
-               ]
-             });
-           this._menuSubject.next(menu);
-         }
-       }
+      next: user => {
+        if (!user) {
+          this._menuSubject.next([]);
+        } else {
+          const menu: INavData[] = [];
+
+          if (user.role?.includes(Roles.ADMINISTRATOR)) {
+            menu.push({
+                title: true,
+                name: 'Administración'
+              },
+              {
+                name: 'Catálogos',
+                icon: 'fa fa-solid fa-table',
+                children: [
+                  {name: 'Plantas', url: '/admin/catalogo/plantas'},
+                  {name: 'Bodegas', url: '/admin/catalogo/bodegas'},
+                  {name: 'Materiales', url: '/admin/catalogo/materiales'},
+                  {name: 'Medidas', url: '/admin/catalogo/medidas'}
+                ]
+              });
+          }
+          if (user.role?.includes(Roles.ADMIN_BODEGA)) {
+            menu.push({
+                title: true,
+                name: 'Inventario'
+              },
+              {
+                name: 'Bodegas',
+                icon: 'fa fa-solid fa-warehouse',
+                url: '/inventario'
+              });
+          }
+          this._menuSubject.next(menu);
+        }
       }
     });
   }

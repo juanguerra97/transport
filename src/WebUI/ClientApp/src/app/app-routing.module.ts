@@ -11,7 +11,8 @@ export const routes: Routes = [
     path: 'admin', canActivate: [AuthorizeGuard], children: [
       {path: 'catalogo', loadChildren: () => import('./catalogos/catalogos.module').then(m => m.CatalogosModule)}
     ]
-  }
+  },
+  {path: 'inventario', loadChildren: () => import('./inventario/inventario.module').then(m => m.InventarioModule)}
 ];
 
 @NgModule({

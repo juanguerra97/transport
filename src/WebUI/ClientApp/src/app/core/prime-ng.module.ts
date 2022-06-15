@@ -11,6 +11,7 @@ import {InputNumberModule} from 'primeng/inputnumber';
 import {KeyFilterModule} from 'primeng/keyfilter';
 import {DialogService, DynamicDialogModule} from 'primeng/dynamicdialog';
 import {AutoCompleteModule} from 'primeng/autocomplete';
+import {CardModule} from 'primeng/card';
 
 @NgModule({
   declarations: [],
@@ -27,6 +28,7 @@ import {AutoCompleteModule} from 'primeng/autocomplete';
     KeyFilterModule,
     DynamicDialogModule,
     AutoCompleteModule,
+    CardModule,
   ],
   providers: [
     ConfirmationService,
