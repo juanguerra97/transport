@@ -16,8 +16,8 @@ public class AdminPlantaConfiguration : IEntityTypeConfiguration<AdminPlanta>
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(a => a.Planta)
-            .WithMany()
-            .HasForeignKey(a => a.PlantaId)
+            .WithOne(ad => ad.AdminPlanta)
+            .HasForeignKey((AdminPlanta ad) => ad.PlantaId)
             .IsRequired()
             .OnDelete(DeleteBehavior.Restrict);
     }

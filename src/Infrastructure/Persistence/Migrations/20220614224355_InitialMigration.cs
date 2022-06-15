@@ -1609,7 +1609,8 @@ namespace seminario.Infrastructure.Persistence.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_AdminPlantas_PlantaId",
                 table: "AdminPlantas",
-                column: "PlantaId");
+                column: "PlantaId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

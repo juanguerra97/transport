@@ -11,7 +11,7 @@ using seminario.Infrastructure.Persistence;
 namespace seminario.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220606001350_InitialMigration")]
+    [Migration("20220614224355_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -379,7 +379,8 @@ namespace seminario.Infrastructure.Persistence.Migrations
 
                     b.HasKey("UserId", "PlantaId");
 
-                    b.HasIndex("PlantaId");
+                    b.HasIndex("PlantaId")
+                        .IsUnique();
 
                     b.ToTable("AdminPlantas");
                 });
@@ -2067,8 +2068,8 @@ namespace seminario.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("seminario.Domain.Entities.AdminPlanta", b =>
                 {
                     b.HasOne("seminario.Domain.Entities.Planta", "Planta")
-                        .WithMany()
-                        .HasForeignKey("PlantaId")
+                        .WithOne("AdminPlanta")
+                        .HasForeignKey("seminario.Domain.Entities.AdminPlanta", "PlantaId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -2577,6 +2578,12 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     b.Navigation("Conductor");
 
                     b.Navigation("Vehiculo");
+                });
+
+            modelBuilder.Entity("seminario.Domain.Entities.Planta", b =>
+                {
+                    b.Navigation("AdminPlanta")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("seminario.Domain.Entities.TodoList", b =>

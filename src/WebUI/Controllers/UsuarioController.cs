@@ -5,7 +5,7 @@ using seminario.Application.Usuarios.Queries;
 using seminario.Application.Usuarios.Queries.SearchByName;
 
 namespace seminario.WebUI.Controllers;
-[Authorize]
+[Authorize(Policy = "AdminCatalogo")]
 public class UsuarioController : ApiControllerBase
 {
 

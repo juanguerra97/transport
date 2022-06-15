@@ -2938,6 +2938,7 @@ export class PlantaDto implements IPlantaDto {
     descripcion?: string | undefined;
     detalle?: string | undefined;
     bodega?: BodegaDto | undefined;
+    encargado?: UsuarioDto | undefined;
 
     constructor(data?: IPlantaDto) {
         if (data) {
@@ -2955,6 +2956,7 @@ export class PlantaDto implements IPlantaDto {
             this.descripcion = _data["descripcion"];
             this.detalle = _data["detalle"];
             this.bodega = _data["bodega"] ? BodegaDto.fromJS(_data["bodega"]) : <any>undefined;
+            this.encargado = _data["encargado"] ? UsuarioDto.fromJS(_data["encargado"]) : <any>undefined;
         }
     }
 
@@ -2972,6 +2974,7 @@ export class PlantaDto implements IPlantaDto {
         data["descripcion"] = this.descripcion;
         data["detalle"] = this.detalle;
         data["bodega"] = this.bodega ? this.bodega.toJSON() : <any>undefined;
+        data["encargado"] = this.encargado ? this.encargado.toJSON() : <any>undefined;
         return data;
     }
 }
@@ -2982,6 +2985,7 @@ export interface IPlantaDto {
     descripcion?: string | undefined;
     detalle?: string | undefined;
     bodega?: BodegaDto | undefined;
+    encargado?: UsuarioDto | undefined;
 }
 
 export class TipoPlantaDto implements ITipoPlantaDto {
@@ -3024,12 +3028,65 @@ export interface ITipoPlantaDto {
     descripcion?: string | undefined;
 }
 
+export class UsuarioDto implements IUsuarioDto {
+    id?: string;
+    userName?: string;
+    firstName?: string | undefined;
+    lastName?: string | undefined;
+    email?: string;
+
+    constructor(data?: IUsuarioDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.userName = _data["userName"];
+            this.firstName = _data["firstName"];
+            this.lastName = _data["lastName"];
+            this.email = _data["email"];
+        }
+    }
+
+    static fromJS(data: any): UsuarioDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new UsuarioDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["userName"] = this.userName;
+        data["firstName"] = this.firstName;
+        data["lastName"] = this.lastName;
+        data["email"] = this.email;
+        return data;
+    }
+}
+
+export interface IUsuarioDto {
+    id?: string;
+    userName?: string;
+    firstName?: string | undefined;
+    lastName?: string | undefined;
+    email?: string;
+}
+
 export class CreatePlantaCommand implements ICreatePlantaCommand {
     tipoPlantaId?: number | undefined;
     descripcion?: string | undefined;
     detalle?: string | undefined;
     municipioId?: number | undefined;
     direccion?: string | undefined;
+    encargadoId?: string;
 
     constructor(data?: ICreatePlantaCommand) {
         if (data) {
@@ -3047,6 +3104,7 @@ export class CreatePlantaCommand implements ICreatePlantaCommand {
             this.detalle = _data["detalle"];
             this.municipioId = _data["municipioId"];
             this.direccion = _data["direccion"];
+            this.encargadoId = _data["encargadoId"];
         }
     }
 
@@ -3064,6 +3122,7 @@ export class CreatePlantaCommand implements ICreatePlantaCommand {
         data["detalle"] = this.detalle;
         data["municipioId"] = this.municipioId;
         data["direccion"] = this.direccion;
+        data["encargadoId"] = this.encargadoId;
         return data;
     }
 }
@@ -3074,6 +3133,7 @@ export interface ICreatePlantaCommand {
     detalle?: string | undefined;
     municipioId?: number | undefined;
     direccion?: string | undefined;
+    encargadoId?: string;
 }
 
 export class UpdatePlantaCommand implements IUpdatePlantaCommand {
@@ -3083,6 +3143,7 @@ export class UpdatePlantaCommand implements IUpdatePlantaCommand {
     detalle?: string | undefined;
     municipioId?: number | undefined;
     direccion?: string | undefined;
+    encargadoId?: string;
 
     constructor(data?: IUpdatePlantaCommand) {
         if (data) {
@@ -3101,6 +3162,7 @@ export class UpdatePlantaCommand implements IUpdatePlantaCommand {
             this.detalle = _data["detalle"];
             this.municipioId = _data["municipioId"];
             this.direccion = _data["direccion"];
+            this.encargadoId = _data["encargadoId"];
         }
     }
 
@@ -3119,6 +3181,7 @@ export class UpdatePlantaCommand implements IUpdatePlantaCommand {
         data["detalle"] = this.detalle;
         data["municipioId"] = this.municipioId;
         data["direccion"] = this.direccion;
+        data["encargadoId"] = this.encargadoId;
         return data;
     }
 }
@@ -3130,6 +3193,7 @@ export interface IUpdatePlantaCommand {
     detalle?: string | undefined;
     municipioId?: number | undefined;
     direccion?: string | undefined;
+    encargadoId?: string;
 }
 
 export class PaginatedListOfTodoItemBriefDto implements IPaginatedListOfTodoItemBriefDto {
@@ -3761,58 +3825,6 @@ export interface IUpdateUnidadMedidaCommand {
     descripcion?: string | undefined;
     descripcionPlural?: string | undefined;
     descripcionCorta?: string | undefined;
-}
-
-export class UsuarioDto implements IUsuarioDto {
-    id?: string;
-    userName?: string;
-    firstName?: string | undefined;
-    lastName?: string | undefined;
-    email?: string;
-
-    constructor(data?: IUsuarioDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.userName = _data["userName"];
-            this.firstName = _data["firstName"];
-            this.lastName = _data["lastName"];
-            this.email = _data["email"];
-        }
-    }
-
-    static fromJS(data: any): UsuarioDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new UsuarioDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["userName"] = this.userName;
-        data["firstName"] = this.firstName;
-        data["lastName"] = this.lastName;
-        data["email"] = this.email;
-        return data;
-    }
-}
-
-export interface IUsuarioDto {
-    id?: string;
-    userName?: string;
-    firstName?: string | undefined;
-    lastName?: string | undefined;
-    email?: string;
 }
 
 export class WeatherForecast implements IWeatherForecast {

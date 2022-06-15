@@ -1,6 +1,7 @@
 ﻿
 using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using seminario.Application.Common.Exceptions;
 using seminario.Application.Common.Interfaces;
@@ -16,22 +17,27 @@ public record UpdatePlantaCommand : IRequest<PlantaDto>
     public string? Detalle { get; init; }
     public int? MunicipioId { get; init; }
     public string? Direccion { get; init; }
+    public string EncargadoId { get; init; }
 }
 
 public class UpdatePlantaCommandHandler : IRequestHandler<UpdatePlantaCommand, PlantaDto>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public UpdatePlantaCommandHandler(IApplicationDbContext context, IMapper mapper)
+    public UpdatePlantaCommandHandler(IApplicationDbContext context, IMapper mapper, UserManager<ApplicationUser> userManager)
     {
         _context = context;
         _mapper = mapper;
+        _userManager = userManager;
     }
 
     public async Task<PlantaDto> Handle(UpdatePlantaCommand request, CancellationToken cancellationToken)
     {
         var entity = await _context.Plantas
+            .Include(p => p.AdminPlanta)
+            .ThenInclude(ad => ad.User)
             .Include(p => p.TipoPlanta)
             .Include(p => p.Bodega)
             .ThenInclude(b => b.Ubicacion)
@@ -57,6 +63,31 @@ public class UpdatePlantaCommandHandler : IRequestHandler<UpdatePlantaCommand, P
 
         entity.Bodega.Ubicacion.Direccion = request.Direccion;
         entity.Bodega.Ubicacion.MunicipioId = request.MunicipioId;
+
+        if (request.EncargadoId != entity.AdminPlanta?.UserId)
+        {
+            var oldAdmin = entity.AdminPlanta;
+            if ((await _context.AdminPlantas.CountAsync(ad => ad.Status == "A" && ad.UserId == oldAdmin.UserId, cancellationToken)) <= 1)
+            {
+                if ((await _userManager.IsInRoleAsync(oldAdmin.User, "AdminPlanta")))
+                {
+                    await _userManager.RemoveFromRoleAsync(oldAdmin.User, "AdminPlanta");
+                }
+            }
+
+            var user = await _context.ApplicationUsers
+                .FirstOrDefaultAsync(u => u.Id == request.EncargadoId, cancellationToken);
+
+            if (!(await _userManager.IsInRoleAsync(user, "AdminPlanta")))
+            {
+                await _userManager.AddToRoleAsync(user, "AdminPlanta");
+            }
+
+            entity.AdminPlanta = new AdminPlanta
+            {
+                User = user
+            };
+        }
 
         await _context.SaveChangesAsync(cancellationToken);
 

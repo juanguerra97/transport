@@ -6,7 +6,7 @@ import {
   PlantaDto,
   PlantasClient,
   TipoPlantaClient,
-  TipoPlantaDto
+  TipoPlantaDto, UsuarioClient, UsuarioDto
 } from "../../../web-api-client";
 import {HotToastService} from "@ngneat/hot-toast";
 import {getErrorMessage} from "../../../utils/errors";
@@ -27,6 +27,7 @@ export class EditPlantaComponent implements OnInit {
     direccion: new FormControl(null, [Validators.required, Validators.maxLength(256)]),
     departamento: new FormControl(null, [Validators.required]),
     municipio: new FormControl(null, [Validators.required]),
+    encargado: new FormControl(null, [Validators.required]),
   });
 
   planta?: PlantaDto;
@@ -36,6 +37,8 @@ export class EditPlantaComponent implements OnInit {
   departamentos: DepartamentoDto[] = [];
   municipios: MunicipioDto[] = [];
 
+  suggestionsEncargado: UsuarioDto[] = [];
+
   guardando = false;
 
   constructor(
@@ -43,6 +46,7 @@ export class EditPlantaComponent implements OnInit {
     private tipoPlantaClient: TipoPlantaClient,
     private departamentosClient: DepartamentosClient,
     private municipiosClient: MunicipiosClient,
+    private usuarioClient: UsuarioClient,
     private toastService: HotToastService,
     private ar: ActivatedRoute,
   ) {
@@ -70,6 +74,10 @@ export class EditPlantaComponent implements OnInit {
 
   get municipio() {
     return this.form.get('municipio');
+  }
+
+  get encargado() {
+    return this.form.get('encargado');
   }
 
   async ngOnInit() {
@@ -115,6 +123,7 @@ export class EditPlantaComponent implements OnInit {
             direccion: this.planta.bodega?.ubicacion?.direccion,
             departamento: this.planta.bodega?.ubicacion?.municipio?.departamento,
             municipio: this.planta.bodega?.ubicacion?.municipio,
+            encargado: this.planta?.encargado
           });
 
           this.loadingPlanta = false;
@@ -178,9 +187,11 @@ export class EditPlantaComponent implements OnInit {
     const datos = Object.assign({plantaId: this.planta?.id}, this.form.value);
     datos.municipioId = datos.municipio.id;
     datos.tipoPlantaId = datos.tipoPlanta.id;
+    datos.encargadoId = datos.encargado.id;
     delete datos.departamento;
     delete datos.municipio;
     delete datos.tipoPlanta;
+    delete datos.encargado;
     this.plantasClient.update(this.planta?.id as any, datos)
       .subscribe({
         next: res => {
@@ -195,6 +206,23 @@ export class EditPlantaComponent implements OnInit {
           this.guardando = false;
         }
       });
+  }
+
+  searchEncargado($event: any) {
+    this.usuarioClient.searchUsuariosByName($event.query, 5)
+      .subscribe({
+        next: res => {
+          this.suggestionsEncargado = res;
+        },
+        error: error => {
+          console.error(error);
+          this.toastService.error(getErrorMessage(error), { autoClose: false, dismissible: true, position: "bottom-center"});
+        }
+      });
+  }
+
+  getEncargado(usuario: UsuarioDto) {
+    return `${usuario.firstName} ${usuario.lastName}(${usuario.userName})`;
   }
 
 }

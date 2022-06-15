@@ -16,4 +16,6 @@ public class Planta : AuditableEntity
     public int? BodegaId { get; set; }
     public Bodega? Bodega { get; set; }
 
+    public AdminPlanta AdminPlanta { get; set; }
+
 }

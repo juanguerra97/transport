@@ -1,4 +1,6 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using seminario.Application.Common.Interfaces;
 using seminario.Domain.Entities;
 using seminario.Domain.Enums;
@@ -11,18 +13,29 @@ public record CreatePlantaCommand : IRequest<int?>
     public string? Detalle { get; init; }
     public int? MunicipioId { get; init; }
     public string? Direccion { get; init; }
+    public string EncargadoId { get; set; }
 }
 
 public class CreatePlantaCommandHandler : IRequestHandler<CreatePlantaCommand, int?>
 {
     private readonly IApplicationDbContext _context;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public CreatePlantaCommandHandler(IApplicationDbContext context)
+    public CreatePlantaCommandHandler(IApplicationDbContext context, UserManager<ApplicationUser> userManager)
     {
         _context = context;
+        _userManager = userManager;
     }
     public async Task<int?> Handle(CreatePlantaCommand request, CancellationToken cancellationToken)
     {
+        var user = await _context.ApplicationUsers
+            .FirstOrDefaultAsync(u => u.Id == request.EncargadoId, cancellationToken);
+
+        if (!(await _userManager.IsInRoleAsync(user, "AdminPlanta")))
+        {
+            await _userManager.AddToRoleAsync(user, "AdminPlanta");
+        }
+        
 
         var ubicacion = new Ubicacion
         {
@@ -48,7 +61,11 @@ public class CreatePlantaCommandHandler : IRequestHandler<CreatePlantaCommand, i
             TipoPlantaId = request.TipoPlantaId,
             Descripcion = request.Descripcion,
             Detalle = request.Detalle,
-            Bodega = bodega
+            Bodega = bodega,
+            AdminPlanta = new AdminPlanta
+            {
+                User = user
+            }
         };
         _context.Plantas.Add(planta);
 

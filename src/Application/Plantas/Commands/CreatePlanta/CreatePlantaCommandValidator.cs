@@ -31,6 +31,10 @@ public class CreatePlantaCommandValidator : AbstractValidator<CreatePlantaComman
         RuleFor(v => v.TipoPlantaId)
             .NotNull().WithMessage("El campo tipoPlantaId es obligatorio.")
             .MustAsync(TipoPlantaExists).WithMessage($"No existe un tipo de planta con el id proporcionado.");
+
+        RuleFor(v => v.EncargadoId)
+            .NotNull().WithMessage("El campo encargadoId es obligatorio.")
+            .MustAsync(EncargadoExists).WithMessage($"No existe un usuario con el encargadoId proporcionado.");
     }
 
 
@@ -42,6 +46,11 @@ public class CreatePlantaCommandValidator : AbstractValidator<CreatePlantaComman
     public async Task<bool> TipoPlantaExists(int? tipoPlantaId, CancellationToken cancellationToken)
     {
         return await _context.TipoPlantas.AnyAsync(t => t.Id == tipoPlantaId);
+    }
+
+    public async Task<bool> EncargadoExists(string encargadoId, CancellationToken cancellationToken)
+    {
+        return await _context.ApplicationUsers.AnyAsync(u => u.Id == encargadoId);
     }
 
 }

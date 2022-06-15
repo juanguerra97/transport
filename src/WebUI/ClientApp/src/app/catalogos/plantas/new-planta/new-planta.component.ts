@@ -5,7 +5,7 @@ import {
   DepartamentosClient,
   MunicipioDto, MunicipiosClient,
   PlantasClient, TipoPlantaClient,
-  TipoPlantaDto
+  TipoPlantaDto, UsuarioClient, UsuarioDto
 } from "../../../web-api-client";
 import {HotToastService} from "@ngneat/hot-toast";
 import {getErrorMessage} from "../../../utils/errors";
@@ -26,11 +26,14 @@ export class NewPlantaComponent implements OnInit {
     direccion: new FormControl(null, [Validators.required, Validators.maxLength(256)]),
     departamento: new FormControl(null, [Validators.required]),
     municipio: new FormControl(null, [Validators.required]),
+    encargado: new FormControl(null, [Validators.required])
   });
 
   tiposPlanta: TipoPlantaDto[] = [];
   departamentos: DepartamentoDto[] = [];
   municipios: MunicipioDto[] = [];
+
+  suggestionsEncargado: UsuarioDto[] = [];
 
   guardando = false;
 
@@ -39,6 +42,7 @@ export class NewPlantaComponent implements OnInit {
     private tipoPlantaClient: TipoPlantaClient,
     private departamentosClient: DepartamentosClient,
     private municipiosClient: MunicipiosClient,
+    private usuarioClient: UsuarioClient,
     private toastService: HotToastService,
     private router: Router,
   ) {
@@ -66,6 +70,10 @@ export class NewPlantaComponent implements OnInit {
 
   get municipio() {
     return this.form.get('municipio');
+  }
+
+  get encargado() {
+    return this.form.get('encargado');
   }
 
   ngOnInit(): void {
@@ -130,9 +138,11 @@ export class NewPlantaComponent implements OnInit {
     const datos = Object.assign({}, this.form.value);
     datos.municipioId = datos.municipio.id;
     datos.tipoPlantaId = datos.tipoPlanta.id;
+    datos.encargadoId = datos.encargado?.id;
     delete datos.departamento;
     delete datos.municipio;
     delete datos.tipoPlanta;
+    delete datos.encargado;
     this.plantasClient.create(datos)
       .subscribe({
         next: res => {
@@ -142,10 +152,28 @@ export class NewPlantaComponent implements OnInit {
         },
         error: error => {
           console.error(error);
+          this.form.enable();
           this.toastService.error(getErrorMessage(error), { autoClose: false, dismissible: true, position: "bottom-center"});
           this.guardando = false;
         }
       });
+  }
+
+  searchEncargado($event: any) {
+    this.usuarioClient.searchUsuariosByName($event.query, 5)
+      .subscribe({
+        next: res => {
+          this.suggestionsEncargado = res;
+        },
+        error: error => {
+          console.error(error);
+          this.toastService.error(getErrorMessage(error), { autoClose: false, dismissible: true, position: "bottom-center"});
+        }
+      });
+  }
+
+  getEncargado(usuario: UsuarioDto) {
+    return `${usuario.firstName} ${usuario.lastName}(${usuario.userName})`;
   }
 
 }

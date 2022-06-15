@@ -25,6 +25,8 @@ public class GetPlantaByIdQueryHandler : IRequestHandler<GetPlantaByIdQuery, Pla
     public async Task<PlantaDto> Handle(GetPlantaByIdQuery request, CancellationToken cancellationToken)
     {
         var entity = await _context.Plantas
+            .Include(p => p.AdminPlanta)
+            .ThenInclude(ad => ad.User)
             .Include(p => p.TipoPlanta)
             .Include(p => p.Bodega)
             .ThenInclude(b => b.Ubicacion)
