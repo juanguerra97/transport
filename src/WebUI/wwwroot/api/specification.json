@@ -272,6 +272,110 @@
         ]
       }
     },
+    "/api/Inventario/bodega/{bodegaId}": {
+      "get": {
+        "tags": [
+          "Inventario"
+        ],
+        "operationId": "Inventario_GetInventarioByBodega",
+        "parameters": [
+          {
+            "name": "bodegaId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            },
+            "x-position": 2
+          },
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            },
+            "x-position": 3
+          },
+          {
+            "name": "descripcionMaterial",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 4
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedListOfInventarioBodegaDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/Inventario": {
+      "post": {
+        "tags": [
+          "Inventario"
+        ],
+        "operationId": "Inventario_Create",
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateIngresoMaterialCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
     "/api/Material": {
       "get": {
         "tags": [
@@ -473,6 +577,55 @@
                 "schema": {
                   "type": "string",
                   "format": "binary"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/Material/searchByDescripcion": {
+      "get": {
+        "tags": [
+          "Material"
+        ],
+        "operationId": "Material_SearchMaterialesByDescripcion",
+        "parameters": [
+          {
+            "name": "descripcion",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          },
+          {
+            "name": "maxResults",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 5
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MaterialDto"
+                  }
                 }
               }
             }
@@ -2053,14 +2206,14 @@
           }
         }
       },
-      "PaginatedListOfMaterialDto": {
+      "PaginatedListOfInventarioBodegaDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "items": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/MaterialDto"
+              "$ref": "#/components/schemas/InventarioBodegaDto"
             }
           },
           "pageNumber": {
@@ -2084,6 +2237,38 @@
           },
           "hasNextPage": {
             "type": "boolean"
+          }
+        }
+      },
+      "InventarioBodegaDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "bodega": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/BodegaDto"
+              }
+            ]
+          },
+          "material": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MaterialDto"
+              }
+            ]
+          },
+          "cantidadDisponible": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "cantidadReservada": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
           }
         }
       },
@@ -2157,6 +2342,66 @@
           "descripcionCorta": {
             "type": "string",
             "nullable": true
+          }
+        }
+      },
+      "CreateIngresoMaterialCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "proveedorMaterialId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "bodegaId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "materialId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "cantidad": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          }
+        }
+      },
+      "PaginatedListOfMaterialDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MaterialDto"
+            }
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hasPreviousPage": {
+            "type": "boolean"
+          },
+          "hasNextPage": {
+            "type": "boolean"
           }
         }
       },

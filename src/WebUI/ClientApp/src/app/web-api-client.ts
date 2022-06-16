@@ -432,12 +432,146 @@ export class DepartamentosClient implements IDepartamentosClient {
     }
 }
 
+export interface IInventarioClient {
+    getInventarioByBodega(bodegaId: number, pageSize: number | undefined, pageNumber: number | undefined, descripcionMaterial: string | null | undefined): Observable<PaginatedListOfInventarioBodegaDto>;
+    create(command: CreateIngresoMaterialCommand): Observable<number>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class InventarioClient implements IInventarioClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    getInventarioByBodega(bodegaId: number, pageSize: number | undefined, pageNumber: number | undefined, descripcionMaterial: string | null | undefined): Observable<PaginatedListOfInventarioBodegaDto> {
+        let url_ = this.baseUrl + "/api/Inventario/bodega/{bodegaId}?";
+        if (bodegaId === undefined || bodegaId === null)
+            throw new Error("The parameter 'bodegaId' must be defined.");
+        url_ = url_.replace("{bodegaId}", encodeURIComponent("" + bodegaId));
+        if (pageSize === null)
+            throw new Error("The parameter 'pageSize' cannot be null.");
+        else if (pageSize !== undefined)
+            url_ += "pageSize=" + encodeURIComponent("" + pageSize) + "&";
+        if (pageNumber === null)
+            throw new Error("The parameter 'pageNumber' cannot be null.");
+        else if (pageNumber !== undefined)
+            url_ += "pageNumber=" + encodeURIComponent("" + pageNumber) + "&";
+        if (descripcionMaterial !== undefined && descripcionMaterial !== null)
+            url_ += "descripcionMaterial=" + encodeURIComponent("" + descripcionMaterial) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetInventarioByBodega(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetInventarioByBodega(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PaginatedListOfInventarioBodegaDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PaginatedListOfInventarioBodegaDto>;
+        }));
+    }
+
+    protected processGetInventarioByBodega(response: HttpResponseBase): Observable<PaginatedListOfInventarioBodegaDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PaginatedListOfInventarioBodegaDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PaginatedListOfInventarioBodegaDto>(null as any);
+    }
+
+    create(command: CreateIngresoMaterialCommand): Observable<number> {
+        let url_ = this.baseUrl + "/api/Inventario";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<number>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<number>;
+        }));
+    }
+
+    protected processCreate(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<number>(null as any);
+    }
+}
+
 export interface IMaterialClient {
     getMateriales(pageSize: number | undefined, pageNumber: number | undefined, tipoMaterialId: number | null | undefined): Observable<PaginatedListOfMaterialDto>;
     create(command: CreateMaterialCommand): Observable<number>;
     getMaterialById(id: number): Observable<MaterialDto>;
     update(id: number, command: UpdateMaterialCommand): Observable<MaterialDto>;
     delete(id: number): Observable<FileResponse>;
+    searchMaterialesByDescripcion(descripcion: string | null | undefined, maxResults: number | undefined): Observable<MaterialDto[]>;
 }
 
 @Injectable({
@@ -717,6 +851,67 @@ export class MaterialClient implements IMaterialClient {
             }));
         }
         return _observableOf<FileResponse>(null as any);
+    }
+
+    searchMaterialesByDescripcion(descripcion: string | null | undefined, maxResults: number | undefined): Observable<MaterialDto[]> {
+        let url_ = this.baseUrl + "/api/Material/searchByDescripcion?";
+        if (descripcion !== undefined && descripcion !== null)
+            url_ += "descripcion=" + encodeURIComponent("" + descripcion) + "&";
+        if (maxResults === null)
+            throw new Error("The parameter 'maxResults' cannot be null.");
+        else if (maxResults !== undefined)
+            url_ += "maxResults=" + encodeURIComponent("" + maxResults) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSearchMaterialesByDescripcion(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSearchMaterialesByDescripcion(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MaterialDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MaterialDto[]>;
+        }));
+    }
+
+    protected processSearchMaterialesByDescripcion(response: HttpResponseBase): Observable<MaterialDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(MaterialDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<MaterialDto[]>(null as any);
     }
 }
 
@@ -3157,8 +3352,8 @@ export interface IUpdateBodegaCommand {
     encargadoId?: string;
 }
 
-export class PaginatedListOfMaterialDto implements IPaginatedListOfMaterialDto {
-    items?: MaterialDto[];
+export class PaginatedListOfInventarioBodegaDto implements IPaginatedListOfInventarioBodegaDto {
+    items?: InventarioBodegaDto[];
     pageNumber?: number;
     pageSize?: number;
     totalPages?: number;
@@ -3166,7 +3361,7 @@ export class PaginatedListOfMaterialDto implements IPaginatedListOfMaterialDto {
     hasPreviousPage?: boolean;
     hasNextPage?: boolean;
 
-    constructor(data?: IPaginatedListOfMaterialDto) {
+    constructor(data?: IPaginatedListOfInventarioBodegaDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -3180,7 +3375,7 @@ export class PaginatedListOfMaterialDto implements IPaginatedListOfMaterialDto {
             if (Array.isArray(_data["items"])) {
                 this.items = [] as any;
                 for (let item of _data["items"])
-                    this.items!.push(MaterialDto.fromJS(item));
+                    this.items!.push(InventarioBodegaDto.fromJS(item));
             }
             this.pageNumber = _data["pageNumber"];
             this.pageSize = _data["pageSize"];
@@ -3191,9 +3386,9 @@ export class PaginatedListOfMaterialDto implements IPaginatedListOfMaterialDto {
         }
     }
 
-    static fromJS(data: any): PaginatedListOfMaterialDto {
+    static fromJS(data: any): PaginatedListOfInventarioBodegaDto {
         data = typeof data === 'object' ? data : {};
-        let result = new PaginatedListOfMaterialDto();
+        let result = new PaginatedListOfInventarioBodegaDto();
         result.init(data);
         return result;
     }
@@ -3215,14 +3410,62 @@ export class PaginatedListOfMaterialDto implements IPaginatedListOfMaterialDto {
     }
 }
 
-export interface IPaginatedListOfMaterialDto {
-    items?: MaterialDto[];
+export interface IPaginatedListOfInventarioBodegaDto {
+    items?: InventarioBodegaDto[];
     pageNumber?: number;
     pageSize?: number;
     totalPages?: number;
     totalCount?: number;
     hasPreviousPage?: boolean;
     hasNextPage?: boolean;
+}
+
+export class InventarioBodegaDto implements IInventarioBodegaDto {
+    bodega?: BodegaDto | undefined;
+    material?: MaterialDto | undefined;
+    cantidadDisponible?: number | undefined;
+    cantidadReservada?: number | undefined;
+
+    constructor(data?: IInventarioBodegaDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.bodega = _data["bodega"] ? BodegaDto.fromJS(_data["bodega"]) : <any>undefined;
+            this.material = _data["material"] ? MaterialDto.fromJS(_data["material"]) : <any>undefined;
+            this.cantidadDisponible = _data["cantidadDisponible"];
+            this.cantidadReservada = _data["cantidadReservada"];
+        }
+    }
+
+    static fromJS(data: any): InventarioBodegaDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new InventarioBodegaDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["bodega"] = this.bodega ? this.bodega.toJSON() : <any>undefined;
+        data["material"] = this.material ? this.material.toJSON() : <any>undefined;
+        data["cantidadDisponible"] = this.cantidadDisponible;
+        data["cantidadReservada"] = this.cantidadReservada;
+        return data;
+    }
+}
+
+export interface IInventarioBodegaDto {
+    bodega?: BodegaDto | undefined;
+    material?: MaterialDto | undefined;
+    cantidadDisponible?: number | undefined;
+    cantidadReservada?: number | undefined;
 }
 
 export class MaterialDto implements IMaterialDto {
@@ -3367,6 +3610,122 @@ export interface IUnidadMedidaDto {
     descripcion?: string | undefined;
     descripcionPlural?: string | undefined;
     descripcionCorta?: string | undefined;
+}
+
+export class CreateIngresoMaterialCommand implements ICreateIngresoMaterialCommand {
+    proveedorMaterialId?: number | undefined;
+    bodegaId?: number | undefined;
+    materialId?: number | undefined;
+    cantidad?: number | undefined;
+
+    constructor(data?: ICreateIngresoMaterialCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.proveedorMaterialId = _data["proveedorMaterialId"];
+            this.bodegaId = _data["bodegaId"];
+            this.materialId = _data["materialId"];
+            this.cantidad = _data["cantidad"];
+        }
+    }
+
+    static fromJS(data: any): CreateIngresoMaterialCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateIngresoMaterialCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["proveedorMaterialId"] = this.proveedorMaterialId;
+        data["bodegaId"] = this.bodegaId;
+        data["materialId"] = this.materialId;
+        data["cantidad"] = this.cantidad;
+        return data;
+    }
+}
+
+export interface ICreateIngresoMaterialCommand {
+    proveedorMaterialId?: number | undefined;
+    bodegaId?: number | undefined;
+    materialId?: number | undefined;
+    cantidad?: number | undefined;
+}
+
+export class PaginatedListOfMaterialDto implements IPaginatedListOfMaterialDto {
+    items?: MaterialDto[];
+    pageNumber?: number;
+    pageSize?: number;
+    totalPages?: number;
+    totalCount?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
+
+    constructor(data?: IPaginatedListOfMaterialDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(MaterialDto.fromJS(item));
+            }
+            this.pageNumber = _data["pageNumber"];
+            this.pageSize = _data["pageSize"];
+            this.totalPages = _data["totalPages"];
+            this.totalCount = _data["totalCount"];
+            this.hasPreviousPage = _data["hasPreviousPage"];
+            this.hasNextPage = _data["hasNextPage"];
+        }
+    }
+
+    static fromJS(data: any): PaginatedListOfMaterialDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PaginatedListOfMaterialDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        data["pageNumber"] = this.pageNumber;
+        data["pageSize"] = this.pageSize;
+        data["totalPages"] = this.totalPages;
+        data["totalCount"] = this.totalCount;
+        data["hasPreviousPage"] = this.hasPreviousPage;
+        data["hasNextPage"] = this.hasNextPage;
+        return data;
+    }
+}
+
+export interface IPaginatedListOfMaterialDto {
+    items?: MaterialDto[];
+    pageNumber?: number;
+    pageSize?: number;
+    totalPages?: number;
+    totalCount?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
 }
 
 export class CreateMaterialCommand implements ICreateMaterialCommand {

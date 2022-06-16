@@ -7,6 +7,7 @@ using seminario.Application.Materiales.Commands.UpdateMaterialCommand;
 using seminario.Application.Materiales.Queries;
 using seminario.Application.Materiales.Queries.GetMaterialById;
 using seminario.Application.Materiales.Queries.GetMateriales;
+using seminario.Application.Materiales.Queries.SearchMaterialByDescripcion;
 
 namespace seminario.WebUI.Controllers;
 [Authorize(Policy = "AdminCatalogo")]
@@ -29,6 +30,16 @@ public class MaterialController : ApiControllerBase
         return await Mediator.Send(new GetMaterialByIdQuery
         {
             MaterialId = id
+        });
+    }
+
+    [HttpGet("searchByDescripcion")]
+    public async Task<ActionResult<List<MaterialDto>>> SearchMaterialesByDescripcion(string descripcion, int maxResults = 5)
+    {
+        return await Mediator.Send(new SearchMaterialByDescripcionQuery
+        {
+            Descripcion = descripcion,
+            MaxResults = maxResults
         });
     }
 

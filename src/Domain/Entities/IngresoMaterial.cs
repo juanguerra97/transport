@@ -1,5 +1,5 @@
-﻿
-namespace seminario.Domain.Entities;
+﻿namespace seminario.Domain.Entities;
+
 public class IngresoMaterial : AuditableEntity
 {
     public int? Id { get; set; }
