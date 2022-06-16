@@ -1155,6 +1155,362 @@ export class PlantasClient implements IPlantasClient {
     }
 }
 
+export interface IProveedoresClient {
+    getProveedores(pageSize: number | undefined, pageNumber: number | undefined, nombre: string | null | undefined, nit: string | null | undefined, telefono: string | null | undefined, email: string | null | undefined): Observable<PaginatedListOfProveedorDto>;
+    create(command: CreateProveedorCommand): Observable<number>;
+    getProveedorById(id: number): Observable<ProveedorDto>;
+    update(id: number, command: UpdateProveedorCommand): Observable<ProveedorDto>;
+    delete(id: number): Observable<FileResponse>;
+    searchProveedoresByName(name: string | null | undefined, maxResults: number | undefined): Observable<ProveedorDto[]>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class ProveedoresClient implements IProveedoresClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    getProveedores(pageSize: number | undefined, pageNumber: number | undefined, nombre: string | null | undefined, nit: string | null | undefined, telefono: string | null | undefined, email: string | null | undefined): Observable<PaginatedListOfProveedorDto> {
+        let url_ = this.baseUrl + "/api/Proveedores?";
+        if (pageSize === null)
+            throw new Error("The parameter 'pageSize' cannot be null.");
+        else if (pageSize !== undefined)
+            url_ += "pageSize=" + encodeURIComponent("" + pageSize) + "&";
+        if (pageNumber === null)
+            throw new Error("The parameter 'pageNumber' cannot be null.");
+        else if (pageNumber !== undefined)
+            url_ += "pageNumber=" + encodeURIComponent("" + pageNumber) + "&";
+        if (nombre !== undefined && nombre !== null)
+            url_ += "nombre=" + encodeURIComponent("" + nombre) + "&";
+        if (nit !== undefined && nit !== null)
+            url_ += "nit=" + encodeURIComponent("" + nit) + "&";
+        if (telefono !== undefined && telefono !== null)
+            url_ += "telefono=" + encodeURIComponent("" + telefono) + "&";
+        if (email !== undefined && email !== null)
+            url_ += "email=" + encodeURIComponent("" + email) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetProveedores(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetProveedores(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PaginatedListOfProveedorDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PaginatedListOfProveedorDto>;
+        }));
+    }
+
+    protected processGetProveedores(response: HttpResponseBase): Observable<PaginatedListOfProveedorDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PaginatedListOfProveedorDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PaginatedListOfProveedorDto>(null as any);
+    }
+
+    create(command: CreateProveedorCommand): Observable<number> {
+        let url_ = this.baseUrl + "/api/Proveedores";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<number>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<number>;
+        }));
+    }
+
+    protected processCreate(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<number>(null as any);
+    }
+
+    getProveedorById(id: number): Observable<ProveedorDto> {
+        let url_ = this.baseUrl + "/api/Proveedores/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetProveedorById(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetProveedorById(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ProveedorDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ProveedorDto>;
+        }));
+    }
+
+    protected processGetProveedorById(response: HttpResponseBase): Observable<ProveedorDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ProveedorDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ProveedorDto>(null as any);
+    }
+
+    update(id: number, command: UpdateProveedorCommand): Observable<ProveedorDto> {
+        let url_ = this.baseUrl + "/api/Proveedores/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ProveedorDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ProveedorDto>;
+        }));
+    }
+
+    protected processUpdate(response: HttpResponseBase): Observable<ProveedorDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ProveedorDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ProveedorDto>(null as any);
+    }
+
+    delete(id: number): Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/Proveedores/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileResponse>;
+        }));
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: responseBlob as any, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileResponse>(null as any);
+    }
+
+    searchProveedoresByName(name: string | null | undefined, maxResults: number | undefined): Observable<ProveedorDto[]> {
+        let url_ = this.baseUrl + "/api/Proveedores/searchByName?";
+        if (name !== undefined && name !== null)
+            url_ += "name=" + encodeURIComponent("" + name) + "&";
+        if (maxResults === null)
+            throw new Error("The parameter 'maxResults' cannot be null.");
+        else if (maxResults !== undefined)
+            url_ += "maxResults=" + encodeURIComponent("" + maxResults) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSearchProveedoresByName(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSearchProveedoresByName(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ProveedorDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ProveedorDto[]>;
+        }));
+    }
+
+    protected processSearchProveedoresByName(response: HttpResponseBase): Observable<ProveedorDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(ProveedorDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ProveedorDto[]>(null as any);
+    }
+}
+
 export interface ITipoMaterialClient {
     getTipoMateriales(): Observable<TipoMaterialDto[]>;
 }
@@ -3331,6 +3687,238 @@ export interface IUpdatePlantaCommand {
     municipioId?: number | undefined;
     direccion?: string | undefined;
     encargadoId?: string;
+}
+
+export class PaginatedListOfProveedorDto implements IPaginatedListOfProveedorDto {
+    items?: ProveedorDto[];
+    pageNumber?: number;
+    pageSize?: number;
+    totalPages?: number;
+    totalCount?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
+
+    constructor(data?: IPaginatedListOfProveedorDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(ProveedorDto.fromJS(item));
+            }
+            this.pageNumber = _data["pageNumber"];
+            this.pageSize = _data["pageSize"];
+            this.totalPages = _data["totalPages"];
+            this.totalCount = _data["totalCount"];
+            this.hasPreviousPage = _data["hasPreviousPage"];
+            this.hasNextPage = _data["hasNextPage"];
+        }
+    }
+
+    static fromJS(data: any): PaginatedListOfProveedorDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PaginatedListOfProveedorDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        data["pageNumber"] = this.pageNumber;
+        data["pageSize"] = this.pageSize;
+        data["totalPages"] = this.totalPages;
+        data["totalCount"] = this.totalCount;
+        data["hasPreviousPage"] = this.hasPreviousPage;
+        data["hasNextPage"] = this.hasNextPage;
+        return data;
+    }
+}
+
+export interface IPaginatedListOfProveedorDto {
+    items?: ProveedorDto[];
+    pageNumber?: number;
+    pageSize?: number;
+    totalPages?: number;
+    totalCount?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
+}
+
+export class ProveedorDto implements IProveedorDto {
+    id?: number | undefined;
+    nombre?: string | undefined;
+    nit?: string | undefined;
+    telefono?: string | undefined;
+    email?: string | undefined;
+    direccion?: string | undefined;
+
+    constructor(data?: IProveedorDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.nombre = _data["nombre"];
+            this.nit = _data["nit"];
+            this.telefono = _data["telefono"];
+            this.email = _data["email"];
+            this.direccion = _data["direccion"];
+        }
+    }
+
+    static fromJS(data: any): ProveedorDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ProveedorDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["nombre"] = this.nombre;
+        data["nit"] = this.nit;
+        data["telefono"] = this.telefono;
+        data["email"] = this.email;
+        data["direccion"] = this.direccion;
+        return data;
+    }
+}
+
+export interface IProveedorDto {
+    id?: number | undefined;
+    nombre?: string | undefined;
+    nit?: string | undefined;
+    telefono?: string | undefined;
+    email?: string | undefined;
+    direccion?: string | undefined;
+}
+
+export class CreateProveedorCommand implements ICreateProveedorCommand {
+    nombre?: string | undefined;
+    nit?: string | undefined;
+    telefono?: string | undefined;
+    email?: string | undefined;
+    direccion?: string | undefined;
+
+    constructor(data?: ICreateProveedorCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.nombre = _data["nombre"];
+            this.nit = _data["nit"];
+            this.telefono = _data["telefono"];
+            this.email = _data["email"];
+            this.direccion = _data["direccion"];
+        }
+    }
+
+    static fromJS(data: any): CreateProveedorCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateProveedorCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["nombre"] = this.nombre;
+        data["nit"] = this.nit;
+        data["telefono"] = this.telefono;
+        data["email"] = this.email;
+        data["direccion"] = this.direccion;
+        return data;
+    }
+}
+
+export interface ICreateProveedorCommand {
+    nombre?: string | undefined;
+    nit?: string | undefined;
+    telefono?: string | undefined;
+    email?: string | undefined;
+    direccion?: string | undefined;
+}
+
+export class UpdateProveedorCommand implements IUpdateProveedorCommand {
+    proveedorId?: number | undefined;
+    nombre?: string | undefined;
+    nit?: string | undefined;
+    telefono?: string | undefined;
+    email?: string | undefined;
+    direccion?: string | undefined;
+
+    constructor(data?: IUpdateProveedorCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.proveedorId = _data["proveedorId"];
+            this.nombre = _data["nombre"];
+            this.nit = _data["nit"];
+            this.telefono = _data["telefono"];
+            this.email = _data["email"];
+            this.direccion = _data["direccion"];
+        }
+    }
+
+    static fromJS(data: any): UpdateProveedorCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateProveedorCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["proveedorId"] = this.proveedorId;
+        data["nombre"] = this.nombre;
+        data["nit"] = this.nit;
+        data["telefono"] = this.telefono;
+        data["email"] = this.email;
+        data["direccion"] = this.direccion;
+        return data;
+    }
+}
+
+export interface IUpdateProveedorCommand {
+    proveedorId?: number | undefined;
+    nombre?: string | undefined;
+    nit?: string | undefined;
+    telefono?: string | undefined;
+    email?: string | undefined;
+    direccion?: string | undefined;
 }
 
 export class PaginatedListOfTodoItemBriefDto implements IPaginatedListOfTodoItemBriefDto {

@@ -33,7 +33,8 @@ export class MenuService {
                   {name: 'Plantas', url: '/admin/catalogo/plantas'},
                   {name: 'Bodegas', url: '/admin/catalogo/bodegas'},
                   {name: 'Materiales', url: '/admin/catalogo/materiales'},
-                  {name: 'Medidas', url: '/admin/catalogo/medidas'}
+                  {name: 'Medidas', url: '/admin/catalogo/medidas'},
+                  {name: 'Proveedores', url: '/admin/catalogo/proveedores'}
                 ]
               });
           }

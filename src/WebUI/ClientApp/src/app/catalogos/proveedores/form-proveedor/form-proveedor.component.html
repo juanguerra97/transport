@@ -1,0 +1,58 @@
+<form [formGroup]="form">
+  <div class="form-group">
+    <label for="nombre">Nombre</label>
+    <textarea formControlName="nombre" pInputTextarea id="nombre" rows="1" class="form-control"></textarea>
+    <ng-container *ngIf="nombre?.invalid && (nombre?.touched || nombre?.dirty)">
+      <span *ngIf="nombre?.hasError('required')" class="text-error">Campo requerido.</span>
+      <span *ngIf="nombre?.hasError('maxlength')" class="text-error">El m&aacute;ximo de caracteres permitido es 256.</span>
+    </ng-container>
+  </div>
+
+  <div class="row mt-1">
+    <div class="col-12 col-md-6">
+      <div class="form-group mt-1">
+        <label for="nit">Nit</label>
+        <input formControlName="nit" pInputText type="text" id="nit" class="form-control">
+        <ng-container *ngIf="nit?.invalid && (nit?.touched || nit?.dirty)">
+          <span *ngIf="nit?.hasError('required')" class="text-error">Campo requerido.</span>
+          <span *ngIf="nit?.hasError('maxlength')" class="text-error">El m&aacute;ximo de caracteres permitido es 32.</span>
+        </ng-container>
+      </div>
+    </div>
+    <div class="col-12 col-md-6">
+      <div class="form-group mt-1">
+        <label for="telefono">Tel&eacute;fono</label>
+        <input formControlName="telefono" pInputText pKeyFilter="pint" type="text" id="telefono" class="form-control">
+        <ng-container *ngIf="telefono?.invalid && (telefono?.touched || telefono?.dirty)">
+          <span *ngIf="telefono?.hasError('required')" class="text-error">Campo requerido.</span>
+          <span *ngIf="telefono?.hasError('minlength')" class="text-error">Debe contener 8 d&iacute;gitos.</span>
+          <span *ngIf="telefono?.hasError('maxlength')" class="text-error">El m&aacute;ximo de d&iacute;gitos permitido es 8.</span>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group mt-1">
+    <label for="email">Email</label>
+    <input formControlName="email" pInputText type="text" id="email" class="form-control">
+    <ng-container *ngIf="email?.invalid && (email?.touched || email?.dirty)">
+      <span *ngIf="email?.hasError('required')" class="text-error">Campo requerido.</span>
+      <span *ngIf="email?.hasError('email')" class="text-error">Correo inv&aacute;lido.</span>
+      <span *ngIf="email?.hasError('maxlength')" class="text-error">El m&aacute;ximo de caracteres permitido es 256.</span>
+    </ng-container>
+  </div>
+
+  <div class="form-group mt-1">
+    <label for="direccion">Direcci&oacute;n</label>
+    <textarea formControlName="direccion" pInputTextarea id="direccion" rows="1" class="form-control"></textarea>
+    <ng-container *ngIf="direccion?.invalid && (direccion?.touched || direccion?.dirty)">
+      <span *ngIf="direccion?.hasError('required')" class="text-error">Campo requerido.</span>
+      <span *ngIf="direccion?.hasError('maxlength')" class="text-error">El m&aacute;ximo de caracteres permitido es 256.</span>
+    </ng-container>
+  </div>
+</form>
+
+<div class="d-flex justify-content-start gap-2 mt-3">
+  <button (click)="guardar()" [disabled]="guardando" pButton type="button" label="Guardar" [icon]="guardando ? 'pi pi-spin pi-spinner' : 'pi pi-save'" class="p-button-raised p-button-sm"></button>
+  <button (click)="cancelar()" [disabled]="guardando" pButton type="button" label="Cancelar" icon="pi pi-times" class="p-button-raised p-button-danger p-button-sm"></button>
+</div>
