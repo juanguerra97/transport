@@ -15,6 +15,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
         _exceptionHandlers = new Dictionary<Type, Action<ExceptionContext>>
             {
                 { typeof(ValidationException), HandleValidationException },
+                { typeof(CustomValidationException), HandleCustomValidationException },
                 { typeof(NotFoundException), HandleNotFoundException },
                 { typeof(UnauthorizedAccessException), HandleUnauthorizedAccessException },
                 { typeof(ForbiddenAccessException), HandleForbiddenAccessException },
@@ -54,6 +55,17 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
         };
 
         context.Result = new BadRequestObjectResult(details);
+
+        context.ExceptionHandled = true;
+    }
+
+    private void HandleCustomValidationException(ExceptionContext context)
+    {
+        var exception = (CustomValidationException)context.Exception;
+
+        context.Result = new BadRequestObjectResult(new { 
+            Detalle = exception.Message
+        });
 
         context.ExceptionHandled = true;
     }

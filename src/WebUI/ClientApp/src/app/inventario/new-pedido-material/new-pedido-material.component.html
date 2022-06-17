@@ -1,0 +1,52 @@
+<form [formGroup]="form">
+
+  <div class="form-group">
+    <label for="material">Material</label>
+    <div class="flex-grow-1">
+      <p-autoComplete formControlName="material" [suggestions]="suggestionsMaterial"
+                      (completeMethod)="searchMaterial($event)"
+                      [field]="getMaterial"
+                      styleClass="w-100" inputStyleClass="w-100" inputId="material" appendTo="body">
+        <ng-template let-material pTemplate="item">
+          <div style="font-size: 0.8rem;">
+            <p class="m-0 p-0">#{{material.id}}&nbsp;{{ material.descripcion }}</p>
+          </div>
+        </ng-template>
+      </p-autoComplete>
+      <ng-container *ngIf="material?.invalid && (material?.touched || material?.dirty)">
+        <small *ngIf="material?.hasError('required')" class="text-error">Campo requerido.</small>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="form-group">
+        <label for="cantidad">Cantidad</label>
+        <input formControlName="cantidad" pInputText pKeyFilter="pint" type="text" id="cantidad" class="form-control">
+        <ng-container *ngIf="cantidad?.invalid && (cantidad?.touched || cantidad?.dirty)">
+          <small *ngIf="cantidad?.hasError('required')" class="text-error">Campo requerido.</small>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="form-group">
+        <label for="detalle">Detalle</label>
+        <textarea formControlName="detalle" pInputTextarea id="detalle" rows="2" class="form-control"></textarea>
+        <ng-container *ngIf="detalle?.invalid && (detalle?.touched || detalle?.dirty)">
+          <small *ngIf="detalle?.hasError('required')" class="text-error">Campo requerido.</small>
+          <small *ngIf="detalle?.hasError('maxlength')" class="text-error">El m&aacute;ximo de caracteres permitido es 1024.</small>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+</form>
+
+<div class="d-flex justify-content-start gap-2 mt-3">
+  <button (click)="guardar()" [disabled]="guardando" pButton type="button" label="Guardar" [icon]="guardando ? 'pi pi-spin pi-spinner' : 'pi pi-save'" class="p-button-raised p-button-sm"></button>
+  <button (click)="cancelar()" [disabled]="guardando" pButton type="button" label="Cancelar" icon="pi pi-times" class="p-button-raised p-button-danger p-button-sm"></button>
+</div>

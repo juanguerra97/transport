@@ -1065,6 +1065,364 @@ export class PaisesClient implements IPaisesClient {
     }
 }
 
+export interface IPedidosClient {
+    getPedidos(pageSize: number | undefined, pageNumber: number | undefined, bodegaId: number | null | undefined, descripcionMaterial: string | null | undefined, fechaDel: string | null | undefined, fechaAl: string | null | undefined): Observable<PaginatedListOfPedidoMaterialDto>;
+    create(command: CreatePedidoMaterialCommand): Observable<number>;
+    getPedidosByBodega(bodegaId: number, pageSize: number | undefined, pageNumber: number | undefined, descripcionMaterial: string | null | undefined, fechaDel: string | null | undefined, fechaAl: string | null | undefined): Observable<PaginatedListOfPedidoMaterialDto>;
+    update(id: number, command: UpdatePedidoMaterialCommand): Observable<PedidoMaterialDto>;
+    enviarPedido(pedidoMaterialId: number): Observable<FileResponse>;
+    anularPedido(pedidoMaterialId: number): Observable<FileResponse>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class PedidosClient implements IPedidosClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    getPedidos(pageSize: number | undefined, pageNumber: number | undefined, bodegaId: number | null | undefined, descripcionMaterial: string | null | undefined, fechaDel: string | null | undefined, fechaAl: string | null | undefined): Observable<PaginatedListOfPedidoMaterialDto> {
+        let url_ = this.baseUrl + "/api/Pedidos?";
+        if (pageSize === null)
+            throw new Error("The parameter 'pageSize' cannot be null.");
+        else if (pageSize !== undefined)
+            url_ += "pageSize=" + encodeURIComponent("" + pageSize) + "&";
+        if (pageNumber === null)
+            throw new Error("The parameter 'pageNumber' cannot be null.");
+        else if (pageNumber !== undefined)
+            url_ += "pageNumber=" + encodeURIComponent("" + pageNumber) + "&";
+        if (bodegaId !== undefined && bodegaId !== null)
+            url_ += "bodegaId=" + encodeURIComponent("" + bodegaId) + "&";
+        if (descripcionMaterial !== undefined && descripcionMaterial !== null)
+            url_ += "descripcionMaterial=" + encodeURIComponent("" + descripcionMaterial) + "&";
+        if (fechaDel !== undefined && fechaDel !== null)
+            url_ += "fechaDel=" + encodeURIComponent("" + fechaDel) + "&";
+        if (fechaAl !== undefined && fechaAl !== null)
+            url_ += "fechaAl=" + encodeURIComponent("" + fechaAl) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPedidos(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPedidos(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PaginatedListOfPedidoMaterialDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PaginatedListOfPedidoMaterialDto>;
+        }));
+    }
+
+    protected processGetPedidos(response: HttpResponseBase): Observable<PaginatedListOfPedidoMaterialDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PaginatedListOfPedidoMaterialDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PaginatedListOfPedidoMaterialDto>(null as any);
+    }
+
+    create(command: CreatePedidoMaterialCommand): Observable<number> {
+        let url_ = this.baseUrl + "/api/Pedidos";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<number>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<number>;
+        }));
+    }
+
+    protected processCreate(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<number>(null as any);
+    }
+
+    getPedidosByBodega(bodegaId: number, pageSize: number | undefined, pageNumber: number | undefined, descripcionMaterial: string | null | undefined, fechaDel: string | null | undefined, fechaAl: string | null | undefined): Observable<PaginatedListOfPedidoMaterialDto> {
+        let url_ = this.baseUrl + "/api/Pedidos/bodega/{bodegaId}?";
+        if (bodegaId === undefined || bodegaId === null)
+            throw new Error("The parameter 'bodegaId' must be defined.");
+        url_ = url_.replace("{bodegaId}", encodeURIComponent("" + bodegaId));
+        if (pageSize === null)
+            throw new Error("The parameter 'pageSize' cannot be null.");
+        else if (pageSize !== undefined)
+            url_ += "pageSize=" + encodeURIComponent("" + pageSize) + "&";
+        if (pageNumber === null)
+            throw new Error("The parameter 'pageNumber' cannot be null.");
+        else if (pageNumber !== undefined)
+            url_ += "pageNumber=" + encodeURIComponent("" + pageNumber) + "&";
+        if (descripcionMaterial !== undefined && descripcionMaterial !== null)
+            url_ += "descripcionMaterial=" + encodeURIComponent("" + descripcionMaterial) + "&";
+        if (fechaDel !== undefined && fechaDel !== null)
+            url_ += "fechaDel=" + encodeURIComponent("" + fechaDel) + "&";
+        if (fechaAl !== undefined && fechaAl !== null)
+            url_ += "fechaAl=" + encodeURIComponent("" + fechaAl) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPedidosByBodega(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPedidosByBodega(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PaginatedListOfPedidoMaterialDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PaginatedListOfPedidoMaterialDto>;
+        }));
+    }
+
+    protected processGetPedidosByBodega(response: HttpResponseBase): Observable<PaginatedListOfPedidoMaterialDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PaginatedListOfPedidoMaterialDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PaginatedListOfPedidoMaterialDto>(null as any);
+    }
+
+    update(id: number, command: UpdatePedidoMaterialCommand): Observable<PedidoMaterialDto> {
+        let url_ = this.baseUrl + "/api/Pedidos/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PedidoMaterialDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PedidoMaterialDto>;
+        }));
+    }
+
+    protected processUpdate(response: HttpResponseBase): Observable<PedidoMaterialDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PedidoMaterialDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PedidoMaterialDto>(null as any);
+    }
+
+    enviarPedido(pedidoMaterialId: number): Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/Pedidos/enviar/{pedidoMaterialId}";
+        if (pedidoMaterialId === undefined || pedidoMaterialId === null)
+            throw new Error("The parameter 'pedidoMaterialId' must be defined.");
+        url_ = url_.replace("{pedidoMaterialId}", encodeURIComponent("" + pedidoMaterialId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processEnviarPedido(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processEnviarPedido(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileResponse>;
+        }));
+    }
+
+    protected processEnviarPedido(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: responseBlob as any, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileResponse>(null as any);
+    }
+
+    anularPedido(pedidoMaterialId: number): Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/Pedidos/anular/{pedidoMaterialId}";
+        if (pedidoMaterialId === undefined || pedidoMaterialId === null)
+            throw new Error("The parameter 'pedidoMaterialId' must be defined.");
+        url_ = url_.replace("{pedidoMaterialId}", encodeURIComponent("" + pedidoMaterialId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAnularPedido(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAnularPedido(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileResponse>;
+        }));
+    }
+
+    protected processAnularPedido(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: responseBlob as any, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileResponse>(null as any);
+    }
+}
+
 export interface IPlantasClient {
     getPlantas(): Observable<PlantaDto[]>;
     create(command: CreatePlantaCommand): Observable<number>;
@@ -3834,6 +4192,274 @@ export interface IUpdateMaterialCommand {
     detalle?: string | undefined;
     unidadMedidaId?: number | undefined;
     peso?: number | undefined;
+}
+
+export class PaginatedListOfPedidoMaterialDto implements IPaginatedListOfPedidoMaterialDto {
+    items?: PedidoMaterialDto[];
+    pageNumber?: number;
+    pageSize?: number;
+    totalPages?: number;
+    totalCount?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
+
+    constructor(data?: IPaginatedListOfPedidoMaterialDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(PedidoMaterialDto.fromJS(item));
+            }
+            this.pageNumber = _data["pageNumber"];
+            this.pageSize = _data["pageSize"];
+            this.totalPages = _data["totalPages"];
+            this.totalCount = _data["totalCount"];
+            this.hasPreviousPage = _data["hasPreviousPage"];
+            this.hasNextPage = _data["hasNextPage"];
+        }
+    }
+
+    static fromJS(data: any): PaginatedListOfPedidoMaterialDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PaginatedListOfPedidoMaterialDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        data["pageNumber"] = this.pageNumber;
+        data["pageSize"] = this.pageSize;
+        data["totalPages"] = this.totalPages;
+        data["totalCount"] = this.totalCount;
+        data["hasPreviousPage"] = this.hasPreviousPage;
+        data["hasNextPage"] = this.hasNextPage;
+        return data;
+    }
+}
+
+export interface IPaginatedListOfPedidoMaterialDto {
+    items?: PedidoMaterialDto[];
+    pageNumber?: number;
+    pageSize?: number;
+    totalPages?: number;
+    totalCount?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
+}
+
+export class PedidoMaterialDto implements IPedidoMaterialDto {
+    id?: number | undefined;
+    estadoPedidoMaterial?: EstadoPedidoMaterialDto | undefined;
+    bodegaSolicita?: BodegaDto | undefined;
+    detalle?: string | undefined;
+    material?: MaterialDto | undefined;
+    cantidad?: number | undefined;
+    fechaSolicitado?: Date | undefined;
+    fechaAprobado?: Date | undefined;
+    fechaCompletado?: Date | undefined;
+
+    constructor(data?: IPedidoMaterialDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.estadoPedidoMaterial = _data["estadoPedidoMaterial"] ? EstadoPedidoMaterialDto.fromJS(_data["estadoPedidoMaterial"]) : <any>undefined;
+            this.bodegaSolicita = _data["bodegaSolicita"] ? BodegaDto.fromJS(_data["bodegaSolicita"]) : <any>undefined;
+            this.detalle = _data["detalle"];
+            this.material = _data["material"] ? MaterialDto.fromJS(_data["material"]) : <any>undefined;
+            this.cantidad = _data["cantidad"];
+            this.fechaSolicitado = _data["fechaSolicitado"] ? new Date(_data["fechaSolicitado"].toString()) : <any>undefined;
+            this.fechaAprobado = _data["fechaAprobado"] ? new Date(_data["fechaAprobado"].toString()) : <any>undefined;
+            this.fechaCompletado = _data["fechaCompletado"] ? new Date(_data["fechaCompletado"].toString()) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): PedidoMaterialDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PedidoMaterialDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["estadoPedidoMaterial"] = this.estadoPedidoMaterial ? this.estadoPedidoMaterial.toJSON() : <any>undefined;
+        data["bodegaSolicita"] = this.bodegaSolicita ? this.bodegaSolicita.toJSON() : <any>undefined;
+        data["detalle"] = this.detalle;
+        data["material"] = this.material ? this.material.toJSON() : <any>undefined;
+        data["cantidad"] = this.cantidad;
+        data["fechaSolicitado"] = this.fechaSolicitado ? this.fechaSolicitado.toISOString() : <any>undefined;
+        data["fechaAprobado"] = this.fechaAprobado ? this.fechaAprobado.toISOString() : <any>undefined;
+        data["fechaCompletado"] = this.fechaCompletado ? this.fechaCompletado.toISOString() : <any>undefined;
+        return data;
+    }
+}
+
+export interface IPedidoMaterialDto {
+    id?: number | undefined;
+    estadoPedidoMaterial?: EstadoPedidoMaterialDto | undefined;
+    bodegaSolicita?: BodegaDto | undefined;
+    detalle?: string | undefined;
+    material?: MaterialDto | undefined;
+    cantidad?: number | undefined;
+    fechaSolicitado?: Date | undefined;
+    fechaAprobado?: Date | undefined;
+    fechaCompletado?: Date | undefined;
+}
+
+export class EstadoPedidoMaterialDto implements IEstadoPedidoMaterialDto {
+    id?: number | undefined;
+    descripcion?: string | undefined;
+
+    constructor(data?: IEstadoPedidoMaterialDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.descripcion = _data["descripcion"];
+        }
+    }
+
+    static fromJS(data: any): EstadoPedidoMaterialDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new EstadoPedidoMaterialDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["descripcion"] = this.descripcion;
+        return data;
+    }
+}
+
+export interface IEstadoPedidoMaterialDto {
+    id?: number | undefined;
+    descripcion?: string | undefined;
+}
+
+export class CreatePedidoMaterialCommand implements ICreatePedidoMaterialCommand {
+    bodegaSolicitaId?: number | undefined;
+    detalle?: string | undefined;
+    materialId?: number | undefined;
+    cantidad?: number | undefined;
+
+    constructor(data?: ICreatePedidoMaterialCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.bodegaSolicitaId = _data["bodegaSolicitaId"];
+            this.detalle = _data["detalle"];
+            this.materialId = _data["materialId"];
+            this.cantidad = _data["cantidad"];
+        }
+    }
+
+    static fromJS(data: any): CreatePedidoMaterialCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreatePedidoMaterialCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["bodegaSolicitaId"] = this.bodegaSolicitaId;
+        data["detalle"] = this.detalle;
+        data["materialId"] = this.materialId;
+        data["cantidad"] = this.cantidad;
+        return data;
+    }
+}
+
+export interface ICreatePedidoMaterialCommand {
+    bodegaSolicitaId?: number | undefined;
+    detalle?: string | undefined;
+    materialId?: number | undefined;
+    cantidad?: number | undefined;
+}
+
+export class UpdatePedidoMaterialCommand implements IUpdatePedidoMaterialCommand {
+    pedidoMaterialId?: number | undefined;
+    detalle?: string | undefined;
+    cantidad?: number | undefined;
+
+    constructor(data?: IUpdatePedidoMaterialCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.pedidoMaterialId = _data["pedidoMaterialId"];
+            this.detalle = _data["detalle"];
+            this.cantidad = _data["cantidad"];
+        }
+    }
+
+    static fromJS(data: any): UpdatePedidoMaterialCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdatePedidoMaterialCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["pedidoMaterialId"] = this.pedidoMaterialId;
+        data["detalle"] = this.detalle;
+        data["cantidad"] = this.cantidad;
+        return data;
+    }
+}
+
+export interface IUpdatePedidoMaterialCommand {
+    pedidoMaterialId?: number | undefined;
+    detalle?: string | undefined;
+    cantidad?: number | undefined;
 }
 
 export class PlantaDto implements IPlantaDto {

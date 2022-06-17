@@ -1,0 +1,55 @@
+<div class="d-flex align-items-center justify-content-start mb-1">
+  <button (click)="openModalNuevoPedido()" pButton type="text" label="Nuevo Pedido" icon="pi pi-plus" class="p-button-raised p-button-sm"></button>
+</div>
+
+<p-table [value]="pedidos?.items" [loading]="loadingPedidos" [paginator]="false" [rows]="pedidos?.pageSize" responsiveLayout="scroll">
+  <ng-template pTemplate="header">
+    <tr class="tp-font-small">
+      <th>Fecha</th>
+      <th>Material</th>
+      <th>Detalle</th>
+      <th>Cantidad</th>
+      <th class="text-center">Estado</th>
+      <th></th>
+    </tr>
+    <!--<tr>
+      <th></th>
+      <th>
+        <input pInputText type="text" class="form-control">
+      </th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>-->
+  </ng-template>
+  <ng-template pTemplate="body" let-pedido>
+    <tr>
+      <td>{{pedido.fechaSolicitado|date:'dd/MM/yyyy'}}</td>
+      <td>{{pedido.material?.descripcion}}</td>
+      <td>{{pedido.detalle}}</td>
+      <td>{{pedido.cantidad}}&nbsp;{{ pedido.cantidad == 1 ? pedido.material?.unidadMedida?.descripcion : pedido.material?.unidadMedida?.descripcionPlural }}</td>
+      <td>
+        <div class="d-flex justify-content-center align-items-center">
+          <span class="p-badge ESTADO-PEDIDO-{{pedido.estadoPedidoMaterial?.descripcion}}">{{pedido.estadoPedidoMaterial?.descripcion}}</span>
+        </div>
+      </td>
+      <td>
+        <div class="d-flex justify-content-center align-items-center">
+          <button *ngIf="puedeEnviar(pedido)" (click)="confirmarEnviar(pedido)" pButton type="button" icon="fa-solid fa-paper-plane" class="p-button-rounded p-button-success p-button-text" pTooltip="Enviar" tooltipPosition="bottom"></button>
+          <button *ngIf="puedeEditar(pedido)" (click)="openModalEditarPedido(pedido)" pButton type="button" icon="fa-solid fa-pen-to-square" class="p-button-rounded p-button-warning p-button-text" pTooltip="Modificar" tooltipPosition="bottom"></button>
+          <button *ngIf="puedeAnular(pedido)" (click)="confirmarAnular(pedido)" pButton type="button" icon="fa-solid fa-xmark" class="p-button-rounded p-button-danger p-button-text" pTooltip="Anular" tooltipPosition="bottom"></button>
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="6" class="tp-font-small">
+        No se encontraron pedidos de esta bodega.
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+<p-paginator (onPageChange)="paginar($event)" [rows]="pedidos?.pageSize" [first]="(pedidos?.pageNumber - 1) * pedidos?.pageSize" [totalRecords]="pedidos?.totalCount" [rowsPerPageOptions]="[10, 15, 25]"></p-paginator>
+<p-confirmDialog header="Confirmaci&oacute;n" icon="pi pi-exclamation-triangle"></p-confirmDialog>
