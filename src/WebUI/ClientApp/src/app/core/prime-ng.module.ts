@@ -14,6 +14,8 @@ import {AutoCompleteModule} from 'primeng/autocomplete';
 import {CardModule} from 'primeng/card';
 import {TabViewModule} from 'primeng/tabview';
 import {TooltipModule} from 'primeng/tooltip';
+import {InputTextModule} from "primeng/inputtext";
+import {CalendarModule} from "primeng/calendar";
 
 @NgModule({
   declarations: [],
@@ -22,6 +24,7 @@ import {TooltipModule} from 'primeng/tooltip';
     TableModule,
     DropdownModule,
     ButtonModule,
+    InputTextModule,
     InputTextareaModule,
     ConfirmDialogModule,
     ProgressSpinnerModule,
@@ -33,6 +36,7 @@ import {TooltipModule} from 'primeng/tooltip';
     CardModule,
     TabViewModule,
     TooltipModule,
+    CalendarModule,
   ],
   providers: [
     ConfirmationService,
