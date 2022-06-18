@@ -8,6 +8,7 @@ using seminario.Domain.Enums;
 namespace seminario.Application.Bodegas.Queries.GetBodegas;
 public record GetBodegasQuery : IRequest<List<BodegaDto>>
 {
+    public bool IncludePlantas { get; set; } = false;
 }
 
 public class GetBodegasQueryHandler : IRequestHandler<GetBodegasQuery, List<BodegaDto>>
@@ -24,7 +25,7 @@ public class GetBodegasQueryHandler : IRequestHandler<GetBodegasQuery, List<Bode
     public async Task<List<BodegaDto>> Handle(GetBodegasQuery request, CancellationToken cancellationToken)
     {
         return await _context.Bodegas
-            .Where(p => p.Status == "A" && p.TipoBodega == TipoBodega.BODEGA)
+            .Where(p => p.Status == "A" && (request.IncludePlantas == true || p.TipoBodega == TipoBodega.BODEGA))
             .OrderBy(p => p.Descripcion).ThenBy(p => p.Id)
             .ProjectTo<BodegaDto>(_mapper.ConfigurationProvider)
             .ToListAsync(cancellationToken);
