@@ -71,6 +71,12 @@ public class ApplicationDbContextInitialiser
             await _roleManager.CreateAsync(adminBodegaRole);
         }
 
+        var adminPedidosRole = new IdentityRole("AdminPedidos");
+        if (_roleManager.Roles.All(r => r.Name != adminPedidosRole.Name))
+        {
+            await _roleManager.CreateAsync(adminPedidosRole);
+        }
+
         // Default users
         var administrator = new ApplicationUser { UserName = "administrator@localhost", Email = "administrator@localhost", FirstName = "Admin", LastName = "Umg" };
 
@@ -78,6 +84,7 @@ public class ApplicationDbContextInitialiser
         {
             await _userManager.CreateAsync(administrator, "Administrator1!");
             await _userManager.AddToRolesAsync(administrator, new[] { administratorRole.Name });
+            await _userManager.AddToRolesAsync(administrator, new[] { adminPedidosRole.Name });
         }
 
         // Default data

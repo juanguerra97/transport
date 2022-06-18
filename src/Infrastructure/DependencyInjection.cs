@@ -63,6 +63,10 @@ public static class DependencyInjection
             {
                 return context.User.HasClaim(c => (c.Type == ClaimTypes.Role || c.Type == JwtClaimTypes.Role) && c.Value == "AdminBodega");
             }));
+            options.AddPolicy("AdminPedidos", policy => policy.RequireAssertion(context =>
+            {
+                return context.User.HasClaim(c => (c.Type == ClaimTypes.Role || c.Type == JwtClaimTypes.Role) && c.Value == "AdminPedidos");
+            }));
             options.AddPolicy("CanPurge", policy => policy.RequireRole("Administrator"));
         });
 
