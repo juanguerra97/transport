@@ -1,9 +1,9 @@
-﻿
-using System.Globalization;
+﻿using System.Globalization;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using seminario.Application.Common.Constants;
 using seminario.Application.Common.Interfaces;
 using seminario.Application.Common.Models;
 
@@ -16,6 +16,8 @@ public record GetPedidoMaterialesQuery : IRequest<PaginatedList<PedidoMaterialDt
     public string? FechaAl { get; set; }
     public int PageNumber { get; set; } = 1;
     public int PageSize { get; set; } = 10;
+    public bool MostrarCreados { get; set; } = true;
+    public bool MostrarAnulados { get; set; } = true;
 }
 
 public class GetPedidoMaterialesQueryHandler : IRequestHandler<GetPedidoMaterialesQuery, PaginatedList<PedidoMaterialDto>>
@@ -41,7 +43,9 @@ public class GetPedidoMaterialesQueryHandler : IRequestHandler<GetPedidoMaterial
             .Where(pm => pm.Status == "A" && (request.BodegaSolicitaId == null || pm.BodegaSolicitaId == request.BodegaSolicitaId)
                 && (request.DescripcionMaterial == null || EF.Functions.Like(pm.Material.Descripcion.ToUpper(), descripcionLike))
                 && (fechaDel == null || pm.FechaSolicitado.Value.Date >= fechaDel.Value.Date)
-                && (fechaAl == null || pm.FechaSolicitado.Value.Date >= fechaAl.Value.Date))
+                && (fechaAl == null || pm.FechaSolicitado.Value.Date <= fechaAl.Value.Date)
+                && (request.MostrarCreados == true || pm.EstadoPedidoMaterialId != EstadosPedidoMaterialConstants.CREADO.Id)
+                && (request.MostrarAnulados == true || pm.EstadoPedidoMaterialId != EstadosPedidoMaterialConstants.ANULADO.Id))
             .OrderByDescending(pm => pm.Id)
             .ProjectTo<PedidoMaterialDto>(_mapper.ConfigurationProvider)
             , request.PageNumber, request.PageSize);
