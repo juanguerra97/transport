@@ -6,7 +6,7 @@ public class VehiculoConductor : AuditableEntity
 
     public Vehiculo? Vehiculo { get; set; }
 
-    public string? ConductorId { get; set; }
+    public int? ConductorId { get; set; }
 
     public Conductor? Conductor { get; set; }
 

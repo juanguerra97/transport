@@ -24,7 +24,7 @@ public class DetalleTransporteCarga : AuditableEntity
     public int? VehiculoId { get; set; }
     public Vehiculo? Vehiculo { get; set; }
 
-    public string? ConductorId { get; set; }
+    public int? ConductorId { get; set; }
     public Conductor? Conductor { get; set; }
 
 }

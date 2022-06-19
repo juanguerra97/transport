@@ -11,7 +11,7 @@ using seminario.Infrastructure.Persistence;
 namespace seminario.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220615033333_InitialMigration")]
+    [Migration("20220619223828_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -689,8 +689,9 @@ namespace seminario.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("seminario.Domain.Entities.Conductor", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("varchar(255)");
+                    b.Property<int?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("Created")
                         .HasColumnType("datetime(6)");
@@ -712,9 +713,15 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     b.Property<string>("Status")
                         .HasColumnType("longtext");
 
-                    b.HasKey("UserId");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("NoLicencia");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Conductores");
                 });
@@ -763,9 +770,9 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("ConductorId")
+                    b.Property<int?>("ConductorId")
                         .IsRequired()
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("Created")
                         .HasColumnType("datetime(6)");
@@ -1153,9 +1160,9 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("double");
 
-                    b.Property<string>("ConductorId")
+                    b.Property<int?>("ConductorId")
                         .IsRequired()
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("Created")
                         .HasColumnType("datetime(6)");
@@ -1952,8 +1959,8 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     b.Property<int?>("VehiculoId")
                         .HasColumnType("int");
 
-                    b.Property<string>("ConductorId")
-                        .HasColumnType("varchar(255)");
+                    b.Property<int?>("ConductorId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("Created")
                         .HasColumnType("datetime(6)");
@@ -2175,8 +2182,8 @@ namespace seminario.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("seminario.Domain.Entities.Conductor", b =>
                 {
                     b.HasOne("seminario.Domain.Entities.ApplicationUser", "User")
-                        .WithOne()
-                        .HasForeignKey("seminario.Domain.Entities.Conductor", "UserId")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 

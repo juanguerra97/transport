@@ -624,6 +624,8 @@ namespace seminario.Infrastructure.Persistence.Migrations
                 name: "Conductores",
                 columns: table => new
                 {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     UserId = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     NoLicencia = table.Column<string>(type: "varchar(64)", maxLength: 64, nullable: false)
@@ -639,7 +641,7 @@ namespace seminario.Infrastructure.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Conductores", x => x.UserId);
+                    table.PrimaryKey("PK_Conductores", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Conductores_AspNetUsers_UserId",
                         column: x => x.UserId,
@@ -792,8 +794,7 @@ namespace seminario.Infrastructure.Persistence.Migrations
                 columns: table => new
                 {
                     VehiculoId = table.Column<int>(type: "int", nullable: false),
-                    ConductorId = table.Column<string>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ConductorId = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Created = table.Column<DateTime>(type: "datetime(6)", nullable: true),
@@ -810,7 +811,7 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         name: "FK_VehiculoConductores_Conductores_ConductorId",
                         column: x => x.ConductorId,
                         principalTable: "Conductores",
-                        principalColumn: "UserId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_VehiculoConductores_Vehiculos_VehiculoId",
@@ -1333,8 +1334,7 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     FechaIniciado = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     FechaTerminado = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     VehiculoId = table.Column<int>(type: "int", nullable: false),
-                    ConductorId = table.Column<string>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ConductorId = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Created = table.Column<DateTime>(type: "datetime(6)", nullable: true),
@@ -1351,7 +1351,7 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         name: "FK_DetalleTransporteCargas_Conductores_ConductorId",
                         column: x => x.ConductorId,
                         principalTable: "Conductores",
-                        principalColumn: "UserId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_DetalleTransporteCargas_EstadosTransporteCarga_EstadoTranspo~",
@@ -1433,8 +1433,7 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     Detalle = table.Column<string>(type: "varchar(1024)", maxLength: 1024, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     VehiculoId = table.Column<int>(type: "int", nullable: false),
-                    ConductorId = table.Column<string>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ConductorId = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Created = table.Column<DateTime>(type: "datetime(6)", nullable: true),
@@ -1463,7 +1462,7 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         name: "FK_MovimientoBodegas_Conductores_ConductorId",
                         column: x => x.ConductorId,
                         principalTable: "Conductores",
-                        principalColumn: "UserId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_MovimientoBodegas_EstadosMovimientoBodega_EstadoMovimientoBo~",
@@ -1699,6 +1698,11 @@ namespace seminario.Infrastructure.Persistence.Migrations
                 name: "IX_Conductores_NoLicencia",
                 table: "Conductores",
                 column: "NoLicencia");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Conductores_UserId",
+                table: "Conductores",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Departamentos_Descripcion",

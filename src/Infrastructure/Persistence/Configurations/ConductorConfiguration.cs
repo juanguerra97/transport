@@ -7,7 +7,12 @@ public class ConductorConfiguration : IEntityTypeConfiguration<Conductor>
 {
     public void Configure(EntityTypeBuilder<Conductor> builder)
     {
-        builder.HasKey(e => e.UserId);
+        builder.HasKey(e => e.Id);
+
+        builder.Property(e => e.Id)
+            .ValueGeneratedOnAdd();
+
+        builder.HasIndex(e => e.UserId);
 
         builder.HasIndex(e => e.NoLicencia);
 
@@ -16,8 +21,8 @@ public class ConductorConfiguration : IEntityTypeConfiguration<Conductor>
             .IsRequired();
 
         builder.HasOne(e => e.User)
-            .WithOne()
-            .HasForeignKey<Conductor>(e => e.UserId)
+            .WithMany()
+            .HasForeignKey(e => e.UserId)
             .IsRequired()
             .OnDelete(DeleteBehavior.Restrict);
     }
