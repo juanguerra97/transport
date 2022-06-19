@@ -1,0 +1,62 @@
+<div class="d-flex gap-2 align-items-center mb-1">
+  <p class="m-0 p-0">VEHICULOS</p>
+  <div class="d-flex flex-fill align-items-center justify-content-end">
+    <button (click)="openModalNuevo()" pButton type="button" label="Nuevo" icon="pi pi-plus" class="p-button-raised p-button-sm"></button>
+  </div>
+</div>
+
+<p-table [value]="vehiculos?.items" [loading]="loadingVehiculos" [paginator]="false" [rows]="vehiculos?.pageSize" responsiveLayout="scroll">
+  <ng-template pTemplate="header">
+    <tr class="tp-font-small">
+      <th>Codigo</th>
+      <th>Descripcion</th>
+      <th>Detalle</th>
+      <th>Placa</th>
+      <th class="text-center">Capacidad</th>
+      <th class="text-center">Estado</th>
+      <th class="text-center">Acci&oacute;n</th>
+    </tr>
+    <tr>
+      <th></th>
+      <th>
+        <input [(ngModel)]="descripcion" (keyup.enter)="filtrar()" pInputText type="text" class="form-control">
+      </th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-vehiculo>
+    <tr>
+      <td>{{vehiculo.codigo}}</td>
+      <td>{{vehiculo.descripcion}}</td>
+      <td>{{vehiculo.detalle}}</td>
+      <td>{{vehiculo.placa}}</td>
+      <td class="text-center">{{vehiculo.capacidadCarga}}&nbsp;Kg</td>
+      <td>
+        <div class="d-flex justify-content-center align-items-center">
+          <span class="p-badge ESTADO-VEHICULO-{{ESTADOS_LABEL[vehiculo.status]}}">{{ESTADOS_LABEL[vehiculo.status]}}</span>
+        </div>
+      </td>
+      <td>
+        <div class="d-flex gap-2 align-items-center justify-content-center">
+          <button (click)="openModalEditar(vehiculo)" pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-warning p-button-text"></button>
+          <button *ngIf="isEstadoAlta(vehiculo)" (click)="confirmarBaja(vehiculo)" pButton pRipple type="button" icon="pi pi-arrow-down" class="p-button-rounded p-button-warning p-button-text"></button>
+          <button *ngIf="isEstadoBaja(vehiculo)" (click)="confirmarAlta(vehiculo)" pButton pRipple type="button" icon="pi pi-arrow-up" class="p-button-rounded p-button-success p-button-text"></button>
+          <button (click)="confirmarEliminar(vehiculo)" pButton pRipple type="button" icon="pi pi-times" class="p-button-rounded p-button-danger p-button-text"></button>
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="7" class="tp-font-small">
+        No se encontraron vehiculos.
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+<p-paginator (onPageChange)="paginar($event)" [rows]="vehiculos?.pageSize" [first]="(vehiculos?.pageNumber - 1) * vehiculos?.pageSize" [totalRecords]="vehiculos?.totalCount" [rowsPerPageOptions]="[10, 15, 25]"></p-paginator>
+<p-confirmDialog header="Confirmaci&oacute;n" icon="pi pi-exclamation-triangle"></p-confirmDialog>

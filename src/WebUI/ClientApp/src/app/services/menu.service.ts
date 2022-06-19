@@ -34,20 +34,30 @@ export class MenuService {
                   {name: 'Bodegas', url: '/admin/catalogo/bodegas'},
                   {name: 'Materiales', url: '/admin/catalogo/materiales'},
                   {name: 'Medidas', url: '/admin/catalogo/medidas'},
-                  {name: 'Proveedores', url: '/admin/catalogo/proveedores'}
+                  {name: 'Proveedores', url: '/admin/catalogo/proveedores'},
+                  {name: 'Vehiculos', url: '/admin/catalogo/vehiculos'}
                 ]
               });
           }
-          if (user.role?.includes(Roles.ADMIN_BODEGA)) {
+          if (user.role?.includes(Roles.ADMIN_BODEGA) || user.role?.includes(Roles.ADMIN_PEDIDOS)) {
             menu.push({
-                title: true,
-                name: 'Inventario'
-              },
-              {
+              title: true,
+              name: 'Inventario'
+            });
+            if (user.role?.includes(Roles.ADMIN_BODEGA)) {
+              menu.push({
                 name: 'Bodegas',
                 icon: 'fa fa-solid fa-warehouse',
                 url: '/inventario'
               });
+            }
+            if (user.role?.includes(Roles.ADMIN_PEDIDOS)) {
+              menu.push({
+                name: 'Pedidos',
+                icon: 'fa-solid fa-cart-shopping',
+                url: '/pedidos'
+              });
+            }
           }
           this._menuSubject.next(menu);
         }

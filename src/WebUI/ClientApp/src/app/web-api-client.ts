@@ -18,6 +18,7 @@ export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 export interface IBodegasClient {
     getBodegas(): Observable<BodegaDto[]>;
     create(command: CreateBodegaCommand): Observable<number>;
+    getAllBodegas(): Observable<BodegaDto[]>;
     getBodegasByEncargado(pageSize: number | undefined, pageNumber: number | undefined): Observable<PaginatedListOfBodegaDto>;
     getBodegaById(id: number): Observable<BodegaDto>;
     update(id: number, command: UpdateBodegaCommand): Observable<BodegaDto>;
@@ -143,6 +144,61 @@ export class BodegasClient implements IBodegasClient {
             }));
         }
         return _observableOf<number>(null as any);
+    }
+
+    getAllBodegas(): Observable<BodegaDto[]> {
+        let url_ = this.baseUrl + "/api/Bodegas/all";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllBodegas(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllBodegas(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<BodegaDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<BodegaDto[]>;
+        }));
+    }
+
+    protected processGetAllBodegas(response: HttpResponseBase): Observable<BodegaDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(BodegaDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<BodegaDto[]>(null as any);
     }
 
     getBodegasByEncargado(pageSize: number | undefined, pageNumber: number | undefined): Observable<PaginatedListOfBodegaDto> {
@@ -1068,8 +1124,9 @@ export class PaisesClient implements IPaisesClient {
 export interface IPedidosClient {
     getPedidos(pageSize: number | undefined, pageNumber: number | undefined, bodegaId: number | null | undefined, descripcionMaterial: string | null | undefined, fechaDel: string | null | undefined, fechaAl: string | null | undefined): Observable<PaginatedListOfPedidoMaterialDto>;
     create(command: CreatePedidoMaterialCommand): Observable<number>;
-    getPedidosByBodega(bodegaId: number, pageSize: number | undefined, pageNumber: number | undefined, descripcionMaterial: string | null | undefined, fechaDel: string | null | undefined, fechaAl: string | null | undefined): Observable<PaginatedListOfPedidoMaterialDto>;
+    getPedidoById(id: number): Observable<PedidoMaterialDto>;
     update(id: number, command: UpdatePedidoMaterialCommand): Observable<PedidoMaterialDto>;
+    getPedidosByBodega(bodegaId: number, pageSize: number | undefined, pageNumber: number | undefined, descripcionMaterial: string | null | undefined, fechaDel: string | null | undefined, fechaAl: string | null | undefined): Observable<PaginatedListOfPedidoMaterialDto>;
     enviarPedido(pedidoMaterialId: number): Observable<FileResponse>;
     anularPedido(pedidoMaterialId: number): Observable<FileResponse>;
 }
@@ -1204,6 +1261,112 @@ export class PedidosClient implements IPedidosClient {
         return _observableOf<number>(null as any);
     }
 
+    getPedidoById(id: number): Observable<PedidoMaterialDto> {
+        let url_ = this.baseUrl + "/api/Pedidos/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPedidoById(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPedidoById(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PedidoMaterialDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PedidoMaterialDto>;
+        }));
+    }
+
+    protected processGetPedidoById(response: HttpResponseBase): Observable<PedidoMaterialDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PedidoMaterialDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PedidoMaterialDto>(null as any);
+    }
+
+    update(id: number, command: UpdatePedidoMaterialCommand): Observable<PedidoMaterialDto> {
+        let url_ = this.baseUrl + "/api/Pedidos/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PedidoMaterialDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PedidoMaterialDto>;
+        }));
+    }
+
+    protected processUpdate(response: HttpResponseBase): Observable<PedidoMaterialDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PedidoMaterialDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PedidoMaterialDto>(null as any);
+    }
+
     getPedidosByBodega(bodegaId: number, pageSize: number | undefined, pageNumber: number | undefined, descripcionMaterial: string | null | undefined, fechaDel: string | null | undefined, fechaAl: string | null | undefined): Observable<PaginatedListOfPedidoMaterialDto> {
         let url_ = this.baseUrl + "/api/Pedidos/bodega/{bodegaId}?";
         if (bodegaId === undefined || bodegaId === null)
@@ -1267,61 +1430,6 @@ export class PedidosClient implements IPedidosClient {
             }));
         }
         return _observableOf<PaginatedListOfPedidoMaterialDto>(null as any);
-    }
-
-    update(id: number, command: UpdatePedidoMaterialCommand): Observable<PedidoMaterialDto> {
-        let url_ = this.baseUrl + "/api/Pedidos/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(command);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processUpdate(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processUpdate(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<PedidoMaterialDto>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<PedidoMaterialDto>;
-        }));
-    }
-
-    protected processUpdate(response: HttpResponseBase): Observable<PedidoMaterialDto> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PedidoMaterialDto.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<PedidoMaterialDto>(null as any);
     }
 
     enviarPedido(pedidoMaterialId: number): Observable<FileResponse> {
@@ -3136,6 +3244,400 @@ export class UsuarioClient implements IUsuarioClient {
             }));
         }
         return _observableOf<UsuarioDto[]>(null as any);
+    }
+}
+
+export interface IVehiculosClient {
+    getVehiculos(pageSize: number | undefined, pageNumber: number | undefined, descripcion: string | null | undefined, codigo: string | null | undefined, placa: string | null | undefined, status: string | null | undefined): Observable<PaginatedListOfVehiculoDto>;
+    create(command: CreateVehiculoCommand): Observable<number>;
+    getVehiculoById(id: number): Observable<VehiculoDto>;
+    update(id: number, command: UpdateVehiculoCommand): Observable<VehiculoDto>;
+    delete(id: number): Observable<FileResponse>;
+    inactivar(id: number): Observable<FileResponse>;
+    activar(id: number): Observable<FileResponse>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class VehiculosClient implements IVehiculosClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    getVehiculos(pageSize: number | undefined, pageNumber: number | undefined, descripcion: string | null | undefined, codigo: string | null | undefined, placa: string | null | undefined, status: string | null | undefined): Observable<PaginatedListOfVehiculoDto> {
+        let url_ = this.baseUrl + "/api/Vehiculos?";
+        if (pageSize === null)
+            throw new Error("The parameter 'pageSize' cannot be null.");
+        else if (pageSize !== undefined)
+            url_ += "pageSize=" + encodeURIComponent("" + pageSize) + "&";
+        if (pageNumber === null)
+            throw new Error("The parameter 'pageNumber' cannot be null.");
+        else if (pageNumber !== undefined)
+            url_ += "pageNumber=" + encodeURIComponent("" + pageNumber) + "&";
+        if (descripcion !== undefined && descripcion !== null)
+            url_ += "descripcion=" + encodeURIComponent("" + descripcion) + "&";
+        if (codigo !== undefined && codigo !== null)
+            url_ += "codigo=" + encodeURIComponent("" + codigo) + "&";
+        if (placa !== undefined && placa !== null)
+            url_ += "placa=" + encodeURIComponent("" + placa) + "&";
+        if (status !== undefined && status !== null)
+            url_ += "status=" + encodeURIComponent("" + status) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetVehiculos(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetVehiculos(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PaginatedListOfVehiculoDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PaginatedListOfVehiculoDto>;
+        }));
+    }
+
+    protected processGetVehiculos(response: HttpResponseBase): Observable<PaginatedListOfVehiculoDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PaginatedListOfVehiculoDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PaginatedListOfVehiculoDto>(null as any);
+    }
+
+    create(command: CreateVehiculoCommand): Observable<number> {
+        let url_ = this.baseUrl + "/api/Vehiculos";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<number>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<number>;
+        }));
+    }
+
+    protected processCreate(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<number>(null as any);
+    }
+
+    getVehiculoById(id: number): Observable<VehiculoDto> {
+        let url_ = this.baseUrl + "/api/Vehiculos/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetVehiculoById(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetVehiculoById(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<VehiculoDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<VehiculoDto>;
+        }));
+    }
+
+    protected processGetVehiculoById(response: HttpResponseBase): Observable<VehiculoDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = VehiculoDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<VehiculoDto>(null as any);
+    }
+
+    update(id: number, command: UpdateVehiculoCommand): Observable<VehiculoDto> {
+        let url_ = this.baseUrl + "/api/Vehiculos/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<VehiculoDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<VehiculoDto>;
+        }));
+    }
+
+    protected processUpdate(response: HttpResponseBase): Observable<VehiculoDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = VehiculoDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<VehiculoDto>(null as any);
+    }
+
+    delete(id: number): Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/Vehiculos/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileResponse>;
+        }));
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: responseBlob as any, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileResponse>(null as any);
+    }
+
+    inactivar(id: number): Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/Vehiculos/inactivar/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processInactivar(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processInactivar(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileResponse>;
+        }));
+    }
+
+    protected processInactivar(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: responseBlob as any, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileResponse>(null as any);
+    }
+
+    activar(id: number): Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/Vehiculos/activar/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processActivar(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processActivar(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileResponse>;
+        }));
+    }
+
+    protected processActivar(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: responseBlob as any, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileResponse>(null as any);
     }
 }
 
@@ -5535,6 +6037,254 @@ export interface IUpdateUnidadMedidaCommand {
     descripcion?: string | undefined;
     descripcionPlural?: string | undefined;
     descripcionCorta?: string | undefined;
+}
+
+export class PaginatedListOfVehiculoDto implements IPaginatedListOfVehiculoDto {
+    items?: VehiculoDto[];
+    pageNumber?: number;
+    pageSize?: number;
+    totalPages?: number;
+    totalCount?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
+
+    constructor(data?: IPaginatedListOfVehiculoDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(VehiculoDto.fromJS(item));
+            }
+            this.pageNumber = _data["pageNumber"];
+            this.pageSize = _data["pageSize"];
+            this.totalPages = _data["totalPages"];
+            this.totalCount = _data["totalCount"];
+            this.hasPreviousPage = _data["hasPreviousPage"];
+            this.hasNextPage = _data["hasNextPage"];
+        }
+    }
+
+    static fromJS(data: any): PaginatedListOfVehiculoDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PaginatedListOfVehiculoDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        data["pageNumber"] = this.pageNumber;
+        data["pageSize"] = this.pageSize;
+        data["totalPages"] = this.totalPages;
+        data["totalCount"] = this.totalCount;
+        data["hasPreviousPage"] = this.hasPreviousPage;
+        data["hasNextPage"] = this.hasNextPage;
+        return data;
+    }
+}
+
+export interface IPaginatedListOfVehiculoDto {
+    items?: VehiculoDto[];
+    pageNumber?: number;
+    pageSize?: number;
+    totalPages?: number;
+    totalCount?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
+}
+
+export class VehiculoDto implements IVehiculoDto {
+    id?: number | undefined;
+    esUsoInterno?: boolean | undefined;
+    codigo?: string | undefined;
+    placa?: string | undefined;
+    descripcion?: string | undefined;
+    detalle?: string | undefined;
+    capacidadCarga?: number | undefined;
+    status?: string | undefined;
+
+    constructor(data?: IVehiculoDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.esUsoInterno = _data["esUsoInterno"];
+            this.codigo = _data["codigo"];
+            this.placa = _data["placa"];
+            this.descripcion = _data["descripcion"];
+            this.detalle = _data["detalle"];
+            this.capacidadCarga = _data["capacidadCarga"];
+            this.status = _data["status"];
+        }
+    }
+
+    static fromJS(data: any): VehiculoDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new VehiculoDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["esUsoInterno"] = this.esUsoInterno;
+        data["codigo"] = this.codigo;
+        data["placa"] = this.placa;
+        data["descripcion"] = this.descripcion;
+        data["detalle"] = this.detalle;
+        data["capacidadCarga"] = this.capacidadCarga;
+        data["status"] = this.status;
+        return data;
+    }
+}
+
+export interface IVehiculoDto {
+    id?: number | undefined;
+    esUsoInterno?: boolean | undefined;
+    codigo?: string | undefined;
+    placa?: string | undefined;
+    descripcion?: string | undefined;
+    detalle?: string | undefined;
+    capacidadCarga?: number | undefined;
+    status?: string | undefined;
+}
+
+export class CreateVehiculoCommand implements ICreateVehiculoCommand {
+    esUsoInterno?: boolean;
+    codigo?: string | undefined;
+    placa?: string | undefined;
+    descripcion?: string | undefined;
+    detalle?: string | undefined;
+    capacidadCarga?: number | undefined;
+
+    constructor(data?: ICreateVehiculoCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.esUsoInterno = _data["esUsoInterno"];
+            this.codigo = _data["codigo"];
+            this.placa = _data["placa"];
+            this.descripcion = _data["descripcion"];
+            this.detalle = _data["detalle"];
+            this.capacidadCarga = _data["capacidadCarga"];
+        }
+    }
+
+    static fromJS(data: any): CreateVehiculoCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateVehiculoCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["esUsoInterno"] = this.esUsoInterno;
+        data["codigo"] = this.codigo;
+        data["placa"] = this.placa;
+        data["descripcion"] = this.descripcion;
+        data["detalle"] = this.detalle;
+        data["capacidadCarga"] = this.capacidadCarga;
+        return data;
+    }
+}
+
+export interface ICreateVehiculoCommand {
+    esUsoInterno?: boolean;
+    codigo?: string | undefined;
+    placa?: string | undefined;
+    descripcion?: string | undefined;
+    detalle?: string | undefined;
+    capacidadCarga?: number | undefined;
+}
+
+export class UpdateVehiculoCommand implements IUpdateVehiculoCommand {
+    vehiculoId?: number;
+    esUsoInterno?: boolean | undefined;
+    codigo?: string | undefined;
+    placa?: string | undefined;
+    descripcion?: string | undefined;
+    detalle?: string | undefined;
+    capacidadCarga?: number | undefined;
+
+    constructor(data?: IUpdateVehiculoCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.vehiculoId = _data["vehiculoId"];
+            this.esUsoInterno = _data["esUsoInterno"];
+            this.codigo = _data["codigo"];
+            this.placa = _data["placa"];
+            this.descripcion = _data["descripcion"];
+            this.detalle = _data["detalle"];
+            this.capacidadCarga = _data["capacidadCarga"];
+        }
+    }
+
+    static fromJS(data: any): UpdateVehiculoCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateVehiculoCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["vehiculoId"] = this.vehiculoId;
+        data["esUsoInterno"] = this.esUsoInterno;
+        data["codigo"] = this.codigo;
+        data["placa"] = this.placa;
+        data["descripcion"] = this.descripcion;
+        data["detalle"] = this.detalle;
+        data["capacidadCarga"] = this.capacidadCarga;
+        return data;
+    }
+}
+
+export interface IUpdateVehiculoCommand {
+    vehiculoId?: number;
+    esUsoInterno?: boolean | undefined;
+    codigo?: string | undefined;
+    placa?: string | undefined;
+    descripcion?: string | undefined;
+    detalle?: string | undefined;
+    capacidadCarga?: number | undefined;
 }
 
 export class WeatherForecast implements IWeatherForecast {

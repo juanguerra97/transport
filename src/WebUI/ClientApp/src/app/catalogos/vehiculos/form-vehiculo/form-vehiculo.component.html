@@ -1,0 +1,55 @@
+<form [formGroup]="form">
+  <div class="form-group">
+    <label for="descripcion">Descripci&oacute;n</label>
+    <textarea formControlName="descripcion" pInputTextarea id="descripcion" rows="1" class="form-control"></textarea>
+    <ng-container *ngIf="descripcion?.invalid && (descripcion?.touched || descripcion?.dirty)">
+      <span *ngIf="descripcion?.hasError('required')" class="text-error">Campo requerido.</span>
+      <span *ngIf="descripcion?.hasError('maxlength')" class="text-error">El m&aacute;ximo de caracteres permitido es 256.</span>
+    </ng-container>
+  </div>
+
+  <div class="form-group">
+    <label for="detalle">Detalle</label>
+    <textarea formControlName="detalle" pInputTextarea id="detalle" rows="1" class="form-control"></textarea>
+    <ng-container *ngIf="detalle?.invalid && (detalle?.touched || detalle?.dirty)">
+      <span *ngIf="detalle?.hasError('required')" class="text-error">Campo requerido.</span>
+      <span *ngIf="detalle?.hasError('maxlength')" class="text-error">El m&aacute;ximo de caracteres permitido es 1024.</span>
+    </ng-container>
+  </div>
+
+  <div class="row mt-1">
+    <div class="col-12 col-md-6">
+      <div class="form-group mt-1">
+        <label for="codigo">C&oacute;digo</label>
+        <input formControlName="codigo" pInputText type="text" id="codigo" class="w-100">
+        <ng-container *ngIf="codigo?.invalid && (codigo?.touched || codigo?.dirty)">
+          <span *ngIf="codigo?.hasError('required')" class="text-error">Campo requerido.</span>
+          <span *ngIf="codigo?.hasError('maxlength')" class="text-error">El m&aacute;ximo de caracteres permitido es 128.</span>
+        </ng-container>
+      </div>
+    </div>
+    <div class="col-12 col-md-6">
+      <div class="form-group mt-1">
+        <label for="placa">No. Placa</label>
+        <input formControlName="placa" pInputText type="text" id="placa" class="w-100">
+        <ng-container *ngIf="placa?.invalid && (placa?.touched || placa?.dirty)">
+          <span *ngIf="placa?.hasError('required')" class="text-error">Campo requerido.</span>
+          <span *ngIf="placa?.hasError('maxlength')" class="text-error">El m&aacute;ximo de d&iacute;gitos permitido es 64.</span>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group mt-1">
+    <label for="capacidadCarga">Capacidad de Carga(Kg)</label>
+    <input formControlName="capacidadCarga" pInputText pKeyFilter="pint" type="text" id="capacidadCarga" class="w-100">
+    <ng-container *ngIf="capacidadCarga?.invalid && (capacidadCarga?.touched || capacidadCarga?.dirty)">
+      <span *ngIf="capacidadCarga?.hasError('required')" class="text-error">Campo requerido.</span>
+    </ng-container>
+  </div>
+</form>
+
+<div class="d-flex justify-content-start gap-2 mt-3">
+  <button (click)="guardar()" [disabled]="guardando" pButton type="button" label="Guardar" [icon]="guardando ? 'pi pi-spin pi-spinner' : 'pi pi-save'" class="p-button-raised p-button-sm"></button>
+  <button (click)="cancelar()" [disabled]="guardando" pButton type="button" label="Cancelar" icon="pi pi-times" class="p-button-raised p-button-danger p-button-sm"></button>
+</div>

@@ -8,6 +8,7 @@ const routes: Routes = [
   {path: 'materiales', loadChildren: () => import('./materiales/materiales.module').then(m => m.MaterialesModule)},
   {path: 'medidas', loadChildren: () => import('./unidad-medida/unidad-medida.module').then(m => m.UnidadMedidaModule)},
   {path: 'proveedores', loadChildren: () => import('./proveedores/proveedores.module').then(m => m.ProveedoresModule)},
+  {path: 'vehiculos', loadChildren: () => import('./vehiculos/vehiculos.module').then(m => m.VehiculosModule)},
 ];
 
 @NgModule({
