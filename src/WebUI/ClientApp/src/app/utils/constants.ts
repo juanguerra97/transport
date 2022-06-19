@@ -12,3 +12,9 @@ export abstract class EstadosPedido {
   static COMPLETADO_ID = 5;
   static ANULADO_ID = 6;
 }
+
+export abstract class EstadosVehiculo {
+  static ACTIVO = 'A';
+  static INACTIVO = 'I';
+  static ELIMINADO = 'X';
+}
