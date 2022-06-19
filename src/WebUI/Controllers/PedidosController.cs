@@ -7,6 +7,7 @@ using seminario.Application.PedidoMateriales.Commands.CreatePedidoMaterialComman
 using seminario.Application.PedidoMateriales.Commands.EnviarPedidoMaterialCommand;
 using seminario.Application.PedidoMateriales.Commands.UpdatePedidoMaterialCommand;
 using seminario.Application.PedidoMateriales.Queries;
+using seminario.Application.PedidoMateriales.Queries.GetPedidoById;
 using seminario.Application.PedidoMateriales.Queries.GetPedidoMateriales;
 
 namespace seminario.WebUI.Controllers;
@@ -16,6 +17,7 @@ public class PedidosController : ApiControllerBase
 {
 
     [HttpGet]
+    [Authorize(Policy = "AdminPedidos")]
     public async Task<ActionResult<PaginatedList<PedidoMaterialDto>>> GetPedidos(
         int pageSize = 10, int pageNumber = 1, int? bodegaId = null, string? descripcionMaterial = null, string? fechaDel = null, string? fechaAl = null)
     {
@@ -27,6 +29,18 @@ public class PedidosController : ApiControllerBase
             FechaAl = fechaAl,
             PageSize = pageSize,
             PageNumber = pageNumber,
+            MostrarAnulados = false,
+            MostrarCreados = false,
+        });
+    }
+
+    [HttpGet("{id}")]
+    [Authorize(Policy = "AdminPedidos")]
+    public async Task<ActionResult<PedidoMaterialDto>> GetPedidoById(int id)
+    {
+        return await Mediator.Send(new GetPedidoByIdQuery
+        {
+            PedidoMaterialId = id
         });
     }
 
@@ -43,6 +57,8 @@ public class PedidosController : ApiControllerBase
             FechaAl = fechaAl,
             PageSize = pageSize,
             PageNumber = pageNumber,
+            MostrarAnulados = true,
+            MostrarCreados = true,
         });
     }
 
