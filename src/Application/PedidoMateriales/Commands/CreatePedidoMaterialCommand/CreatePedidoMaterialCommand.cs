@@ -42,7 +42,9 @@ public class CreatePedidoMaterialCommandHandler : IRequestHandler<CreatePedidoMa
             throw new NotFoundException(nameof(Bodega), request.MaterialId);
         }
 
-        if (true == (await _context.PedidoMateriales.AnyAsync(pm => pm.Status == "A" && (pm.EstadoPedidoMaterialId == EstadosPedidoMaterialConstants.CREADO.Id || pm.EstadoPedidoMaterialId == EstadosPedidoMaterialConstants.PENDIENTE.Id),cancellationToken)))
+        if (true == (await _context.PedidoMateriales.AnyAsync(pm => pm.Status == "A"
+            && (pm.BodegaSolicitaId == request.BodegaSolicitaId)
+            && (pm.EstadoPedidoMaterialId == EstadosPedidoMaterialConstants.CREADO.Id || pm.EstadoPedidoMaterialId == EstadosPedidoMaterialConstants.PENDIENTE.Id),cancellationToken)))
         {
             throw new CustomValidationException("Actualmente existe otro pedido del mismo material en estado CREADO o PENDIENTE.");
         }
