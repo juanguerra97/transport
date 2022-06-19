@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {CommonModule, DatePipe} from '@angular/common';
 import {PrimeNgModule} from "./prime-ng.module";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {CoreUiModule} from "./core-ui.module";
@@ -13,6 +13,9 @@ import {CoreUiModule} from "./core-ui.module";
     ReactiveFormsModule,
     PrimeNgModule,
     CoreUiModule,
+  ],
+  providers: [
+    DatePipe,
   ]
 })
 export class CoreModule {

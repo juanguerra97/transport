@@ -1,0 +1,45 @@
+<form [formGroup]="form" class="row">
+  <div class="col-12 col-md-6 col-lg-3 col-xl-4">
+    <div class="form-group">
+      <label for="bodegaId" class="tp-font-small">Solicitante</label>
+      <p-dropdown formControlName="bodegaId" [options]="bodegas" optionLabel="descripcion" optionValue="id" inputId="bodegaId" styleClass="w-100" [showClear]="true" [filter]="true" filterBy="descripcion" placeholder="Seleccionar">
+        <ng-template let-bodega pTemplate="item">
+          <div class="w-100">
+            <p class="m-0 p-0" style="font-size: 0.95rem;">{{bodega.descripcion}}</p>
+          </div>
+        </ng-template>
+      </p-dropdown>
+    </div>
+  </div>
+
+  <div class="col-12 col-md-6 col-lg-3 col-xl-4">
+    <div class="form-group">
+      <label for="descripcionMaterial" class="tp-font-small">Descripci&oacute;n material</label>
+      <input formControlName="descripcionMaterial" pInputText type="text" class="w-100" id="descripcionMaterial">
+    </div>
+  </div>
+
+  <div class="col-12 col-sm-6 col-lg-3 col-xl-2">
+    <div class="form-group">
+      <label for="descripcionMaterial" class="tp-font-small">Fecha Del</label>
+      <div class="flex-grow-1">
+        <p-calendar formControlName="fechaDel" dateFormat="dd/mm/yy" [showButtonBar]="true" [showClear]="true" appendTo="body" styleClass="w-100"></p-calendar>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-sm-6 col-lg-3 col-xl-2">
+    <div class="form-group">
+      <label for="descripcionMaterial" class="tp-font-small">Fecha Al</label>
+      <div class="flex-grow-1">
+        <p-calendar formControlName="fechaAl" dateFormat="dd/mm/yy" [showButtonBar]="true" [showClear]="true" appendTo="body" styleClass="w-100"></p-calendar>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 mt-2">
+    <div class="d-flex align-items-center justify-content-start gap-2">
+      <button (click)="filtrar()" [disabled]="filtrando" pButton label="Filtrar" icon="fa-solid fa-filter" class="p-button-raised p-button-sm"></button>
+      <button (click)="limpiar()" [disabled]="filtrando" pButton label="Limpiar" icon="fa-solid fa-filter-circle-xmark" class="p-button-raised p-button-sm"></button>
+    </div>
+  </div>
+</form>

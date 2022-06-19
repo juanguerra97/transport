@@ -12,7 +12,8 @@ export const routes: Routes = [
       {path: 'catalogo', loadChildren: () => import('./catalogos/catalogos.module').then(m => m.CatalogosModule)}
     ]
   },
-  {path: 'inventario', loadChildren: () => import('./inventario/inventario.module').then(m => m.InventarioModule)}
+  {path: 'inventario', loadChildren: () => import('./inventario/inventario.module').then(m => m.InventarioModule)},
+  {path: 'pedidos', loadChildren: () => import('./pedidos/pedidos.module').then(m => m.PedidosModule)},
 ];
 
 @NgModule({
