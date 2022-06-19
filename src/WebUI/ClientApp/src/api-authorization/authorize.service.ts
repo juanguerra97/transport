@@ -42,6 +42,7 @@ export abstract class Roles {
   static ADMINISTRATOR = "Administrator";
   static ADMIN_PLANTA = "AdminPlanta";
   static ADMIN_BODEGA = "AdminBodega";
+  static ADMIN_PEDIDOS = "AdminPedidos";
 }
 
 @Injectable({
