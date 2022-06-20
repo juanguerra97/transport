@@ -66,7 +66,7 @@
           <div class="flex-grow-1">
             <p-autoComplete formControlName="encargado" [suggestions]="suggestionsEncargado"
                             (completeMethod)="searchEncargado($event)"
-                            [field]="getEncargado"
+                            [field]="getEncargado" [forceSelection]="true"
                             styleClass="w-100" inputStyleClass="w-100" inputId="encargado">
               <ng-template let-usuario pTemplate="item">
                 <div style="font-size: 0.8rem;">
