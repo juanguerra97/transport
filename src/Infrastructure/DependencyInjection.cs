@@ -1,5 +1,4 @@
 ﻿using seminario.Application.Common.Interfaces;
-using seminario.Infrastructure.Files;
 using seminario.Infrastructure.Identity;
 using seminario.Infrastructure.Persistence;
 using seminario.Infrastructure.Services;
@@ -48,7 +47,6 @@ public static class DependencyInjection
 
         services.AddTransient<IDateTime, DateTimeService>();
         services.AddTransient<IIdentityService, IdentityService>();
-        services.AddTransient<ICsvFileBuilder, CsvFileBuilder>();
 
         services.AddAuthentication()
             .AddIdentityServerJwt();
