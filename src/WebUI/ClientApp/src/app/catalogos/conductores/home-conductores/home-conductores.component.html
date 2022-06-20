@@ -1,0 +1,53 @@
+<div class="d-flex gap-2 align-items-center mb-1">
+  <p class="m-0 p-0">CONDUCTORES</p>
+  <div class="d-flex flex-fill align-items-center justify-content-end">
+    <button (click)="openModalNuevo()" pButton type="button" label="Nuevo" icon="pi pi-plus" class="p-button-raised p-button-sm"></button>
+  </div>
+</div>
+
+<p-table [value]="conductores?.items" [loading]="loadingConductores" [paginator]="false" [rows]="conductores?.pageSize" responsiveLayout="scroll">
+  <ng-template pTemplate="header">
+    <tr class="tp-font-small">
+      <th>Nombre</th>
+      <th>Licencia</th>
+      <th class="text-center">Estado</th>
+      <th class="text-center">Acci&oacute;n</th>
+    </tr>
+    <tr>
+      <th>
+        <input [(ngModel)]="nombre" (keyup.enter)="filtrar()" pInputText type="text" class="form-control">
+      </th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-conductor>
+    <tr>
+      <td>{{conductor.user?.firstName}}&nbsp;{{conductor.user?.lastName}}</td>
+      <td>{{conductor.noLicencia}}</td>
+      <td>
+        <div class="d-flex justify-content-center align-items-center">
+          <span class="p-badge ESTADO-VEHICULO-{{ESTADOS_LABEL[conductor.status]}}">{{ESTADOS_LABEL[conductor.status]}}</span>
+        </div>
+      </td>
+      <td>
+        <div class="d-flex gap-2 align-items-center justify-content-center">
+          <button (click)="openModalEditar(conductor)" pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-warning p-button-text"></button>
+          <button *ngIf="isEstadoAlta(conductor)" (click)="confirmarBaja(conductor)" pButton pRipple type="button" icon="pi pi-arrow-down" class="p-button-rounded p-button-warning p-button-text"></button>
+          <button *ngIf="isEstadoBaja(conductor)" (click)="confirmarAlta(conductor)" pButton pRipple type="button" icon="pi pi-arrow-up" class="p-button-rounded p-button-success p-button-text"></button>
+          <button (click)="confirmarEliminar(conductor)" pButton pRipple type="button" icon="pi pi-times" class="p-button-rounded p-button-danger p-button-text"></button>
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="4" class="tp-font-small">
+        No se encontraron conductores.
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+<p-paginator (onPageChange)="paginar($event)" [rows]="conductores?.pageSize" [first]="(conductores?.pageNumber - 1) * conductores?.pageSize" [totalRecords]="conductores?.totalCount" [rowsPerPageOptions]="[10, 15, 25]"></p-paginator>
+<p-confirmDialog header="Confirmaci&oacute;n" icon="pi pi-exclamation-triangle"></p-confirmDialog>

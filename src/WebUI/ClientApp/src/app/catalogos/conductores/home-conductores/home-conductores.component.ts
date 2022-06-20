@@ -1,31 +1,27 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {
-  IPaginatedListOfVehiculoDto,
-  VehiculoDto,
-  VehiculosClient
-} from "../../../web-api-client";
+import {EstadosConductor} from "../../../utils/constants";
+import {ConductorDto, ConductoresClient, IPaginatedListOfConductorDto} from "../../../web-api-client";
 import {ConfirmationService} from "primeng/api";
 import {DialogService} from "primeng/dynamicdialog";
 import {HotToastService} from "@ngneat/hot-toast";
 import {getErrorMessage} from "../../../utils/errors";
-import {EstadosVehiculo} from "../../../utils/constants";
-import {NewVehiculoComponent} from "../new-vehiculo/new-vehiculo.component";
-import {EditVehiculoComponent} from "../edit-vehiculo/edit-vehiculo.component";
+import {NewConductorComponent} from "../new-conductor/new-conductor.component";
+import {EditConductorComponent} from "../edit-conductor/edit-conductor.component";
 
 @Component({
-  selector: 'app-home-vehiculos',
-  templateUrl: './home-vehiculos.component.html',
-  styleUrls: ['./home-vehiculos.component.scss'],
+  selector: 'app-home-conductores',
+  templateUrl: './home-conductores.component.html',
+  styleUrls: ['./home-conductores.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HomeVehiculosComponent implements OnInit {
+export class HomeConductoresComponent implements OnInit {
 
   ESTADOS_LABEL: any = {
-    [EstadosVehiculo.ACTIVO]: 'ALTA',
-    [EstadosVehiculo.INACTIVO]: 'BAJA'
+    [EstadosConductor.ACTIVO]: 'ALTA',
+    [EstadosConductor.INACTIVO]: 'BAJA'
   };
 
-  vehiculos: IPaginatedListOfVehiculoDto = {
+  conductores: IPaginatedListOfConductorDto = {
     totalCount: 0,
     pageSize: 10,
     pageNumber: 1,
@@ -34,39 +30,39 @@ export class HomeVehiculosComponent implements OnInit {
     hasNextPage: false,
     hasPreviousPage: false,
   };
-  loadingVehiculos = true;
+  loadingConductores = true;
 
   modalNuevoAbierto = false;
   modalEditarAbierto = false;
 
-  descripcion?: string = undefined;
+  nombre?: string = undefined;
 
   constructor(
-    private vehiculosClient: VehiculosClient,
+    private conductoresClient: ConductoresClient,
     private confirmationService: ConfirmationService,
     private dialogService: DialogService,
     private toastService: HotToastService,
     private cdr: ChangeDetectorRef,
-  ) { }
-
-  ngOnInit(): void {
-    this.cargarVehiculos();
+  ) {
   }
 
-  private cargarVehiculos(pageSize: number = 10, pageNumber: number = 1, descripcion: string | undefined = undefined, codigo: string | undefined = undefined, placa: string | undefined = undefined, status: string | undefined = undefined)
-  {
-    this.loadingVehiculos = true;
+  ngOnInit(): void {
+    this.cargarConductores();
+  }
+
+  private cargarConductores(pageSize: number = 10, pageNumber: number = 1, nombre: string | undefined = undefined) {
+    this.loadingConductores = true;
     this.cdr.markForCheck();
-    this.vehiculosClient.getVehiculos(pageSize, pageNumber, descripcion, codigo, placa, status)
+    this.conductoresClient.getConductores(pageSize, pageNumber, nombre)
       .subscribe({
         next: res => {
-          this.vehiculos = res;
-          this.loadingVehiculos = false;
+          this.conductores = res;
+          this.loadingConductores = false;
           this.cdr.markForCheck();
         },
         error: error => {
           console.error(error);
-          this.loadingVehiculos = false;
+          this.loadingConductores = false;
           this.cdr.markForCheck();
           this.toastService.error(getErrorMessage(error), {
             dismissible: true,
@@ -80,32 +76,32 @@ export class HomeVehiculosComponent implements OnInit {
   paginar($event: any) {
     const pageNumber = ($event.page || 0) + 1;
     const pageSize = $event.rows;
-    this.cargarVehiculos(pageSize, pageNumber, this.getDescripcion());
+    this.cargarConductores(pageSize, pageNumber, this.getNombre());
   }
 
-  getDescripcion() {
-    return this.descripcion || undefined;
+  getNombre() {
+    return this.nombre || undefined;
   }
 
-  confirmarEliminar(vehiculo: VehiculoDto) {
+  confirmarEliminar(conductor: ConductorDto) {
     this.confirmationService.confirm({
-      message: `¿Seguro que quieres eliminar el vehiculo seleccionado?`,
+      message: `¿Seguro que quieres eliminar el conductor seleccionado?`,
       acceptLabel: 'Sí, eliminar',
       rejectLabel: 'Cancelar',
       acceptButtonStyleClass: 'p-button-sm p-button-raised p-button-danger',
       rejectButtonStyleClass: 'p-button-sm p-button-raised',
       accept: () => {
-        this.eliminar(vehiculo);
+        this.eliminar(conductor);
       }
     });
   }
 
-  eliminar(vehiculo: VehiculoDto) {
-    this.vehiculosClient.delete(vehiculo.id as any)
+  eliminar(conductor: ConductorDto) {
+    this.conductoresClient.delete(conductor.id as any)
       .subscribe({
         next: res => {
-          this.toastService.success(`Se eliminó un vehiculo.`, {position: 'bottom-center'});
-          this.cargarVehiculos(this.vehiculos?.pageSize, this.vehiculos.pageNumber, this.getDescripcion());
+          this.toastService.success(`Se eliminó un conductor.`, {position: 'bottom-center'});
+          this.cargarConductores(this.conductores?.pageSize, this.conductores.pageNumber, this.getNombre());
         },
         error: error => {
           console.error(error);
@@ -123,7 +119,7 @@ export class HomeVehiculosComponent implements OnInit {
       return;
     }
     this.modalNuevoAbierto = true;
-    const ref = this.dialogService.open(NewVehiculoComponent, {
+    const ref = this.dialogService.open(NewConductorComponent, {
       header: 'Nuevo',
       styleClass: 'modal-catalogo'
     });
@@ -131,61 +127,61 @@ export class HomeVehiculosComponent implements OnInit {
       next: res => {
         this.modalNuevoAbierto = false;
         if (res) {
-          this.cargarVehiculos(this.vehiculos?.pageSize, this.vehiculos?.pageNumber, this.getDescripcion());
+          this.cargarConductores(this.conductores?.pageSize, this.conductores?.pageNumber, this.getNombre());
         }
       }
     });
   }
 
-  openModalEditar(vehiculo: VehiculoDto) {
+  openModalEditar(conductor: ConductorDto) {
     if (this.modalEditarAbierto) {
       return;
     }
     this.modalEditarAbierto = true;
-    const ref = this.dialogService.open(EditVehiculoComponent, {
+    const ref = this.dialogService.open(EditConductorComponent, {
       header: 'Editar',
       styleClass: 'modal-catalogo',
-      data: vehiculo
+      data: conductor
     });
     ref.onClose.subscribe({
       next: res => {
         this.modalEditarAbierto = false;
-        this.cargarVehiculos(this.vehiculos?.pageSize, this.vehiculos?.pageNumber, this.getDescripcion());
+        this.cargarConductores(this.conductores?.pageSize, this.conductores?.pageNumber, this.getNombre());
       }
     });
   }
 
   filtrar() {
-    this.cargarVehiculos(this.vehiculos?.pageSize, this.vehiculos?.pageNumber, this.getDescripcion());
+    this.cargarConductores(this.conductores?.pageSize, this.conductores?.pageNumber, this.getNombre());
   }
 
-  isEstadoAlta(vehiculo: VehiculoDto) {
-    return vehiculo.status === EstadosVehiculo.ACTIVO;
+  isEstadoAlta(conductor: ConductorDto) {
+    return conductor.status === EstadosConductor.ACTIVO;
   }
 
-  isEstadoBaja(vehiculo: VehiculoDto) {
-    return vehiculo.status === EstadosVehiculo.INACTIVO;
+  isEstadoBaja(conductor: ConductorDto) {
+    return conductor.status === EstadosConductor.INACTIVO;
   }
 
-  confirmarBaja(vehiculo: VehiculoDto) {
+  confirmarBaja(conductor: ConductorDto) {
     this.confirmationService.confirm({
-      message: `¿Seguro que quieres dar de baja el vehiculo seleccionado?`,
+      message: `¿Seguro que quieres dar de baja el conductor seleccionado?`,
       acceptLabel: 'Sí, dar de baja',
       rejectLabel: 'Cancelar',
       acceptButtonStyleClass: 'p-button-sm p-button-raised p-button-danger',
       rejectButtonStyleClass: 'p-button-sm p-button-raised',
       accept: () => {
-        this.darDeBaja(vehiculo);
+        this.darDeBaja(conductor);
       }
     });
   }
 
-  darDeBaja(vehiculo: VehiculoDto) {
-    this.vehiculosClient.inactivar(vehiculo.id as any)
+  darDeBaja(conductor: ConductorDto) {
+    this.conductoresClient.inactivar(conductor.id as any)
       .subscribe({
         next: res => {
-          this.toastService.success(`Se dió de baja un vehiculo.`, {position: 'bottom-center'});
-          this.cargarVehiculos(this.vehiculos?.pageSize, this.vehiculos.pageNumber, this.getDescripcion());
+          this.toastService.success(`Se dió de baja un conductor.`, {position: 'bottom-center'});
+          this.cargarConductores(this.conductores?.pageSize, this.conductores.pageNumber, this.getNombre());
         },
         error: error => {
           console.error(error);
@@ -198,25 +194,25 @@ export class HomeVehiculosComponent implements OnInit {
       });
   }
 
-  confirmarAlta(vehiculo: VehiculoDto) {
+  confirmarAlta(conductor: ConductorDto) {
     this.confirmationService.confirm({
-      message: `¿Seguro que quieres dar de alta el vehiculo seleccionado?`,
+      message: `¿Seguro que quieres dar de alta el conductor seleccionado?`,
       acceptLabel: 'Sí, dar de alta',
       rejectLabel: 'Cancelar',
       acceptButtonStyleClass: 'p-button-sm p-button-raised p-button-danger',
       rejectButtonStyleClass: 'p-button-sm p-button-raised',
       accept: () => {
-        this.darDeAlta(vehiculo);
+        this.darDeAlta(conductor);
       }
     });
   }
 
-  darDeAlta(vehiculo: VehiculoDto) {
-    this.vehiculosClient.activar(vehiculo.id as any)
+  darDeAlta(conductor: ConductorDto) {
+    this.conductoresClient.activar(conductor.id as any)
       .subscribe({
         next: res => {
           this.toastService.success(`Se dió de alta un vehiculo.`, {position: 'bottom-center'});
-          this.cargarVehiculos(this.vehiculos?.pageSize, this.vehiculos.pageNumber, this.getDescripcion());
+          this.cargarConductores(this.conductores?.pageSize, this.conductores.pageNumber, this.getNombre());
         },
         error: error => {
           console.error(error);

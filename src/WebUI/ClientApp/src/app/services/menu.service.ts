@@ -35,7 +35,8 @@ export class MenuService {
                   {name: 'Materiales', url: '/admin/catalogo/materiales'},
                   {name: 'Medidas', url: '/admin/catalogo/medidas'},
                   {name: 'Proveedores', url: '/admin/catalogo/proveedores'},
-                  {name: 'Vehiculos', url: '/admin/catalogo/vehiculos'}
+                  {name: 'Vehiculos', url: '/admin/catalogo/vehiculos'},
+                  {name: 'Conductores', url: '/admin/catalogo/conductores'}
                 ]
               });
           }

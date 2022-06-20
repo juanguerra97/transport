@@ -18,3 +18,9 @@ export abstract class EstadosVehiculo {
   static INACTIVO = 'I';
   static ELIMINADO = 'X';
 }
+
+export abstract class EstadosConductor {
+  static ACTIVO = 'A';
+  static INACTIVO = 'I';
+  static ELIMINADO = 'X';
+}
