@@ -30,7 +30,7 @@
           <div class="col-12 col-md-4">
             <div class="form-group">
               <label for="peso">Peso</label>
-              <input pInputText formControlName="peso" pKeyFilter="pnum" type="text" id="peso" class="form-control">
+              <input pInputText formControlName="peso" pKeyFilter="pnum" type="text" id="peso">
               <ng-container *ngIf="peso?.invalid && (peso?.touched || peso?.dirty)">
                 <small *ngIf="peso?.hasError('required')" class="text-error">Campo requerido.</small>
                 <small *ngIf="peso?.hasError('min')" class="text-error">No se permiten numeros negativos.</small>
