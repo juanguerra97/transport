@@ -14,8 +14,8 @@ public record GetVehiculoByIdQuery : IRequest<VehiculoDto>
 
 public class GetVehiculoByIdQueryHandler : IRequestHandler<GetVehiculoByIdQuery, VehiculoDto>
 {
-    private IApplicationDbContext _context;
-    private IMapper _mapper;
+    private readonly IApplicationDbContext _context;
+    private readonly IMapper _mapper;
 
     public GetVehiculoByIdQueryHandler(IApplicationDbContext context, IMapper mapper)
     {

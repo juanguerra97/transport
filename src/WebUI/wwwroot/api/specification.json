@@ -2737,7 +2737,8 @@
             "nullable": true
           },
           "encargadoId": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           }
         }
       },

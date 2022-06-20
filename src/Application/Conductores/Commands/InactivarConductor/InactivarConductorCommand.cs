@@ -15,8 +15,8 @@ public record InactivarConductorCommand : IRequest<ConductorDto>
 
 public class InactivarConductorCommandHandler : IRequestHandler<InactivarConductorCommand, ConductorDto>
 {
-    private IApplicationDbContext _context;
-    private IMapper _mapper;
+    private readonly IApplicationDbContext _context;
+    private readonly IMapper _mapper;
 
     public InactivarConductorCommandHandler(IApplicationDbContext context, IMapper mapper)
     {

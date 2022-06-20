@@ -3852,7 +3852,7 @@ export class CreateBodegaCommand implements ICreateBodegaCommand {
     detalle?: string | undefined;
     municipioId?: number | undefined;
     direccion?: string | undefined;
-    encargadoId?: string;
+    encargadoId?: string | undefined;
 
     constructor(data?: ICreateBodegaCommand) {
         if (data) {
@@ -3899,7 +3899,7 @@ export interface ICreateBodegaCommand {
     detalle?: string | undefined;
     municipioId?: number | undefined;
     direccion?: string | undefined;
-    encargadoId?: string;
+    encargadoId?: string | undefined;
 }
 
 export class UpdateBodegaCommand implements IUpdateBodegaCommand {

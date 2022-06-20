@@ -15,8 +15,8 @@ public record GetConductoresQuery : IRequest<PaginatedList<ConductorDto>>
 
 public class GetConductoresQueryHandler : IRequestHandler<GetConductoresQuery, PaginatedList<ConductorDto>>
 {
-    private IApplicationDbContext _context;
-    private IMapper _mapper;
+    private readonly IApplicationDbContext _context;
+    private readonly IMapper _mapper;
 
     public GetConductoresQueryHandler(IApplicationDbContext context, IMapper mapper)
     {

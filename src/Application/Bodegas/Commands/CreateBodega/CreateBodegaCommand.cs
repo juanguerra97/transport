@@ -13,7 +13,7 @@ public record CreateBodegaCommand : IRequest<int?>
     public string? Detalle { get; init; }
     public int? MunicipioId { get; init; }
     public string? Direccion { get; init; }
-    public string EncargadoId { get; set; }
+    public string? EncargadoId { get; set; }
 }
 
 public class CreateBodegaCommandHandler : IRequestHandler<CreateBodegaCommand, int?>
