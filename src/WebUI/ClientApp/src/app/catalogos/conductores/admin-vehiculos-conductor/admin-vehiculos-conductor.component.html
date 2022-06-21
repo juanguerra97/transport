@@ -1,0 +1,24 @@
+<form [formGroup]="form" class="mt-1">
+  <div class="form-group">
+    <label for="vehiculos">Disponibles</label>
+    <p-dropdown formControlName="vehiculoId" [options]="vehiculosDisponibles" optionLabel="descripcion" optionValue="id" [showClear]="true" [filter]="true" filterBy="descripcion,detalle" placeholder="Seleccionar" styleClass="w-100" inputId="vehiculos" appendTo="body"></p-dropdown>
+  </div>
+</form>
+<div class="d-flex justify-content-start align-items-center mt-2">
+  <button [disabled]="guardando || form.invalid" (click)="agregar()" pButton type="button" label="Agregar" [icon]="guardando ? 'pi pi-spin pi-spinner' : 'pi pi-plus'" class="p-button-raised p-button-sm"></button>
+</div>
+
+<ng-container *ngIf="vehiculos.length > 0">
+  <hr>
+  <label style="text-decoration: underline;">Agregados</label>
+  <ul class="lista-vehiculos">
+    <li *ngFor="let vehiculo of vehiculos" class="d-flex align-items-center gap-1 p-1 p-dropdown-item">
+      <div class="flex-fill d-flex flex-column gap-0">
+        <div>{{vehiculo?.codigo}}&nbsp;-&nbsp;{{vehiculo?.descripcion}}</div>
+        <p class="p-0 m-0 tp-font-small">{{vehiculo?.detalle}}</p>
+      </div>
+      <button (click)="eliminar(vehiculo)" pButton pRipple type="button" icon="pi pi-times" class="p-button-rounded p-button-danger p-button-text"></button>
+    </li>
+  </ul>
+
+</ng-container>

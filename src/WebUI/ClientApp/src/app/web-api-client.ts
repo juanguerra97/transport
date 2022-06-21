@@ -3070,6 +3070,361 @@ export class UsuarioClient implements IUsuarioClient {
     }
 }
 
+export interface IVehiculoConductorClient {
+    getConductoresByVehiculo(vehiculoId: number): Observable<ConductorDto[]>;
+    getConductoresDisponiblesByVehiculo(vehiculoId: number): Observable<ConductorDto[]>;
+    getVehiculosByConductor(conductorId: number): Observable<VehiculoDto[]>;
+    getVehiculosDisponiblesByConductor(conductorId: number): Observable<VehiculoDto[]>;
+    create(command: CreateVehiculoConductorCommand): Observable<FileResponse>;
+    delete(command: DeleteVehiculoConductorCommand): Observable<FileResponse>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class VehiculoConductorClient implements IVehiculoConductorClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    getConductoresByVehiculo(vehiculoId: number): Observable<ConductorDto[]> {
+        let url_ = this.baseUrl + "/api/VehiculoConductor/vehiculo/conductores/{vehiculoId}";
+        if (vehiculoId === undefined || vehiculoId === null)
+            throw new Error("The parameter 'vehiculoId' must be defined.");
+        url_ = url_.replace("{vehiculoId}", encodeURIComponent("" + vehiculoId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetConductoresByVehiculo(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetConductoresByVehiculo(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ConductorDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ConductorDto[]>;
+        }));
+    }
+
+    protected processGetConductoresByVehiculo(response: HttpResponseBase): Observable<ConductorDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(ConductorDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ConductorDto[]>(null as any);
+    }
+
+    getConductoresDisponiblesByVehiculo(vehiculoId: number): Observable<ConductorDto[]> {
+        let url_ = this.baseUrl + "/api/VehiculoConductor/vehiculo/conductores/{vehiculoId}/disponibles";
+        if (vehiculoId === undefined || vehiculoId === null)
+            throw new Error("The parameter 'vehiculoId' must be defined.");
+        url_ = url_.replace("{vehiculoId}", encodeURIComponent("" + vehiculoId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetConductoresDisponiblesByVehiculo(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetConductoresDisponiblesByVehiculo(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ConductorDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ConductorDto[]>;
+        }));
+    }
+
+    protected processGetConductoresDisponiblesByVehiculo(response: HttpResponseBase): Observable<ConductorDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(ConductorDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ConductorDto[]>(null as any);
+    }
+
+    getVehiculosByConductor(conductorId: number): Observable<VehiculoDto[]> {
+        let url_ = this.baseUrl + "/api/VehiculoConductor/conductor/vehiculos/{conductorId}";
+        if (conductorId === undefined || conductorId === null)
+            throw new Error("The parameter 'conductorId' must be defined.");
+        url_ = url_.replace("{conductorId}", encodeURIComponent("" + conductorId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetVehiculosByConductor(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetVehiculosByConductor(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<VehiculoDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<VehiculoDto[]>;
+        }));
+    }
+
+    protected processGetVehiculosByConductor(response: HttpResponseBase): Observable<VehiculoDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(VehiculoDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<VehiculoDto[]>(null as any);
+    }
+
+    getVehiculosDisponiblesByConductor(conductorId: number): Observable<VehiculoDto[]> {
+        let url_ = this.baseUrl + "/api/VehiculoConductor/conductor/vehiculos/{conductorId}/disponibles";
+        if (conductorId === undefined || conductorId === null)
+            throw new Error("The parameter 'conductorId' must be defined.");
+        url_ = url_.replace("{conductorId}", encodeURIComponent("" + conductorId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetVehiculosDisponiblesByConductor(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetVehiculosDisponiblesByConductor(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<VehiculoDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<VehiculoDto[]>;
+        }));
+    }
+
+    protected processGetVehiculosDisponiblesByConductor(response: HttpResponseBase): Observable<VehiculoDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(VehiculoDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<VehiculoDto[]>(null as any);
+    }
+
+    create(command: CreateVehiculoConductorCommand): Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/VehiculoConductor";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileResponse>;
+        }));
+    }
+
+    protected processCreate(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: responseBlob as any, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileResponse>(null as any);
+    }
+
+    delete(command: DeleteVehiculoConductorCommand): Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/VehiculoConductor";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileResponse>;
+        }));
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: responseBlob as any, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileResponse>(null as any);
+    }
+}
+
 export interface IVehiculosClient {
     getVehiculos(pageSize: number | undefined, pageNumber: number | undefined, descripcion: string | null | undefined, codigo: string | null | undefined, placa: string | null | undefined, status: string | null | undefined): Observable<PaginatedListOfVehiculoDto>;
     create(command: CreateVehiculoCommand): Observable<number>;
@@ -5446,6 +5801,150 @@ export interface IUpdateUnidadMedidaCommand {
     descripcionCorta?: string | undefined;
 }
 
+export class VehiculoDto implements IVehiculoDto {
+    id?: number | undefined;
+    esUsoInterno?: boolean | undefined;
+    codigo?: string | undefined;
+    placa?: string | undefined;
+    descripcion?: string | undefined;
+    detalle?: string | undefined;
+    capacidadCarga?: number | undefined;
+    status?: string | undefined;
+
+    constructor(data?: IVehiculoDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.esUsoInterno = _data["esUsoInterno"];
+            this.codigo = _data["codigo"];
+            this.placa = _data["placa"];
+            this.descripcion = _data["descripcion"];
+            this.detalle = _data["detalle"];
+            this.capacidadCarga = _data["capacidadCarga"];
+            this.status = _data["status"];
+        }
+    }
+
+    static fromJS(data: any): VehiculoDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new VehiculoDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["esUsoInterno"] = this.esUsoInterno;
+        data["codigo"] = this.codigo;
+        data["placa"] = this.placa;
+        data["descripcion"] = this.descripcion;
+        data["detalle"] = this.detalle;
+        data["capacidadCarga"] = this.capacidadCarga;
+        data["status"] = this.status;
+        return data;
+    }
+}
+
+export interface IVehiculoDto {
+    id?: number | undefined;
+    esUsoInterno?: boolean | undefined;
+    codigo?: string | undefined;
+    placa?: string | undefined;
+    descripcion?: string | undefined;
+    detalle?: string | undefined;
+    capacidadCarga?: number | undefined;
+    status?: string | undefined;
+}
+
+export class CreateVehiculoConductorCommand implements ICreateVehiculoConductorCommand {
+    vehiculoId?: number;
+    conductorId?: number;
+
+    constructor(data?: ICreateVehiculoConductorCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.vehiculoId = _data["vehiculoId"];
+            this.conductorId = _data["conductorId"];
+        }
+    }
+
+    static fromJS(data: any): CreateVehiculoConductorCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateVehiculoConductorCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["vehiculoId"] = this.vehiculoId;
+        data["conductorId"] = this.conductorId;
+        return data;
+    }
+}
+
+export interface ICreateVehiculoConductorCommand {
+    vehiculoId?: number;
+    conductorId?: number;
+}
+
+export class DeleteVehiculoConductorCommand implements IDeleteVehiculoConductorCommand {
+    vehiculoId?: number;
+    conductorId?: number;
+
+    constructor(data?: IDeleteVehiculoConductorCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.vehiculoId = _data["vehiculoId"];
+            this.conductorId = _data["conductorId"];
+        }
+    }
+
+    static fromJS(data: any): DeleteVehiculoConductorCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new DeleteVehiculoConductorCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["vehiculoId"] = this.vehiculoId;
+        data["conductorId"] = this.conductorId;
+        return data;
+    }
+}
+
+export interface IDeleteVehiculoConductorCommand {
+    vehiculoId?: number;
+    conductorId?: number;
+}
+
 export class PaginatedListOfVehiculoDto implements IPaginatedListOfVehiculoDto {
     items?: VehiculoDto[];
     pageNumber?: number;
@@ -5512,70 +6011,6 @@ export interface IPaginatedListOfVehiculoDto {
     totalCount?: number;
     hasPreviousPage?: boolean;
     hasNextPage?: boolean;
-}
-
-export class VehiculoDto implements IVehiculoDto {
-    id?: number | undefined;
-    esUsoInterno?: boolean | undefined;
-    codigo?: string | undefined;
-    placa?: string | undefined;
-    descripcion?: string | undefined;
-    detalle?: string | undefined;
-    capacidadCarga?: number | undefined;
-    status?: string | undefined;
-
-    constructor(data?: IVehiculoDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.esUsoInterno = _data["esUsoInterno"];
-            this.codigo = _data["codigo"];
-            this.placa = _data["placa"];
-            this.descripcion = _data["descripcion"];
-            this.detalle = _data["detalle"];
-            this.capacidadCarga = _data["capacidadCarga"];
-            this.status = _data["status"];
-        }
-    }
-
-    static fromJS(data: any): VehiculoDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new VehiculoDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["esUsoInterno"] = this.esUsoInterno;
-        data["codigo"] = this.codigo;
-        data["placa"] = this.placa;
-        data["descripcion"] = this.descripcion;
-        data["detalle"] = this.detalle;
-        data["capacidadCarga"] = this.capacidadCarga;
-        data["status"] = this.status;
-        return data;
-    }
-}
-
-export interface IVehiculoDto {
-    id?: number | undefined;
-    esUsoInterno?: boolean | undefined;
-    codigo?: string | undefined;
-    placa?: string | undefined;
-    descripcion?: string | undefined;
-    detalle?: string | undefined;
-    capacidadCarga?: number | undefined;
-    status?: string | undefined;
 }
 
 export class CreateVehiculoCommand implements ICreateVehiculoCommand {

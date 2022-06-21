@@ -1,0 +1,10 @@
+.lista-vehiculos {
+  list-style-type: none;
+  padding: 0;
+  max-height: 240px;
+  overflow-y: scroll;
+
+  li {
+    border-bottom: 1px solid #dee2e6;
+  }
+}

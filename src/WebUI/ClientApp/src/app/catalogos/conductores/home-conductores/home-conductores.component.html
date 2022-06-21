@@ -34,6 +34,7 @@
       <td>
         <div class="d-flex gap-2 align-items-center justify-content-center">
           <button (click)="openModalEditar(conductor)" pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-warning p-button-text"></button>
+          <button (click)="openModalVehiculos(conductor)" pButton pRipple type="button" icon="pi pi-car" class="p-button-rounded p-button-text"></button>
           <button *ngIf="isEstadoAlta(conductor)" (click)="confirmarBaja(conductor)" pButton pRipple type="button" icon="pi pi-arrow-down" class="p-button-rounded p-button-warning p-button-text"></button>
           <button *ngIf="isEstadoBaja(conductor)" (click)="confirmarAlta(conductor)" pButton pRipple type="button" icon="pi pi-arrow-up" class="p-button-rounded p-button-success p-button-text"></button>
           <button (click)="confirmarEliminar(conductor)" pButton pRipple type="button" icon="pi pi-times" class="p-button-rounded p-button-danger p-button-text"></button>

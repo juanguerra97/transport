@@ -7,6 +7,7 @@ import {HotToastService} from "@ngneat/hot-toast";
 import {getErrorMessage} from "../../../utils/errors";
 import {NewConductorComponent} from "../new-conductor/new-conductor.component";
 import {EditConductorComponent} from "../edit-conductor/edit-conductor.component";
+import {AdminVehiculosConductorComponent} from "../admin-vehiculos-conductor/admin-vehiculos-conductor.component";
 
 @Component({
   selector: 'app-home-conductores',
@@ -34,6 +35,7 @@ export class HomeConductoresComponent implements OnInit {
 
   modalNuevoAbierto = false;
   modalEditarAbierto = false;
+  modalVehiculosAbierto = false;
 
   nombre?: string = undefined;
 
@@ -223,6 +225,23 @@ export class HomeConductoresComponent implements OnInit {
           });
         }
       });
+  }
+
+  openModalVehiculos(conductor: ConductorDto) {
+    if (this.modalVehiculosAbierto) {
+      return;
+    }
+    this.modalVehiculosAbierto = true;
+    const ref = this.dialogService.open(AdminVehiculosConductorComponent, {
+      header: 'Vehiculos',
+      styleClass: 'modal-catalogo',
+      data: conductor
+    });
+    ref.onClose.subscribe({
+      next: res => {
+        this.modalVehiculosAbierto = false;
+      }
+    });
   }
 
 }

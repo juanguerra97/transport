@@ -5,6 +5,7 @@ import {HomeConductoresComponent} from './home-conductores/home-conductores.comp
 import {EditConductorComponent} from './edit-conductor/edit-conductor.component';
 import {NewConductorComponent} from './new-conductor/new-conductor.component';
 import {FormConductorComponent} from './form-conductor/form-conductor.component';
+import { AdminVehiculosConductorComponent } from './admin-vehiculos-conductor/admin-vehiculos-conductor.component';
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', component: HomeConductoresComponent},
@@ -16,6 +17,7 @@ const routes: Routes = [
     EditConductorComponent,
     NewConductorComponent,
     FormConductorComponent,
+    AdminVehiculosConductorComponent,
   ],
   imports: [
     CoreModule,
