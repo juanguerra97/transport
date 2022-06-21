@@ -90,6 +90,7 @@ export class AdministracionPedidoComponent implements OnInit {
           this.pedido = res;
           this.aprobando = false;
           this.toastService.success('El pedido fue aprobado con exito.', { position: 'bottom-center'});
+          this.cargarMovimientos(this.pedido?.id);
         },
         error: error => {
           console.error(error);
