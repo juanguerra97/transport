@@ -37,13 +37,14 @@
       <ng-template pTemplate="body" let-movimiento>
         <tr>
           <td>{{movimiento.fechaInicioProgramado|date:'dd/MM/yyyy'}}</td>
-          <td>{{movimiento.bodegaOrigen?.descripcion}}</td>
+          <td>{{movimiento.bodegaOrigen?.descripcion}}&nbsp;<span class="d-block tp-font-small"><i class="fa-solid fa-location-dot"></i>&nbsp;{{movimiento.bodegaOrigen?.ubicacion?.municipio?.descripcion}}
+            ,&nbsp;{{movimiento.bodegaOrigen?.ubicacion?.municipio?.departamento?.descripcion}}</span></td>
           <td>{{movimiento.conductor?.user?.firstName}}&nbsp;{{movimiento.conductor?.user?.lastName}}</td>
           <td>{{movimiento.vehiculo?.descripcion}}</td>
           <td class="text-center">{{movimiento.cantidad}}&nbsp;<span>{{movimiento.cantidad === 1 ? movimiento.pedidoMaterial?.material?.unidadMedida?.descripcion : movimiento.pedidoMaterial?.material?.unidadMedida?.descripcionPlural }}</span></td>
           <td>
             <div class="d-flex justify-content-center align-items-center">
-              <span class="p-badge">{{movimiento.estadoMovimientoBodega?.descripcion}}</span>
+              <span class="p-badge ESTADO-MOVIMIENTO-{{movimiento.estadoMovimientoBodega?.descripcion}}">{{movimiento.estadoMovimientoBodega?.descripcion}}</span>
             </div>
           </td>
         </tr>
