@@ -17,7 +17,7 @@
   </div>
 
   <div class="d-flex align-items-center mt-2">
-    <button *ngIf="isPendiente()" (click)="aprobar()" [disabled]="aprobando" pButton type="button" label="Aprobar" icon="pi pi-check" class="p-button-raised p-button-sm p-button-success"></button>
+    <button *ngIf="isPendiente()" (click)="aprobar()" [disabled]="aprobando" pButton type="button" label="Aprobar" [icon]="aprobando ? 'pi pi-spin pi-spinner' : 'pi pi-check'" class="p-button-raised p-button-sm p-button-success"></button>
   </div>
 
   <ng-container *ngIf="movimientos.length > 0">
