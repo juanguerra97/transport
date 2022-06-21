@@ -1359,6 +1359,82 @@ export class MaterialClient implements IMaterialClient {
     }
 }
 
+export interface IMovimientoBodegaClient {
+    getMovimientosBodegaByPedido(pedidoMaterialId: number): Observable<MovimientoBodegaDto[]>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class MovimientoBodegaClient implements IMovimientoBodegaClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    getMovimientosBodegaByPedido(pedidoMaterialId: number): Observable<MovimientoBodegaDto[]> {
+        let url_ = this.baseUrl + "/api/MovimientoBodega/byPedido/{pedidoMaterialId}";
+        if (pedidoMaterialId === undefined || pedidoMaterialId === null)
+            throw new Error("The parameter 'pedidoMaterialId' must be defined.");
+        url_ = url_.replace("{pedidoMaterialId}", encodeURIComponent("" + pedidoMaterialId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMovimientosBodegaByPedido(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMovimientosBodegaByPedido(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MovimientoBodegaDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MovimientoBodegaDto[]>;
+        }));
+    }
+
+    protected processGetMovimientosBodegaByPedido(response: HttpResponseBase): Observable<MovimientoBodegaDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(MovimientoBodegaDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<MovimientoBodegaDto[]>(null as any);
+    }
+}
+
 export interface IMunicipiosClient {
     getMunicipios(paisId: number | null | undefined, departamentoId: number | null | undefined): Observable<MunicipioDto[]>;
 }
@@ -1517,6 +1593,7 @@ export interface IPedidosClient {
     getPedidosByBodega(bodegaId: number, pageSize: number | undefined, pageNumber: number | undefined, descripcionMaterial: string | null | undefined, fechaDel: string | null | undefined, fechaAl: string | null | undefined): Observable<PaginatedListOfPedidoMaterialDto>;
     enviarPedido(pedidoMaterialId: number): Observable<FileResponse>;
     anularPedido(pedidoMaterialId: number): Observable<FileResponse>;
+    aprobarPedido(pedidoMaterialId: number): Observable<PedidoMaterialDto>;
 }
 
 @Injectable({
@@ -1916,6 +1993,57 @@ export class PedidosClient implements IPedidosClient {
             }));
         }
         return _observableOf<FileResponse>(null as any);
+    }
+
+    aprobarPedido(pedidoMaterialId: number): Observable<PedidoMaterialDto> {
+        let url_ = this.baseUrl + "/api/Pedidos/aprobar/{pedidoMaterialId}";
+        if (pedidoMaterialId === undefined || pedidoMaterialId === null)
+            throw new Error("The parameter 'pedidoMaterialId' must be defined.");
+        url_ = url_.replace("{pedidoMaterialId}", encodeURIComponent("" + pedidoMaterialId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAprobarPedido(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAprobarPedido(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PedidoMaterialDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PedidoMaterialDto>;
+        }));
+    }
+
+    protected processAprobarPedido(response: HttpResponseBase): Observable<PedidoMaterialDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PedidoMaterialDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PedidoMaterialDto>(null as any);
     }
 }
 
@@ -4997,16 +5125,22 @@ export interface IUpdateMaterialCommand {
     peso?: number | undefined;
 }
 
-export class PaginatedListOfPedidoMaterialDto implements IPaginatedListOfPedidoMaterialDto {
-    items?: PedidoMaterialDto[];
-    pageNumber?: number;
-    pageSize?: number;
-    totalPages?: number;
-    totalCount?: number;
-    hasPreviousPage?: boolean;
-    hasNextPage?: boolean;
+export class MovimientoBodegaDto implements IMovimientoBodegaDto {
+    id?: number | undefined;
+    estadoMovimientoBodega?: EstadoMovimientoBodegaDto | undefined;
+    pedidoMaterial?: PedidoMaterialDto | undefined;
+    bodegaOrigen?: BodegaDto;
+    bodegaDestino?: BodegaDto | undefined;
+    fechaInicioProgramado?: Date | undefined;
+    fechaCargado?: Date | undefined;
+    fechaDescargado?: Date | undefined;
+    material?: MaterialDto | undefined;
+    cantidad?: number | undefined;
+    detalle?: string | undefined;
+    vehiculo?: VehiculoDto | undefined;
+    conductor?: ConductorDto | undefined;
 
-    constructor(data?: IPaginatedListOfPedidoMaterialDto) {
+    constructor(data?: IMovimientoBodegaDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -5017,52 +5151,102 @@ export class PaginatedListOfPedidoMaterialDto implements IPaginatedListOfPedidoM
 
     init(_data?: any) {
         if (_data) {
-            if (Array.isArray(_data["items"])) {
-                this.items = [] as any;
-                for (let item of _data["items"])
-                    this.items!.push(PedidoMaterialDto.fromJS(item));
-            }
-            this.pageNumber = _data["pageNumber"];
-            this.pageSize = _data["pageSize"];
-            this.totalPages = _data["totalPages"];
-            this.totalCount = _data["totalCount"];
-            this.hasPreviousPage = _data["hasPreviousPage"];
-            this.hasNextPage = _data["hasNextPage"];
+            this.id = _data["id"];
+            this.estadoMovimientoBodega = _data["estadoMovimientoBodega"] ? EstadoMovimientoBodegaDto.fromJS(_data["estadoMovimientoBodega"]) : <any>undefined;
+            this.pedidoMaterial = _data["pedidoMaterial"] ? PedidoMaterialDto.fromJS(_data["pedidoMaterial"]) : <any>undefined;
+            this.bodegaOrigen = _data["bodegaOrigen"] ? BodegaDto.fromJS(_data["bodegaOrigen"]) : <any>undefined;
+            this.bodegaDestino = _data["bodegaDestino"] ? BodegaDto.fromJS(_data["bodegaDestino"]) : <any>undefined;
+            this.fechaInicioProgramado = _data["fechaInicioProgramado"] ? new Date(_data["fechaInicioProgramado"].toString()) : <any>undefined;
+            this.fechaCargado = _data["fechaCargado"] ? new Date(_data["fechaCargado"].toString()) : <any>undefined;
+            this.fechaDescargado = _data["fechaDescargado"] ? new Date(_data["fechaDescargado"].toString()) : <any>undefined;
+            this.material = _data["material"] ? MaterialDto.fromJS(_data["material"]) : <any>undefined;
+            this.cantidad = _data["cantidad"];
+            this.detalle = _data["detalle"];
+            this.vehiculo = _data["vehiculo"] ? VehiculoDto.fromJS(_data["vehiculo"]) : <any>undefined;
+            this.conductor = _data["conductor"] ? ConductorDto.fromJS(_data["conductor"]) : <any>undefined;
         }
     }
 
-    static fromJS(data: any): PaginatedListOfPedidoMaterialDto {
+    static fromJS(data: any): MovimientoBodegaDto {
         data = typeof data === 'object' ? data : {};
-        let result = new PaginatedListOfPedidoMaterialDto();
+        let result = new MovimientoBodegaDto();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.items)) {
-            data["items"] = [];
-            for (let item of this.items)
-                data["items"].push(item.toJSON());
-        }
-        data["pageNumber"] = this.pageNumber;
-        data["pageSize"] = this.pageSize;
-        data["totalPages"] = this.totalPages;
-        data["totalCount"] = this.totalCount;
-        data["hasPreviousPage"] = this.hasPreviousPage;
-        data["hasNextPage"] = this.hasNextPage;
+        data["id"] = this.id;
+        data["estadoMovimientoBodega"] = this.estadoMovimientoBodega ? this.estadoMovimientoBodega.toJSON() : <any>undefined;
+        data["pedidoMaterial"] = this.pedidoMaterial ? this.pedidoMaterial.toJSON() : <any>undefined;
+        data["bodegaOrigen"] = this.bodegaOrigen ? this.bodegaOrigen.toJSON() : <any>undefined;
+        data["bodegaDestino"] = this.bodegaDestino ? this.bodegaDestino.toJSON() : <any>undefined;
+        data["fechaInicioProgramado"] = this.fechaInicioProgramado ? this.fechaInicioProgramado.toISOString() : <any>undefined;
+        data["fechaCargado"] = this.fechaCargado ? this.fechaCargado.toISOString() : <any>undefined;
+        data["fechaDescargado"] = this.fechaDescargado ? this.fechaDescargado.toISOString() : <any>undefined;
+        data["material"] = this.material ? this.material.toJSON() : <any>undefined;
+        data["cantidad"] = this.cantidad;
+        data["detalle"] = this.detalle;
+        data["vehiculo"] = this.vehiculo ? this.vehiculo.toJSON() : <any>undefined;
+        data["conductor"] = this.conductor ? this.conductor.toJSON() : <any>undefined;
         return data;
     }
 }
 
-export interface IPaginatedListOfPedidoMaterialDto {
-    items?: PedidoMaterialDto[];
-    pageNumber?: number;
-    pageSize?: number;
-    totalPages?: number;
-    totalCount?: number;
-    hasPreviousPage?: boolean;
-    hasNextPage?: boolean;
+export interface IMovimientoBodegaDto {
+    id?: number | undefined;
+    estadoMovimientoBodega?: EstadoMovimientoBodegaDto | undefined;
+    pedidoMaterial?: PedidoMaterialDto | undefined;
+    bodegaOrigen?: BodegaDto;
+    bodegaDestino?: BodegaDto | undefined;
+    fechaInicioProgramado?: Date | undefined;
+    fechaCargado?: Date | undefined;
+    fechaDescargado?: Date | undefined;
+    material?: MaterialDto | undefined;
+    cantidad?: number | undefined;
+    detalle?: string | undefined;
+    vehiculo?: VehiculoDto | undefined;
+    conductor?: ConductorDto | undefined;
+}
+
+export class EstadoMovimientoBodegaDto implements IEstadoMovimientoBodegaDto {
+    id?: number | undefined;
+    descripcion?: string | undefined;
+
+    constructor(data?: IEstadoMovimientoBodegaDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.descripcion = _data["descripcion"];
+        }
+    }
+
+    static fromJS(data: any): EstadoMovimientoBodegaDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new EstadoMovimientoBodegaDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["descripcion"] = this.descripcion;
+        return data;
+    }
+}
+
+export interface IEstadoMovimientoBodegaDto {
+    id?: number | undefined;
+    descripcion?: string | undefined;
 }
 
 export class PedidoMaterialDto implements IPedidoMaterialDto {
@@ -5171,6 +5355,138 @@ export class EstadoPedidoMaterialDto implements IEstadoPedidoMaterialDto {
 export interface IEstadoPedidoMaterialDto {
     id?: number | undefined;
     descripcion?: string | undefined;
+}
+
+export class VehiculoDto implements IVehiculoDto {
+    id?: number | undefined;
+    esUsoInterno?: boolean | undefined;
+    codigo?: string | undefined;
+    placa?: string | undefined;
+    descripcion?: string | undefined;
+    detalle?: string | undefined;
+    capacidadCarga?: number | undefined;
+    status?: string | undefined;
+
+    constructor(data?: IVehiculoDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.esUsoInterno = _data["esUsoInterno"];
+            this.codigo = _data["codigo"];
+            this.placa = _data["placa"];
+            this.descripcion = _data["descripcion"];
+            this.detalle = _data["detalle"];
+            this.capacidadCarga = _data["capacidadCarga"];
+            this.status = _data["status"];
+        }
+    }
+
+    static fromJS(data: any): VehiculoDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new VehiculoDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["esUsoInterno"] = this.esUsoInterno;
+        data["codigo"] = this.codigo;
+        data["placa"] = this.placa;
+        data["descripcion"] = this.descripcion;
+        data["detalle"] = this.detalle;
+        data["capacidadCarga"] = this.capacidadCarga;
+        data["status"] = this.status;
+        return data;
+    }
+}
+
+export interface IVehiculoDto {
+    id?: number | undefined;
+    esUsoInterno?: boolean | undefined;
+    codigo?: string | undefined;
+    placa?: string | undefined;
+    descripcion?: string | undefined;
+    detalle?: string | undefined;
+    capacidadCarga?: number | undefined;
+    status?: string | undefined;
+}
+
+export class PaginatedListOfPedidoMaterialDto implements IPaginatedListOfPedidoMaterialDto {
+    items?: PedidoMaterialDto[];
+    pageNumber?: number;
+    pageSize?: number;
+    totalPages?: number;
+    totalCount?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
+
+    constructor(data?: IPaginatedListOfPedidoMaterialDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(PedidoMaterialDto.fromJS(item));
+            }
+            this.pageNumber = _data["pageNumber"];
+            this.pageSize = _data["pageSize"];
+            this.totalPages = _data["totalPages"];
+            this.totalCount = _data["totalCount"];
+            this.hasPreviousPage = _data["hasPreviousPage"];
+            this.hasNextPage = _data["hasNextPage"];
+        }
+    }
+
+    static fromJS(data: any): PaginatedListOfPedidoMaterialDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PaginatedListOfPedidoMaterialDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        data["pageNumber"] = this.pageNumber;
+        data["pageSize"] = this.pageSize;
+        data["totalPages"] = this.totalPages;
+        data["totalCount"] = this.totalCount;
+        data["hasPreviousPage"] = this.hasPreviousPage;
+        data["hasNextPage"] = this.hasNextPage;
+        return data;
+    }
+}
+
+export interface IPaginatedListOfPedidoMaterialDto {
+    items?: PedidoMaterialDto[];
+    pageNumber?: number;
+    pageSize?: number;
+    totalPages?: number;
+    totalCount?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
 }
 
 export class CreatePedidoMaterialCommand implements ICreatePedidoMaterialCommand {
@@ -5799,70 +6115,6 @@ export interface IUpdateUnidadMedidaCommand {
     descripcion?: string | undefined;
     descripcionPlural?: string | undefined;
     descripcionCorta?: string | undefined;
-}
-
-export class VehiculoDto implements IVehiculoDto {
-    id?: number | undefined;
-    esUsoInterno?: boolean | undefined;
-    codigo?: string | undefined;
-    placa?: string | undefined;
-    descripcion?: string | undefined;
-    detalle?: string | undefined;
-    capacidadCarga?: number | undefined;
-    status?: string | undefined;
-
-    constructor(data?: IVehiculoDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.esUsoInterno = _data["esUsoInterno"];
-            this.codigo = _data["codigo"];
-            this.placa = _data["placa"];
-            this.descripcion = _data["descripcion"];
-            this.detalle = _data["detalle"];
-            this.capacidadCarga = _data["capacidadCarga"];
-            this.status = _data["status"];
-        }
-    }
-
-    static fromJS(data: any): VehiculoDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new VehiculoDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["esUsoInterno"] = this.esUsoInterno;
-        data["codigo"] = this.codigo;
-        data["placa"] = this.placa;
-        data["descripcion"] = this.descripcion;
-        data["detalle"] = this.detalle;
-        data["capacidadCarga"] = this.capacidadCarga;
-        data["status"] = this.status;
-        return data;
-    }
-}
-
-export interface IVehiculoDto {
-    id?: number | undefined;
-    esUsoInterno?: boolean | undefined;
-    codigo?: string | undefined;
-    placa?: string | undefined;
-    descripcion?: string | undefined;
-    detalle?: string | undefined;
-    capacidadCarga?: number | undefined;
-    status?: string | undefined;
 }
 
 export class CreateVehiculoConductorCommand implements ICreateVehiculoConductorCommand {

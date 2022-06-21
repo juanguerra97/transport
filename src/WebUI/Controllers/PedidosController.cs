@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using seminario.Application.Common.Models;
 using seminario.Application.PedidoMateriales.Commands.AnularPedidoMaterialCommand;
+using seminario.Application.PedidoMateriales.Commands.AprobarPedidoMaterialCommand;
 using seminario.Application.PedidoMateriales.Commands.CreatePedidoMaterialCommand;
 using seminario.Application.PedidoMateriales.Commands.EnviarPedidoMaterialCommand;
 using seminario.Application.PedidoMateriales.Commands.UpdatePedidoMaterialCommand;
@@ -97,6 +98,16 @@ public class PedidosController : ApiControllerBase
             PedidoMaterialId = pedidoMaterialId
         });
         return NoContent();
+    }
+
+    [HttpPost("aprobar/{pedidoMaterialId}")]
+    [Authorize(Policy = "AdminPedidos")]
+    public async Task<ActionResult<PedidoMaterialDto>> AprobarPedido(int pedidoMaterialId)
+    {
+        return await Mediator.Send(new AprobarPedidoMaterialCommand
+        {
+            PedidoMaterialId = pedidoMaterialId
+        });
     }
 
 }
