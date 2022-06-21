@@ -80,45 +80,32 @@ public class AprobarPedidoMaterialCommandHandler : IRequestHandler<AprobarPedido
         var conductoresVigentes = await pedidosVigentes
             .Select(p => p.ConductorId)
             .ToListAsync(cancellationToken);
-
-         var vcCandidatos = await _context.VehiculoConductores
-            .Include(vc => vc.Conductor)
-            .Include(vc => vc.Vehiculo)
-            .Where(vc => vc.Status == "A" && vc.Conductor.Status == "A" && vc.Vehiculo.Status == "A"
-                && !vehiculosVigentes.Contains(vc.VehiculoId) && !conductoresVigentes.Contains(vc.ConductorId))
-            .OrderBy(vc => Math.Abs((double)(vc.Vehiculo.CapacidadCarga - pesoTotalPedido)))
-            .ToListAsync(cancellationToken);
-
-        if (vcCandidatos.Count == 0)
-        {
-            throw new CustomValidationException("No existen conductores o vehiculos disponibles para asignar al pedido.");
-        }
         
-        var capacidadDisponible = vcCandidatos
-            .Select(vc => vc.Vehiculo.CapacidadCarga)
-            .Sum();
-
-        if (capacidadDisponible < pesoTotalPedido)
-        {
-            throw new CustomValidationException("No existen vehiculos disponibles con la capacidad de carga necesaria para el pedido.");
-        }
-
         var pesoFaltanteAsignar = (double)pesoTotalPedido;
 
-        foreach(var candidato in vcCandidatos)
+        do
         {
+            var candidato = await _context.VehiculoConductores
+                .Include(vc => vc.Conductor)
+                .Include(vc => vc.Vehiculo)
+                .Where(vc => vc.Status == "A" && vc.Conductor.Status == "A" && vc.Vehiculo.Status == "A"
+                    && !vehiculosVigentes.Contains(vc.VehiculoId) && !conductoresVigentes.Contains(vc.ConductorId))
+                .OrderBy(vc => Math.Abs((double)(vc.Vehiculo.CapacidadCarga - pesoFaltanteAsignar)))
+                .FirstOrDefaultAsync(cancellationToken);
+
+            if (candidato == null)
+            {
+                throw new CustomValidationException("No existen vehiculos/conductores disponibles para entregar el pedido.");
+            }
+
             double cantidadAsignar = 0;
             if (candidato.Vehiculo.CapacidadCarga >= pesoFaltanteAsignar)
             {
                 cantidadAsignar = pesoFaltanteAsignar;
-            } else
-            {
-                cantidadAsignar = pesoFaltanteAsignar - (double)candidato.Vehiculo.CapacidadCarga;
             }
-
-            if (cantidadAsignar <= 0)
+            else
             {
-                break;
+                cantidadAsignar = (double)candidato.Vehiculo.CapacidadCarga;
             }
 
             var movimiento = new MovimientoBodega
@@ -146,9 +133,15 @@ public class AprobarPedidoMaterialCommandHandler : IRequestHandler<AprobarPedido
                 MovimientoBodega = movimiento
             }, cancellationToken);
 
-            pesoFaltanteAsignar = pesoFaltanteAsignar - cantidadAsignar;
-        }
+            conductoresVigentes.Add(candidato.ConductorId);
+            vehiculosVigentes.Add(candidato.VehiculoId);
 
+            pesoFaltanteAsignar = pesoFaltanteAsignar - cantidadAsignar;
+
+        }
+        while (pesoFaltanteAsignar > 0);
+
+       
         bodegaExistencias.CantidadDisponible = bodegaExistencias.CantidadDisponible - pedido.Cantidad;
         bodegaExistencias.CantidadReservada = bodegaExistencias.CantidadReservada + pedido.Cantidad;
 
