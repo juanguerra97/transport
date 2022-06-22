@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using seminario.Application.Common.Exceptions;
 using seminario.Application.Common.Interfaces;
@@ -15,10 +16,12 @@ public record CreateConductorCommand : IRequest<int?>
 public class CreateConductorCommandHandler : IRequestHandler<CreateConductorCommand, int?>
 {
     private readonly IApplicationDbContext _context;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public CreateConductorCommandHandler(IApplicationDbContext context)
+    public CreateConductorCommandHandler(IApplicationDbContext context, UserManager<ApplicationUser> userManager)
     {
         _context = context;
+        _userManager = userManager;
     }
 
     public async Task<int?> Handle(CreateConductorCommand request, CancellationToken cancellationToken)
@@ -34,6 +37,11 @@ public class CreateConductorCommandHandler : IRequestHandler<CreateConductorComm
         if (true == (await _context.Conductores.AnyAsync(c => c.UserId == request.UserId && c.Status != "X", cancellationToken)))
         {
             throw new CustomValidationException($"El usuario {user.FirstName} {user.LastName}({user.UserName}) ya se registro como conductor.");
+        }
+
+        if (!(await _userManager.IsInRoleAsync(user, "Conductor")))
+        {
+            await _userManager.AddToRoleAsync(user, "Conductor");
         }
 
         var entity = new Conductor

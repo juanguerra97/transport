@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using seminario.Application.Common.Exceptions;
 using seminario.Application.Common.Interfaces;
@@ -17,11 +18,13 @@ public class DeleteConductorCommandHandler : IRequestHandler<DeleteConductorComm
 {
     private IApplicationDbContext _context;
     private IMapper _mapper;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public DeleteConductorCommandHandler(IApplicationDbContext context, IMapper mapper)
+    public DeleteConductorCommandHandler(IApplicationDbContext context, IMapper mapper, UserManager<ApplicationUser> userManager)
     {
         _context = context;
         _mapper = mapper;
+        _userManager = userManager;
     }
 
     public async Task<ConductorDto> Handle(DeleteConductorCommand request, CancellationToken cancellationToken)
@@ -33,6 +36,11 @@ public class DeleteConductorCommandHandler : IRequestHandler<DeleteConductorComm
         if (entity == null)
         {
             throw new NotFoundException(nameof(Conductor), request.ConductorId);
+        }
+
+        if ((await _userManager.IsInRoleAsync(entity.User, "Conductor")))
+        {
+            await _userManager.RemoveFromRoleAsync(entity.User, "Conductor");
         }
 
         entity.Status = "X";
