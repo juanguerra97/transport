@@ -13,6 +13,14 @@ export abstract class EstadosPedido {
   static ANULADO_ID = 6;
 }
 
+export abstract class EstadosMovimiento {
+  static PENDIENTE_ID = 1;
+  static PROGRAMADO_ID = 2;
+  static CARGADO_ID = 3;
+  static ENTREGADO_ID = 4;
+  static ANULADO_ID = 5;
+}
+
 export abstract class EstadosVehiculo {
   static ACTIVO = 'A';
   static INACTIVO = 'I';
