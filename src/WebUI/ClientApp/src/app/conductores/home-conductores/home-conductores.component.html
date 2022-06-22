@@ -38,6 +38,13 @@
       </td>
     </tr>
   </ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="8" class="tp-font-small">
+        No tienes entregas programadas.
+      </td>
+    </tr>
+  </ng-template>
 </p-table>
 <p-paginator (onPageChange)="paginar($event)" [rows]="movimientos?.pageSize" [first]="(movimientos?.pageNumber - 1) * movimientos?.pageSize" [totalRecords]="movimientos?.totalCount" [rowsPerPageOptions]="[10, 15, 25]"></p-paginator>
 <p-confirmDialog header="Confirmaci&oacute;n" icon="pi pi-exclamation-triangle"></p-confirmDialog>
