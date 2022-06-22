@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using seminario.Application.Common.Models;
 using seminario.Application.MovimientosBodega.Commands.CargarMovimientoBodega;
 using seminario.Application.MovimientosBodega.Queries;
+using seminario.Application.MovimientosBodega.Queries.GetMovimientosBodega;
 using seminario.Application.MovimientosBodega.Queries.GetMovimientosBodegaByConductor;
 using seminario.Application.MovimientosBodega.Queries.GetMovimientosBodegaByPedido;
 
@@ -32,6 +33,23 @@ public class MovimientoBodegaController : ApiControllerBase
             DescripcionMaterial = descripcionMaterial,
             BodegaOrigenId = bodegaOrigenId,
             BodegaDestinoId = bodegaDestinoId,
+        });
+    }
+
+    [HttpGet("byBodegaDestino/{bodegaDestinoId}")]
+    [Authorize(Policy = "AdminBodega")]
+    public async Task<ActionResult<PaginatedList<MovimientoBodegaDto>>> GetMovimientosByBodegaDestino(
+        int bodegaDestinoId, int pageSize = 10, int pageNumber = 1, string? descripcionMaterial = null, int? bodegaOrigenId = null, int? conductorId = null, int? vehiculoId = null)
+    {
+        return await Mediator.Send(new GetMovimientosBodegaQuery
+        {
+            PageSize = pageSize,
+            PageNumber = pageNumber,
+            DescripcionMaterial = descripcionMaterial,
+            BodegaOrigenId = bodegaOrigenId,
+            BodegaDestinoId = bodegaDestinoId,
+            ConductorId = conductorId,
+            VehiculoId = vehiculoId,
         });
     }
 
