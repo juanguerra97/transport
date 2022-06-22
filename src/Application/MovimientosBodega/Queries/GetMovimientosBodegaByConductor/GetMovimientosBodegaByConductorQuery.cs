@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using seminario.Application.Common.Constants;
 using seminario.Application.Common.Exceptions;
 using seminario.Application.Common.Interfaces;
 using seminario.Application.Common.Models;
@@ -47,12 +48,15 @@ public class GetMovimientosBodegaByConductorQueryHandler : IRequestHandler<GetMo
         return await PaginatedList<MovimientoBodegaDto>.CreateAsync(
             _context.MovimientoBodegas
             .Where(m => m.Status != "X" && m.ConductorId == conductor.Id
+                && (ESTADOS.Contains(m.EstadoMovimientoBodegaId))
                 && (request.DescripcionMaterial == null || EF.Functions.Like((m.PedidoMaterial.Material.Descripcion + " " + m.PedidoMaterial.Material.Detalle).ToUpper(), descripcionLike))
                 && (request.BodegaOrigenId == null || m.BodegaOrigenId == request.BodegaOrigenId)
                 && (request.BodegaDestinoId == null || m.BodegaDestinoId == request.BodegaDestinoId))
-            .OrderBy(m => Math.Abs(m.FechaInicioProgramado.Value.Ticks - todayDate.Ticks))
-            .ThenBy(m => m.Id)
+            .OrderBy(m => m.Id)
             .ProjectTo<MovimientoBodegaDto>(_mapper.ConfigurationProvider)
             , request.PageNumber, request.PageSize);
     }
+
+    private static readonly int?[] ESTADOS = new int?[] { EstadosMovimientoBodegaConstants.PROGRAMADO.Id, EstadosMovimientoBodegaConstants.CARGADO.Id, EstadosMovimientoBodegaConstants.ENTREGADO.Id };
+
 }
