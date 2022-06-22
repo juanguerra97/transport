@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using seminario.Application.Common.Models;
-using seminario.Application.MovimientosBodega.Commands;
+using seminario.Application.MovimientosBodega.Commands.CargarMovimientoBodega;
 using seminario.Application.MovimientosBodega.Queries;
 using seminario.Application.MovimientosBodega.Queries.GetMovimientosBodegaByConductor;
 using seminario.Application.MovimientosBodega.Queries.GetMovimientosBodegaByPedido;

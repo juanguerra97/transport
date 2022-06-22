@@ -7,7 +7,7 @@ using seminario.Application.Common.Interfaces;
 using seminario.Application.MovimientosBodega.Queries;
 using seminario.Domain.Entities;
 
-namespace seminario.Application.MovimientosBodega.Commands;
+namespace seminario.Application.MovimientosBodega.Commands.CargarMovimientoBodega;
 
 public record CargarMovimientoBodegaCommand : IRequest<MovimientoBodegaDto>
 {
