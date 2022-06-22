@@ -60,6 +60,17 @@ export class MenuService {
               });
             }
           }
+          if (user.role?.includes(Roles.CONDUCTOR)) {
+            menu.push({
+              title: true,
+              name: 'Conductores'
+            });
+            menu.push({
+              name: 'Entregas',
+              icon: 'fa-solid fa-truck',
+              url: '/entregas'
+            });
+          }
           this._menuSubject.next(menu);
         }
       }
