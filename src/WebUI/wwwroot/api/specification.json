@@ -1075,6 +1075,43 @@
         ]
       }
     },
+    "/api/MovimientoBodega/cargar/{movimientoBodegaId}": {
+      "post": {
+        "tags": [
+          "MovimientoBodega"
+        ],
+        "operationId": "MovimientoBodega_CargarMovimiento",
+        "parameters": [
+          {
+            "name": "movimientoBodegaId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MovimientoBodegaDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
     "/api/Municipios": {
       "get": {
         "tags": [
