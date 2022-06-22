@@ -1361,6 +1361,7 @@ export class MaterialClient implements IMaterialClient {
 
 export interface IMovimientoBodegaClient {
     getMovimientosBodegaByPedido(pedidoMaterialId: number): Observable<MovimientoBodegaDto[]>;
+    getMovimientosBodegaByConductor(pageSize: number | undefined, pageNumber: number | undefined, descripcionMaterial: string | null | undefined, bodegaOrigenId: number | null | undefined, bodegaDestinoId: number | null | undefined): Observable<PaginatedListOfMovimientoBodegaDto>;
 }
 
 @Injectable({
@@ -1432,6 +1433,68 @@ export class MovimientoBodegaClient implements IMovimientoBodegaClient {
             }));
         }
         return _observableOf<MovimientoBodegaDto[]>(null as any);
+    }
+
+    getMovimientosBodegaByConductor(pageSize: number | undefined, pageNumber: number | undefined, descripcionMaterial: string | null | undefined, bodegaOrigenId: number | null | undefined, bodegaDestinoId: number | null | undefined): Observable<PaginatedListOfMovimientoBodegaDto> {
+        let url_ = this.baseUrl + "/api/MovimientoBodega/byConductor?";
+        if (pageSize === null)
+            throw new Error("The parameter 'pageSize' cannot be null.");
+        else if (pageSize !== undefined)
+            url_ += "pageSize=" + encodeURIComponent("" + pageSize) + "&";
+        if (pageNumber === null)
+            throw new Error("The parameter 'pageNumber' cannot be null.");
+        else if (pageNumber !== undefined)
+            url_ += "pageNumber=" + encodeURIComponent("" + pageNumber) + "&";
+        if (descripcionMaterial !== undefined && descripcionMaterial !== null)
+            url_ += "descripcionMaterial=" + encodeURIComponent("" + descripcionMaterial) + "&";
+        if (bodegaOrigenId !== undefined && bodegaOrigenId !== null)
+            url_ += "bodegaOrigenId=" + encodeURIComponent("" + bodegaOrigenId) + "&";
+        if (bodegaDestinoId !== undefined && bodegaDestinoId !== null)
+            url_ += "bodegaDestinoId=" + encodeURIComponent("" + bodegaDestinoId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMovimientosBodegaByConductor(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMovimientosBodegaByConductor(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PaginatedListOfMovimientoBodegaDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PaginatedListOfMovimientoBodegaDto>;
+        }));
+    }
+
+    protected processGetMovimientosBodegaByConductor(response: HttpResponseBase): Observable<PaginatedListOfMovimientoBodegaDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PaginatedListOfMovimientoBodegaDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PaginatedListOfMovimientoBodegaDto>(null as any);
     }
 }
 
@@ -5419,6 +5482,74 @@ export interface IVehiculoDto {
     detalle?: string | undefined;
     capacidadCarga?: number | undefined;
     status?: string | undefined;
+}
+
+export class PaginatedListOfMovimientoBodegaDto implements IPaginatedListOfMovimientoBodegaDto {
+    items?: MovimientoBodegaDto[];
+    pageNumber?: number;
+    pageSize?: number;
+    totalPages?: number;
+    totalCount?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
+
+    constructor(data?: IPaginatedListOfMovimientoBodegaDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(MovimientoBodegaDto.fromJS(item));
+            }
+            this.pageNumber = _data["pageNumber"];
+            this.pageSize = _data["pageSize"];
+            this.totalPages = _data["totalPages"];
+            this.totalCount = _data["totalCount"];
+            this.hasPreviousPage = _data["hasPreviousPage"];
+            this.hasNextPage = _data["hasNextPage"];
+        }
+    }
+
+    static fromJS(data: any): PaginatedListOfMovimientoBodegaDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PaginatedListOfMovimientoBodegaDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        data["pageNumber"] = this.pageNumber;
+        data["pageSize"] = this.pageSize;
+        data["totalPages"] = this.totalPages;
+        data["totalCount"] = this.totalCount;
+        data["hasPreviousPage"] = this.hasPreviousPage;
+        data["hasNextPage"] = this.hasNextPage;
+        return data;
+    }
+}
+
+export interface IPaginatedListOfMovimientoBodegaDto {
+    items?: MovimientoBodegaDto[];
+    pageNumber?: number;
+    pageSize?: number;
+    totalPages?: number;
+    totalCount?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
 }
 
 export class PaginatedListOfPedidoMaterialDto implements IPaginatedListOfPedidoMaterialDto {
