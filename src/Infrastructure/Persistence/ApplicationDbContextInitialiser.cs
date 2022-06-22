@@ -77,6 +77,12 @@ public class ApplicationDbContextInitialiser
             await _roleManager.CreateAsync(adminPedidosRole);
         }
 
+        var conductorRole = new IdentityRole("Conductor");
+        if (_roleManager.Roles.All(r => r.Name != conductorRole.Name))
+        {
+            await _roleManager.CreateAsync(conductorRole);
+        }
+
         // Default users
         var administrator = new ApplicationUser { UserName = "administrator@localhost", Email = "administrator@localhost", FirstName = "Admin", LastName = "Umg" };
 
