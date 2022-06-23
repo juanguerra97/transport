@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using seminario.Application.Common.Models;
 using seminario.Application.MovimientosBodega.Commands.CargarMovimientoBodega;
+using seminario.Application.MovimientosBodega.Commands.EntregarMovimientoBodega;
 using seminario.Application.MovimientosBodega.Queries;
 using seminario.Application.MovimientosBodega.Queries.GetMovimientosBodega;
 using seminario.Application.MovimientosBodega.Queries.GetMovimientosBodegaByConductor;
@@ -60,6 +61,16 @@ public class MovimientoBodegaController : ApiControllerBase
         return await Mediator.Send(new CargarMovimientoBodegaCommand
         {
            MovimientoBodegaId = movimientoBodegaId
+        });
+    }
+
+    [HttpPost("entregar/{movimientoBodegaId}")]
+    [Authorize(Policy = "AdminBodega")]
+    public async Task<ActionResult<MovimientoBodegaDto>> EntregarMovimiento(int movimientoBodegaId)
+    {
+        return await Mediator.Send(new EntregarMovimientoBodegaCommand
+        {
+            MovimientoBodegaId = movimientoBodegaId
         });
     }
 

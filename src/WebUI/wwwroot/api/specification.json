@@ -1208,6 +1208,43 @@
         ]
       }
     },
+    "/api/MovimientoBodega/entregar/{movimientoBodegaId}": {
+      "post": {
+        "tags": [
+          "MovimientoBodega"
+        ],
+        "operationId": "MovimientoBodega_EntregarMovimiento",
+        "parameters": [
+          {
+            "name": "movimientoBodegaId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MovimientoBodegaDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
     "/api/Municipios": {
       "get": {
         "tags": [
