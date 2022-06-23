@@ -52,7 +52,7 @@ public class GetMovimientosBodegaByConductorQueryHandler : IRequestHandler<GetMo
                 && (request.DescripcionMaterial == null || EF.Functions.Like((m.PedidoMaterial.Material.Descripcion + " " + m.PedidoMaterial.Material.Detalle).ToUpper(), descripcionLike))
                 && (request.BodegaOrigenId == null || m.BodegaOrigenId == request.BodegaOrigenId)
                 && (request.BodegaDestinoId == null || m.BodegaDestinoId == request.BodegaDestinoId))
-            .OrderBy(m => m.Id)
+            .OrderByDescending(m => m.Id)
             .ProjectTo<MovimientoBodegaDto>(_mapper.ConfigurationProvider)
             , request.PageNumber, request.PageSize);
     }
