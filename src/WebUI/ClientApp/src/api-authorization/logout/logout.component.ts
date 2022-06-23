@@ -29,7 +29,7 @@ export class LogoutComponent implements OnInit {
           await this.logout(this.getReturnUrl());
         } else {
           // This prevents regular links to <app>/authentication/logout from triggering a logout
-          this.message.next('The logout was not initiated from within the page.');
+          this.message.next('La petición de cierre de sesión no se inició desde la página.');
         }
 
         break;
@@ -37,10 +37,10 @@ export class LogoutComponent implements OnInit {
         await this.processLogoutCallback();
         break;
       case LogoutActions.LoggedOut:
-        this.message.next('You successfully logged out!');
+        this.message.next('Se ha cerrado la sesión!');
         break;
       default:
-        throw new Error(`Invalid action '${action}'`);
+        throw new Error(`Operación inválida '${action}'`);
     }
   }
 
@@ -61,10 +61,10 @@ export class LogoutComponent implements OnInit {
           this.message.next(result.message);
           break;
         default:
-          throw new Error('Invalid authentication result status.');
+          throw new Error('Resultado de autenticación inválido.');
       }
     } else {
-      this.message.next('You successfully logged out!');
+      this.message.next('Se ha cerrado sesión!');
     }
   }
 
@@ -75,7 +75,7 @@ export class LogoutComponent implements OnInit {
       case AuthenticationResultStatus.Redirect:
         // There should not be any redirects as the only time completeAuthentication finishes
         // is when we are doing a redirect sign in flow.
-        throw new Error('Should not redirect.');
+        throw new Error('No debe redireccionar.');
       case AuthenticationResultStatus.Success:
         await this.navigateToReturnUrl(this.getReturnUrl(result.state));
         break;
@@ -83,7 +83,7 @@ export class LogoutComponent implements OnInit {
         this.message.next(result.message);
         break;
       default:
-        throw new Error('Invalid authentication result status.');
+        throw new Error('Resultado de autenticación inválido.');
     }
   }
 
