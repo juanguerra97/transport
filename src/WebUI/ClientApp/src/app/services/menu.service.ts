@@ -30,13 +30,13 @@ export class MenuService {
                 name: 'Catálogos',
                 icon: 'fa fa-solid fa-table',
                 children: [
-                  {name: 'Plantas', url: '/admin/catalogo/plantas'},
-                  {name: 'Bodegas', url: '/admin/catalogo/bodegas'},
-                  {name: 'Materiales', url: '/admin/catalogo/materiales'},
-                  {name: 'Medidas', url: '/admin/catalogo/medidas'},
-                  {name: 'Proveedores', url: '/admin/catalogo/proveedores'},
-                  {name: 'Vehiculos', url: '/admin/catalogo/vehiculos'},
-                  {name: 'Conductores', url: '/admin/catalogo/conductores'}
+                  {name: 'Plantas', url: '/admin/catalogo/plantas', icon: 'fa-solid fa-house'},
+                  {name: 'Bodegas', url: '/admin/catalogo/bodegas', icon: 'fa-solid fa-warehouse'},
+                  {name: 'Materiales', url: '/admin/catalogo/materiales', icon: 'fa-solid fa-arrow-trend-up'},
+                  {name: 'Medidas', url: '/admin/catalogo/medidas', icon: 'fa-solid fa-weight-scale'},
+                  {name: 'Proveedores', url: '/admin/catalogo/proveedores', icon: 'fa-solid fa-user-tie'},
+                  {name: 'Vehiculos', url: '/admin/catalogo/vehiculos', icon: 'fa-solid fa-car'},
+                  {name: 'Conductores', url: '/admin/catalogo/conductores', icon: 'fa-solid fa-person-biking'}
                 ]
               });
           }
