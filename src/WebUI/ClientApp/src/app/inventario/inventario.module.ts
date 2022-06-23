@@ -7,6 +7,7 @@ import { NewIngresoMaterialComponent } from './new-ingreso-material/new-ingreso-
 import { PedidosBodegaComponent } from './pedidos-bodega/pedidos-bodega.component';
 import { NewPedidoMaterialComponent } from './new-pedido-material/new-pedido-material.component';
 import { EditPedidoMaterialComponent } from './edit-pedido-material/edit-pedido-material.component';
+import { ListMovimientosComponent } from './list-movimientos/list-movimientos.component';
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', component: HomeInventarioComponent},
@@ -21,6 +22,7 @@ const routes: Routes = [
     PedidosBodegaComponent,
     NewPedidoMaterialComponent,
     EditPedidoMaterialComponent,
+    ListMovimientosComponent,
   ],
   imports: [
     CoreModule,

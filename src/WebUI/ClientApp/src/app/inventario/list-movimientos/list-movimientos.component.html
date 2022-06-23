@@ -1,0 +1,50 @@
+<p-table [value]="movimientos?.items" [loading]="loadingMovimientos" [paginator]="false" [rows]="movimientos?.pageSize" responsiveLayout="scroll">
+  <ng-template pTemplate="header">
+    <tr class="tp-font-small">
+      <th>Fecha</th>
+      <th>Origen</th>
+      <th>Conductor</th>
+      <th>Veh&iacute;culo</th>
+      <th>Material</th>
+      <th class="text-center">Cantidad</th>
+      <th class="text-center">Estado</th>
+      <th class="text-center">Acci&oacute;n</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-movimiento>
+    <tr>
+      <td>{{movimiento.fechaInicioProgramado|date:'dd/MM/yyyy'}}</td>
+      <td>{{movimiento.bodegaOrigen?.descripcion}}&nbsp;<span class="d-block tp-font-small"><i class="fa-solid fa-location-dot"></i>&nbsp;{{movimiento.bodegaOrigen?.ubicacion?.municipio?.descripcion}}
+        ,&nbsp;{{movimiento.bodegaOrigen?.ubicacion?.municipio?.departamento?.descripcion}}</span></td>
+      <td>
+        <span class="d-block tp-font-small">{{movimiento.conductor?.noLicencia}}</span>
+        {{movimiento.conductor?.user?.firstName}}&nbsp;{{movimiento.conductor?.user?.lastName}}
+      </td>
+      <td>
+        <span class="d-block tp-font-small">{{movimiento.vehiculo?.codigo}}</span>
+        {{movimiento.vehiculo?.descripcion}}
+      </td>
+      <td>{{movimiento.pedidoMaterial?.material?.descripcion}}</td>
+      <td class="text-center">{{movimiento.cantidad}}&nbsp;<span>{{movimiento.cantidad === 1 ? movimiento.pedidoMaterial?.material?.unidadMedida?.descripcion : movimiento.pedidoMaterial?.material?.unidadMedida?.descripcionPlural }}</span></td>
+      <td>
+        <div class="d-flex justify-content-center align-items-center">
+          <span class="p-badge ESTADO-MOVIMIENTO-{{movimiento.estadoMovimientoBodega?.descripcion}}">{{movimiento.estadoMovimientoBodega?.descripcion}}</span>
+        </div>
+      </td>
+      <td>
+        <div class="d-flex gap-2 align-items-center justify-content-center">
+          <button *ngIf="isCargado(movimiento)" (click)="confirmarEntregar(movimiento)" pButton pRipple type="button" icon="pi pi-check" class="p-button-rounded p-button-warning p-button-text" pTooltip="Entregado" tooltipPosition="bottom"></button>
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="8" class="tp-font-small">
+        No se encontraron entregas.
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+<p-paginator (onPageChange)="paginar($event)" [rows]="movimientos?.pageSize" [first]="(movimientos?.pageNumber - 1) * movimientos?.pageSize" [totalRecords]="movimientos?.totalCount" [rowsPerPageOptions]="[10, 15, 25]"></p-paginator>
+<p-confirmDialog key="confirmListMovimientos" header="Confirmaci&oacute;n" icon="pi pi-exclamation-triangle"></p-confirmDialog>

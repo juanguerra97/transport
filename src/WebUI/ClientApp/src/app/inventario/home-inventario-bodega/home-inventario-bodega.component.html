@@ -60,6 +60,9 @@
       <p-tabPanel header="Pedidos" leftIcon="fa-solid fa-cart-shopping">
         <app-pedidos-bodega [bodega]="bodega"></app-pedidos-bodega>
       </p-tabPanel>
+      <p-tabPanel header="Entregas" leftIcon="fa-solid fa-truck">
+        <app-list-movimientos [bodega]="bodega"></app-list-movimientos>
+      </p-tabPanel>
     </p-tabView>
 
 
