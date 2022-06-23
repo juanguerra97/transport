@@ -23,9 +23,6 @@ public class MovimientoBodega : AuditableEntity
 
     public DateTime? FechaDescargado { get; set; }
 
-    public int? MaterialId { get; set; }
-    public Material? Material { get; set; }
-
     public double? Cantidad { get; set; }
 
     public string? Detalle { get; set; }

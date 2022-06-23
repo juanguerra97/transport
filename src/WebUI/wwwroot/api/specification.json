@@ -3734,14 +3734,6 @@
             "format": "date-time",
             "nullable": true
           },
-          "material": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/MaterialDto"
-              }
-            ]
-          },
           "cantidad": {
             "type": "number",
             "format": "double",

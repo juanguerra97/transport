@@ -22,7 +22,7 @@ public class GetUnidadesMedidaQueryHandler : IRequestHandler<GetUnidadesMedidaQu
 
     public async Task<List<UnidadMedidaDto>> Handle(GetUnidadesMedidaQuery request, CancellationToken cancellationToken)
     {
-        return await _context.UnidadMedidas
+        return await _context.UnidadMedida
             .Where(u => u.Status == "A")
             .OrderBy(u => u.Descripcion)
             .ThenBy(u => u.DescripcionCorta)

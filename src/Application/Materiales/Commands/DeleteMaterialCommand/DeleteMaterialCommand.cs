@@ -25,7 +25,7 @@ public class DeleteMaterialCommandHandler : IRequestHandler<DeleteMaterialComman
 
     public async Task<MaterialDto> Handle(DeleteMaterialCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _context.Materiales
+        var entity = await _context.Material
             .FirstOrDefaultAsync(m => m.Id == request.MaterialId && m.Status == "A", cancellationToken);
 
         if (entity == null)

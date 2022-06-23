@@ -31,7 +31,7 @@ public class UpdateVehiculoCommandHandler : IRequestHandler<UpdateVehiculoComman
 
     public async Task<VehiculoDto> Handle(UpdateVehiculoCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _context.Vehiculos
+        var entity = await _context.Vehiculo
             .FirstOrDefaultAsync(v => v.Id == request.VehiculoId && v.Status != "X", cancellationToken);
         if (entity == null)
         {

@@ -24,7 +24,7 @@ public class GetProveedorByIdQueryHandler : IRequestHandler<GetProveedorByIdQuer
 
     public async Task<ProveedorDto> Handle(GetProveedorByIdQuery request, CancellationToken cancellationToken)
     {
-        var entity = await _context.ProveedorMateriales
+        var entity = await _context.ProveedorMaterial
             .FirstOrDefaultAsync(p => p.Id == request.ProveedorId && p.Status == "A");
         if (entity == null)
         {

@@ -34,7 +34,7 @@ public class UpdateMaterialCommandHandler : IRequestHandler<UpdateMaterialComman
 
     public async Task<MaterialDto> Handle(UpdateMaterialCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _context.Materiales
+        var entity = await _context.Material
             .Include(m => m.TipoMaterial)
             .Include(m => m.UnidadMedida)
             .FirstOrDefaultAsync(m => m.Id == request.MaterialId && m.Status == "A", cancellationToken);
@@ -46,8 +46,8 @@ public class UpdateMaterialCommandHandler : IRequestHandler<UpdateMaterialComman
 
         entity.Descripcion = request.Descripcion;
         entity.Detalle = request.Detalle;
-        entity.TipoMaterial = await _context.TipoMateriales.FirstOrDefaultAsync(t => t.Id == request.TipoMaterialId && t.Status == "A", cancellationToken);
-        entity.UnidadMedida = await _context.UnidadMedidas.FirstOrDefaultAsync(u => u.Id == request.UnidadMedidaId && u.Status == "A", cancellationToken);
+        entity.TipoMaterial = await _context.TipoMaterial.FirstOrDefaultAsync(t => t.Id == request.TipoMaterialId && t.Status == "A", cancellationToken);
+        entity.UnidadMedida = await _context.UnidadMedida.FirstOrDefaultAsync(u => u.Id == request.UnidadMedidaId && u.Status == "A", cancellationToken);
         entity.Peso = request.Peso;
 
         await _context.SaveChangesAsync(cancellationToken);

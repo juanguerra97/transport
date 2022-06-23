@@ -24,7 +24,7 @@ public class DeleteVehiculoConductorCommandHandler : IRequestHandler<DeleteVehic
     public async Task<Unit> Handle(DeleteVehiculoConductorCommand request, CancellationToken cancellationToken)
     {
 
-        var entity = await _context.VehiculoConductores
+        var entity = await _context.VehiculoConductor
             .FirstOrDefaultAsync(vc => vc.VehiculoId == request.VehiculoId && vc.ConductorId == vc.ConductorId && vc.Status == "A", cancellationToken);
 
         if (entity == null)

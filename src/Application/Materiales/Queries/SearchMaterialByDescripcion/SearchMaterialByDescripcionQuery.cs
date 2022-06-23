@@ -25,7 +25,7 @@ public class SearchMaterialByDescripcionQueryHandler : IRequestHandler<SearchMat
     public async Task<List<MaterialDto>> Handle(SearchMaterialByDescripcionQuery request, CancellationToken cancellationToken)
     {
         var descripcionLike = "%" + request.Descripcion.Replace(" ", "%").ToUpper() + "%";
-        return await _context.Materiales
+        return await _context.Material
             .Where(m => m.Status == "A" && EF.Functions.Like(m.Descripcion.ToUpper(), descripcionLike))
             .Take(request.MaxResults)
             .ProjectTo<MaterialDto>(_mapper.ConfigurationProvider)

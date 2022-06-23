@@ -31,7 +31,7 @@ public class UpdateUnidadMedidaCommandHandler : IRequestHandler<UpdateUnidadMedi
 
     public async Task<UnidadMedidaDto> Handle(UpdateUnidadMedidaCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _context.UnidadMedidas
+        var entity = await _context.UnidadMedida
             .FirstOrDefaultAsync(u => u.Id == request.UnidadMedidaId, cancellationToken);
 
         if (entity == null)

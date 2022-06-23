@@ -40,17 +40,17 @@ public class CreatePlantaCommandValidator : AbstractValidator<CreatePlantaComman
 
     public async Task<bool> MunicipioExists(int? municipioId, CancellationToken cancellationToken)
     {
-        return await _context.Municipios.AnyAsync(m => m.Id == municipioId);
+        return await _context.Municipio.AnyAsync(m => m.Id == municipioId);
     }
 
     public async Task<bool> TipoPlantaExists(int? tipoPlantaId, CancellationToken cancellationToken)
     {
-        return await _context.TipoPlantas.AnyAsync(t => t.Id == tipoPlantaId);
+        return await _context.TipoPlanta.AnyAsync(t => t.Id == tipoPlantaId);
     }
 
     public async Task<bool> EncargadoExists(string encargadoId, CancellationToken cancellationToken)
     {
-        return await _context.ApplicationUsers.AnyAsync(u => u.Id == encargadoId);
+        return await _context.ApplicationUser.AnyAsync(u => u.Id == encargadoId);
     }
 
 }

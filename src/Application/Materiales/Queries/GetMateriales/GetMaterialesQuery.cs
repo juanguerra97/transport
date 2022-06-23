@@ -26,7 +26,7 @@ public class GetMaterialesQueryHandler : IRequestHandler<GetMaterialesQuery, Pag
     public async Task<PaginatedList<MaterialDto>> Handle(GetMaterialesQuery request, CancellationToken cancellationToken)
     {
         return await PaginatedList<MaterialDto>.CreateAsync(
-            _context.Materiales
+            _context.Material
             .Where(m => m.Status == "A" && (request.TipoMaterialId == null || m.TipoMaterialId == request.TipoMaterialId))
             .OrderBy(m => m.Id)
             .ProjectTo<MaterialDto>(_mapper.ConfigurationProvider)

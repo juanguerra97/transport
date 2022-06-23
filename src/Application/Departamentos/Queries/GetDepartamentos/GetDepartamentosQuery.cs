@@ -23,7 +23,7 @@ public class GetDepartamentosQueryHandler : IRequestHandler<GetDepartamentosQuer
 
     public async Task<List<DepartamentoDto>> Handle(GetDepartamentosQuery request, CancellationToken cancellationToken)
     {
-        return await _context.Departamentos
+        return await _context.Departamento
             .Where(d => d.Status == "A" && (request.PaisId == null || d.PaisId == request.PaisId))
             .OrderBy(d => d.PaisId)
             .ThenBy(d => d.Descripcion)

@@ -24,7 +24,7 @@ public class GetUnidadMedidaByIdQueryHandler : IRequestHandler<GetUnidadMedidaBy
 
     public async Task<UnidadMedidaDto> Handle(GetUnidadMedidaByIdQuery request, CancellationToken cancellationToken)
     {
-        var entity = await _context.UnidadMedidas
+        var entity = await _context.UnidadMedida
             .FirstOrDefaultAsync(p => p.Id == request.UnidadMedidaId, cancellationToken);
 
         if (entity is null)

@@ -27,7 +27,7 @@ public class CargarMovimientoBodegaCommandHandler : IRequestHandler<CargarMovimi
 
     public async Task<MovimientoBodegaDto> Handle(CargarMovimientoBodegaCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _context.MovimientoBodegas
+        var entity = await _context.MovimientoBodega
             .Include(m => m.EstadoMovimientoBodega)
             .Include(m => m.PedidoMaterial.Material.UnidadMedida)
             .FirstOrDefaultAsync(m => m.Id == request.MovimientoBodegaId && m.Status != "X", cancellationToken);
@@ -44,14 +44,14 @@ public class CargarMovimientoBodegaCommandHandler : IRequestHandler<CargarMovimi
 
         entity.EstadoMovimientoBodegaId = EstadosMovimientoBodegaConstants.CARGADO.Id;
 
-        await _context.BitacoraEstadoMovimientoBodegas.AddAsync(new BitacoraEstadoMovimientoBodega
+        await _context.BitacoraEstadoMovimientoBodega.AddAsync(new BitacoraEstadoMovimientoBodega
         {
             MovimientoBodegaId = entity.Id,
             EstadoMovimientoBodegaId = EstadosMovimientoBodegaConstants.CARGADO.Id
         }, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 
-        entity = await _context.MovimientoBodegas
+        entity = await _context.MovimientoBodega
             .Include(m => m.EstadoMovimientoBodega)
             .Include(m => m.PedidoMaterial.Material.UnidadMedida)
             .Include(m => m.BodegaOrigen.Ubicacion.Municipio.Departamento.Pais)

@@ -22,7 +22,7 @@ public class GetPlantasQueryHandler : IRequestHandler<GetPlantasQuery, List<Plan
     }
     public async Task<List<PlantaDto>> Handle(GetPlantasQuery request, CancellationToken cancellationToken)
     {
-        return await _context.Plantas
+        return await _context.Planta
             .Where(p => p.Status == "A")
             .OrderBy(p => p.Descripcion).ThenBy(p => p.Id)
             .ProjectTo<PlantaDto>(_mapper.ConfigurationProvider)

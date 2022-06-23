@@ -30,7 +30,7 @@ public class CreateBodegaCommandHandler : IRequestHandler<CreateBodegaCommand, i
     public async Task<int?> Handle(CreateBodegaCommand request, CancellationToken cancellationToken)
     {
 
-        var user = await _context.ApplicationUsers
+        var user = await _context.ApplicationUser
             .FirstOrDefaultAsync(u => u.Id == request.EncargadoId, cancellationToken);
 
         if (!(await _userManager.IsInRoleAsync(user, "AdminBodega")))
@@ -46,7 +46,7 @@ public class CreateBodegaCommandHandler : IRequestHandler<CreateBodegaCommand, i
             Direccion = request.Direccion,
             MunicipioId = request.MunicipioId,
         };
-        _context.Ubicaciones.Add(ubicacion);
+        _context.Ubicacion.Add(ubicacion);
 
         var bodega = new Bodega
         {
@@ -59,7 +59,7 @@ public class CreateBodegaCommandHandler : IRequestHandler<CreateBodegaCommand, i
                 User = user
             }
         };
-        _context.Bodegas.Add(bodega);
+        _context.Bodega.Add(bodega);
 
         await _context.SaveChangesAsync(cancellationToken);
 

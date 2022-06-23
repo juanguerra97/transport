@@ -26,7 +26,7 @@ public class CreateConductorCommandHandler : IRequestHandler<CreateConductorComm
 
     public async Task<int?> Handle(CreateConductorCommand request, CancellationToken cancellationToken)
     {
-        var user = await _context.ApplicationUsers
+        var user = await _context.ApplicationUser
             .FirstOrDefaultAsync(u => u.Id == request.UserId, cancellationToken);
 
         if (user == null)
@@ -34,7 +34,7 @@ public class CreateConductorCommandHandler : IRequestHandler<CreateConductorComm
             throw new NotFoundException(nameof(ApplicationUser), request.UserId);
         }
 
-        if (true == (await _context.Conductores.AnyAsync(c => c.UserId == request.UserId && c.Status != "X", cancellationToken)))
+        if (true == (await _context.Conductor.AnyAsync(c => c.UserId == request.UserId && c.Status != "X", cancellationToken)))
         {
             throw new CustomValidationException($"El usuario {user.FirstName} {user.LastName}({user.UserName}) ya se registro como conductor.");
         }
@@ -50,7 +50,7 @@ public class CreateConductorCommandHandler : IRequestHandler<CreateConductorComm
             NoLicencia = request.NoLicencia
         };
 
-        await _context.Conductores.AddAsync(entity, cancellationToken);
+        await _context.Conductor.AddAsync(entity, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 
         return entity.Id;

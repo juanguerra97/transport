@@ -25,21 +25,21 @@ public class CreateIngresoMaterialCommandHandler : IRequestHandler<CreateIngreso
 
     public async Task<int?> Handle(CreateIngresoMaterialCommand request, CancellationToken cancellationToken)
     {
-        var proveedor = await _context.ProveedorMateriales
+        var proveedor = await _context.ProveedorMaterial
             .FirstOrDefaultAsync(p => p.Id == request.ProveedorMaterialId && p.Status == "A", cancellationToken);
         if (proveedor == null)
         {
             throw new NotFoundException(nameof(ProveedorMaterial), request.ProveedorMaterialId);
         }
 
-        var bodega = await _context.Bodegas
+        var bodega = await _context.Bodega
             .FirstOrDefaultAsync(b => b.Id == request.BodegaId && b.Status == "A", cancellationToken);
         if (bodega == null)
         {
             throw new NotFoundException(nameof(Bodega), request.BodegaId);
         }
 
-        var material = await _context.Materiales
+        var material = await _context.Material
             .FirstOrDefaultAsync(m => m.Id == request.MaterialId && m.Status == "A", cancellationToken);
         if (material == null)
         {
@@ -54,9 +54,9 @@ public class CreateIngresoMaterialCommandHandler : IRequestHandler<CreateIngreso
             Cantidad = request.Cantidad
         };
 
-        await _context.IngresoMaterials.AddAsync(entity, cancellationToken);
+        await _context.IngresoMaterial.AddAsync(entity, cancellationToken);
 
-        var inventario = await _context.InventarioBodegas
+        var inventario = await _context.InventarioBodega
             .FirstOrDefaultAsync(ib => ib.BodegaId == bodega.Id && ib.MaterialId == material.Id, cancellationToken);
 
         if (inventario == null)
@@ -68,7 +68,7 @@ public class CreateIngresoMaterialCommandHandler : IRequestHandler<CreateIngreso
                 CantidadDisponible = entity.Cantidad,
                 CantidadReservada = 0
             };
-            await _context.InventarioBodegas.AddAsync(inventario, cancellationToken);
+            await _context.InventarioBodega.AddAsync(inventario, cancellationToken);
         } else
         {
             inventario.CantidadDisponible += entity.Cantidad;

@@ -23,7 +23,7 @@ public class GetPaisesQueryHandler : IRequestHandler<GetPaisesQuery, List<PaisDt
 
     public async Task<List<PaisDto>> Handle(GetPaisesQuery request, CancellationToken cancellationToken)
     {
-        return await _context.Paises
+        return await _context.Pais
             .Where(p => p.Status == "A")
             .OrderBy(p => p.Id)
             .ProjectTo<PaisDto>(_mapper.ConfigurationProvider)

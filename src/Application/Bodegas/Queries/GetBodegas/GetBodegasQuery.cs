@@ -24,7 +24,7 @@ public class GetBodegasQueryHandler : IRequestHandler<GetBodegasQuery, List<Bode
 
     public async Task<List<BodegaDto>> Handle(GetBodegasQuery request, CancellationToken cancellationToken)
     {
-        return await _context.Bodegas
+        return await _context.Bodega
             .Where(p => p.Status == "A" && (request.IncludePlantas == true || p.TipoBodega == TipoBodega.BODEGA))
             .OrderBy(p => p.Descripcion).ThenBy(p => p.Id)
             .ProjectTo<BodegaDto>(_mapper.ConfigurationProvider)

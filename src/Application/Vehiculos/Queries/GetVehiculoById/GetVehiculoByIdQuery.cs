@@ -25,7 +25,7 @@ public class GetVehiculoByIdQueryHandler : IRequestHandler<GetVehiculoByIdQuery,
 
     public async Task<VehiculoDto> Handle(GetVehiculoByIdQuery request, CancellationToken cancellationToken)
     {
-        var entity = await _context.Vehiculos
+        var entity = await _context.Vehiculo
             .FirstOrDefaultAsync(v => v.Id == request.VehiculoId && v.Status != "X", cancellationToken);
         if (entity == null)
         {

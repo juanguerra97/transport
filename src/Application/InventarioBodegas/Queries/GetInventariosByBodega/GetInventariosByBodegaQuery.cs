@@ -29,7 +29,7 @@ public class GetInventariosByBodegaQueryHandler : IRequestHandler<GetInventarios
     {
         var descripcionLike = "%" + request.DescripcionMaterial?.Replace(" ", "%")?.ToUpper() + "%";
         return await PaginatedList<InventarioBodegaDto>.CreateAsync(
-            _context.InventarioBodegas
+            _context.InventarioBodega
             .Where(ib => ib.BodegaId == request.BodegaId 
                 && (request.DescripcionMaterial == null 
                     || EF.Functions.Like(ib.Material.Descripcion.ToUpper(), descripcionLike)))

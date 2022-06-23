@@ -10,7 +10,7 @@ public class EstadoPedidoMaterialConfiguration : IEntityTypeConfiguration<Estado
         builder.HasKey(e => e.Id);
 
         builder.Property(e => e.Id)
-            .ValueGeneratedOnAdd();
+            .ValueGeneratedNever();
 
         builder.Property(e => e.Descripcion)
             .HasMaxLength(EstadoPedidoMaterial.MAX_DESCRIPCION_LENGTH)

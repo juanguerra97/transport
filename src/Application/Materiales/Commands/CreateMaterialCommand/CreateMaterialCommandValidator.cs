@@ -35,11 +35,11 @@ public class CreateMaterialCommandValidator : AbstractValidator<CreateMaterialCo
 
     public async Task<bool> TipoMaterialExists(int? tipoMaterialId, CancellationToken cancellationToken)
     {
-        return await _context.TipoMateriales.AnyAsync(m => m.Id == tipoMaterialId, cancellationToken);
+        return await _context.TipoMaterial.AnyAsync(m => m.Id == tipoMaterialId, cancellationToken);
     }
 
     public async Task<bool> UnidadMedidaExists(int? unidadMedidaId, CancellationToken cancellationToken)
     {
-        return await _context.UnidadMedidas.AnyAsync(m => m.Id == unidadMedidaId, cancellationToken);
+        return await _context.UnidadMedida.AnyAsync(m => m.Id == unidadMedidaId, cancellationToken);
     }
 }

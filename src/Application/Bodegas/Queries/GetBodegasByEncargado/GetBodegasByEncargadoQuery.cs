@@ -27,7 +27,7 @@ public record GetBodegasByEncargadoQueryHandler : IRequestHandler<GetBodegasByEn
     public async Task<PaginatedList<BodegaDto>> Handle(GetBodegasByEncargadoQuery request, CancellationToken cancellationToken)
     {
         return await PaginatedList<BodegaDto>.CreateAsync(
-            _context.AdminBodegas
+            _context.AdminBodega
             .Where(ad => ad.Status == "A" && ad.UserId == request.EncargadoId)
             .Select(ad => ad.Bodega)
             .OrderBy(b => b.Id)

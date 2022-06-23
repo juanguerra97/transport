@@ -12,7 +12,7 @@ public class EstadoMovimientoBodegaConfiguration : IEntityTypeConfiguration<Esta
         builder.HasKey(e => e.Id);
 
         builder.Property(e => e.Id)
-            .ValueGeneratedOnAdd();
+            .ValueGeneratedNever();
 
         builder.Property(e => e.Descripcion)
             .HasMaxLength(EstadoMovimientoBodega.MAX_DESCRIPCION_LENGTH)

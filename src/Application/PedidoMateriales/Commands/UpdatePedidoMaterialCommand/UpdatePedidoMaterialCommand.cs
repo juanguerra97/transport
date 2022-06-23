@@ -28,7 +28,7 @@ public class UpdatePedidoMaterialCommandHandler : IRequestHandler<UpdatePedidoMa
 
     public async Task<PedidoMaterialDto> Handle(UpdatePedidoMaterialCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _context.PedidoMateriales
+        var entity = await _context.PedidoMaterial
              .Include(pm => pm.EstadoPedidoMaterial)
              .Include(pm => pm.Material)
              .ThenInclude(pm => pm.UnidadMedida)

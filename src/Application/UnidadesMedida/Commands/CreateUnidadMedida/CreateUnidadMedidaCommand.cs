@@ -31,7 +31,7 @@ public class CreateUnidadMedidaCommandHandler : IRequestHandler<CreateUnidadMedi
             DescripcionPlural = request.DescripcionPlural,
         };
 
-        _context.UnidadMedidas.Add(unidadMedida);
+        _context.UnidadMedida.Add(unidadMedida);
         await _context.SaveChangesAsync(cancellationToken);
 
         return unidadMedida.Id;

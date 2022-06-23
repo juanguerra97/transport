@@ -29,7 +29,7 @@ public class UpdateProveedorCommandHandler : IRequestHandler<UpdateProveedorComm
     }
     public async Task<ProveedorDto> Handle(UpdateProveedorCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _context.ProveedorMateriales
+        var entity = await _context.ProveedorMaterial
             .FirstOrDefaultAsync(p => p.Id == request.ProveedorId && p.Status == "A", cancellationToken);
 
         if (entity == null)

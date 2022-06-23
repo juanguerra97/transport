@@ -43,12 +43,6 @@ public class MovimientoBodegaConfiguration : IEntityTypeConfiguration<Movimiento
             .IsRequired()
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(e => e.Material)
-            .WithMany()
-            .HasForeignKey(e => e.MaterialId)
-            .IsRequired()
-            .OnDelete(DeleteBehavior.Restrict);
-
         builder.HasOne(e => e.Vehiculo)
             .WithMany()
             .HasForeignKey(e => e.VehiculoId)

@@ -39,7 +39,7 @@ public class GetPedidoMaterialesQueryHandler : IRequestHandler<GetPedidoMaterial
         DateTime? fechaAl = ToLocalDate(request.FechaAl);
 
         return await PaginatedList<PedidoMaterialDto>.CreateAsync(
-            _context.PedidoMateriales
+            _context.PedidoMaterial
             .Where(pm => pm.Status == "A" && (request.BodegaSolicitaId == null || pm.BodegaSolicitaId == request.BodegaSolicitaId)
                 && (request.DescripcionMaterial == null || EF.Functions.Like(pm.Material.Descripcion.ToUpper(), descripcionLike))
                 && (fechaDel == null || pm.FechaSolicitado.Value.Date >= fechaDel.Value.Date)

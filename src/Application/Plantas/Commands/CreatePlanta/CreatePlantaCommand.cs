@@ -28,7 +28,7 @@ public class CreatePlantaCommandHandler : IRequestHandler<CreatePlantaCommand, i
     }
     public async Task<int?> Handle(CreatePlantaCommand request, CancellationToken cancellationToken)
     {
-        var user = await _context.ApplicationUsers
+        var user = await _context.ApplicationUser
             .FirstOrDefaultAsync(u => u.Id == request.EncargadoId, cancellationToken);
 
         if (!(await _userManager.IsInRoleAsync(user, "AdminPlanta")))
@@ -49,7 +49,7 @@ public class CreatePlantaCommandHandler : IRequestHandler<CreatePlantaCommand, i
             Direccion = request.Direccion,
             MunicipioId = request.MunicipioId,
         };
-        _context.Ubicaciones.Add(ubicacion);
+        _context.Ubicacion.Add(ubicacion);
 
         var bodega = new Bodega
         {
@@ -62,7 +62,7 @@ public class CreatePlantaCommandHandler : IRequestHandler<CreatePlantaCommand, i
                 User = user
             }
         };
-        _context.Bodegas.Add(bodega);
+        _context.Bodega.Add(bodega);
 
         var planta = new Planta
         {
@@ -75,7 +75,7 @@ public class CreatePlantaCommandHandler : IRequestHandler<CreatePlantaCommand, i
                 User = user
             }
         };
-        _context.Plantas.Add(planta);
+        _context.Planta.Add(planta);
 
         await _context.SaveChangesAsync(cancellationToken);
 

@@ -14,7 +14,7 @@ namespace seminario.Infrastructure.Persistence.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "AlgoritmosMinimizacion",
+                name: "AlgoritmoMinimizacion",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -23,16 +23,16 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Status = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaInsert = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioInsert = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaUpdate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioUpdate = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AlgoritmosMinimizacion", x => x.Id);
+                    table.PrimaryKey("PK_AlgoritmoMinimizacion", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -122,53 +122,51 @@ namespace seminario.Infrastructure.Persistence.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "EstadosMovimientoBodega",
+                name: "EstadoMovimientoBodega",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     Descripcion = table.Column<string>(type: "varchar(64)", maxLength: 64, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Status = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaInsert = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioInsert = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaUpdate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioUpdate = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EstadosMovimientoBodega", x => x.Id);
+                    table.PrimaryKey("PK_EstadoMovimientoBodega", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "EstadosPedidoMaterial",
+                name: "EstadoPedidoMaterial",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     Descripcion = table.Column<string>(type: "varchar(64)", maxLength: 64, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Status = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaInsert = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioInsert = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaUpdate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioUpdate = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EstadosPedidoMaterial", x => x.Id);
+                    table.PrimaryKey("PK_EstadoPedidoMaterial", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "EstadosSolicitiudTransporteCarga",
+                name: "EstadoSolicitudTransporteCarga",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -177,21 +175,21 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Status = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaInsert = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioInsert = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaUpdate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioUpdate = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EstadosSolicitiudTransporteCarga", x => x.Id);
+                    table.PrimaryKey("PK_EstadoSolicitudTransporteCarga", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "EstadosTransporteCarga",
+                name: "EstadoTransporteCarga",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -200,16 +198,16 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Status = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaInsert = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioInsert = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaUpdate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioUpdate = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EstadosTransporteCarga", x => x.Id);
+                    table.PrimaryKey("PK_EstadoTransporteCarga", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -237,7 +235,7 @@ namespace seminario.Infrastructure.Persistence.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Paises",
+                name: "Pais",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false),
@@ -245,16 +243,16 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Status = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaInsert = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioInsert = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaUpdate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioUpdate = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Paises", x => x.Id);
+                    table.PrimaryKey("PK_Pais", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -287,7 +285,7 @@ namespace seminario.Infrastructure.Persistence.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "ProveedorMateriales",
+                name: "ProveedorMaterial",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -304,21 +302,21 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Status = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaInsert = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioInsert = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaUpdate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioUpdate = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProveedorMateriales", x => x.Id);
+                    table.PrimaryKey("PK_ProveedorMaterial", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "TipoEmpresas",
+                name: "TipoEmpresa",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -327,44 +325,21 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Status = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaInsert = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioInsert = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaUpdate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioUpdate = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TipoEmpresas", x => x.Id);
+                    table.PrimaryKey("PK_TipoEmpresa", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "TipoMateriales",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Descripcion = table.Column<string>(type: "varchar(64)", maxLength: 64, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Status = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TipoMateriales", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "TipoPlantas",
+                name: "TipoMaterial",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false),
@@ -372,21 +347,43 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Status = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaInsert = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioInsert = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaUpdate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioUpdate = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TipoPlantas", x => x.Id);
+                    table.PrimaryKey("PK_TipoMaterial", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "TipoRutas",
+                name: "TipoPlanta",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    Descripcion = table.Column<string>(type: "varchar(64)", maxLength: 64, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Status = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    FechaInsert = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioInsert = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    FechaUpdate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioUpdate = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TipoPlanta", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "TipoRuta",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -397,46 +394,21 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Status = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaInsert = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioInsert = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaUpdate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioUpdate = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TipoRutas", x => x.Id);
+                    table.PrimaryKey("PK_TipoRuta", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "TodoLists",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Title = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Colour_Code = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Status = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TodoLists", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "UnidadMedidas",
+                name: "UnidadMedida",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -449,21 +421,21 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Status = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaInsert = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioInsert = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaUpdate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioUpdate = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UnidadMedidas", x => x.Id);
+                    table.PrimaryKey("PK_UnidadMedida", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Vehiculos",
+                name: "Vehiculo",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -480,16 +452,16 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     CapacidadCarga = table.Column<double>(type: "double", nullable: false),
                     Status = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaInsert = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioInsert = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaUpdate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioUpdate = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Vehiculos", x => x.Id);
+                    table.PrimaryKey("PK_Vehiculo", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -621,7 +593,7 @@ namespace seminario.Infrastructure.Persistence.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Conductores",
+                name: "Conductor",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -632,18 +604,18 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Status = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaInsert = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioInsert = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaUpdate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioUpdate = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Conductores", x => x.Id);
+                    table.PrimaryKey("PK_Conductor", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Conductores_AspNetUsers_UserId",
+                        name: "FK_Conductor_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -652,7 +624,7 @@ namespace seminario.Infrastructure.Persistence.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Departamentos",
+                name: "Departamento",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false),
@@ -661,27 +633,27 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     PaisId = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaInsert = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioInsert = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaUpdate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioUpdate = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Departamentos", x => x.Id);
+                    table.PrimaryKey("PK_Departamento", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Departamentos_Paises_PaisId",
+                        name: "FK_Departamento_Pais_PaisId",
                         column: x => x.PaisId,
-                        principalTable: "Paises",
+                        principalTable: "Pais",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Empresas",
+                name: "Empresa",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -695,62 +667,27 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Status = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaInsert = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioInsert = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaUpdate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioUpdate = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Empresas", x => x.Id);
+                    table.PrimaryKey("PK_Empresa", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Empresas_TipoEmpresas_TipoEmpresaId",
+                        name: "FK_Empresa_TipoEmpresa_TipoEmpresaId",
                         column: x => x.TipoEmpresaId,
-                        principalTable: "TipoEmpresas",
+                        principalTable: "TipoEmpresa",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "TodoItems",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    ListId = table.Column<int>(type: "int", nullable: false),
-                    Title = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Note = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Priority = table.Column<int>(type: "int", nullable: false),
-                    Reminder = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    Done = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Status = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TodoItems", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_TodoItems_TodoLists_ListId",
-                        column: x => x.ListId,
-                        principalTable: "TodoLists",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "Materiales",
+                name: "Material",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -764,66 +701,66 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     Peso = table.Column<double>(type: "double", nullable: true),
                     Status = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaInsert = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioInsert = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaUpdate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioUpdate = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Materiales", x => x.Id);
+                    table.PrimaryKey("PK_Material", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Materiales_TipoMateriales_TipoMaterialId",
+                        name: "FK_Material_TipoMaterial_TipoMaterialId",
                         column: x => x.TipoMaterialId,
-                        principalTable: "TipoMateriales",
+                        principalTable: "TipoMaterial",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Materiales_UnidadMedidas_UnidadMedidaId",
+                        name: "FK_Material_UnidadMedida_UnidadMedidaId",
                         column: x => x.UnidadMedidaId,
-                        principalTable: "UnidadMedidas",
+                        principalTable: "UnidadMedida",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "VehiculoConductores",
+                name: "VehiculoConductor",
                 columns: table => new
                 {
                     VehiculoId = table.Column<int>(type: "int", nullable: false),
                     ConductorId = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaInsert = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioInsert = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaUpdate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioUpdate = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_VehiculoConductores", x => new { x.VehiculoId, x.ConductorId });
+                    table.PrimaryKey("PK_VehiculoConductor", x => new { x.VehiculoId, x.ConductorId });
                     table.ForeignKey(
-                        name: "FK_VehiculoConductores_Conductores_ConductorId",
+                        name: "FK_VehiculoConductor_Conductor_ConductorId",
                         column: x => x.ConductorId,
-                        principalTable: "Conductores",
+                        principalTable: "Conductor",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_VehiculoConductores_Vehiculos_VehiculoId",
+                        name: "FK_VehiculoConductor_Vehiculo_VehiculoId",
                         column: x => x.VehiculoId,
-                        principalTable: "Vehiculos",
+                        principalTable: "Vehiculo",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Municipios",
+                name: "Municipio",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false),
@@ -832,27 +769,27 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     DepartamentoId = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaInsert = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioInsert = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaUpdate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioUpdate = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Municipios", x => x.Id);
+                    table.PrimaryKey("PK_Municipio", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Municipios_Departamentos_DepartamentoId",
+                        name: "FK_Municipio_Departamento_DepartamentoId",
                         column: x => x.DepartamentoId,
-                        principalTable: "Departamentos",
+                        principalTable: "Departamento",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "AdminEmpresas",
+                name: "AdminEmpresa",
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "varchar(255)", nullable: false)
@@ -860,33 +797,33 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     EmpresaId = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaInsert = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioInsert = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaUpdate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioUpdate = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AdminEmpresas", x => new { x.UserId, x.EmpresaId });
+                    table.PrimaryKey("PK_AdminEmpresa", x => new { x.UserId, x.EmpresaId });
                     table.ForeignKey(
-                        name: "FK_AdminEmpresas_AspNetUsers_UserId",
+                        name: "FK_AdminEmpresa_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_AdminEmpresas_Empresas_EmpresaId",
+                        name: "FK_AdminEmpresa_Empresa_EmpresaId",
                         column: x => x.EmpresaId,
-                        principalTable: "Empresas",
+                        principalTable: "Empresa",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Ubicaciones",
+                name: "Ubicacion",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -903,27 +840,27 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     Longitud = table.Column<double>(type: "double", nullable: true),
                     Status = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaInsert = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioInsert = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaUpdate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioUpdate = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Ubicaciones", x => x.Id);
+                    table.PrimaryKey("PK_Ubicacion", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Ubicaciones_Municipios_MunicipioId",
+                        name: "FK_Ubicacion_Municipio_MunicipioId",
                         column: x => x.MunicipioId,
-                        principalTable: "Municipios",
+                        principalTable: "Municipio",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Bodegas",
+                name: "Bodega",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -936,27 +873,27 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     UbicacionId = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaInsert = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioInsert = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaUpdate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioUpdate = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Bodegas", x => x.Id);
+                    table.PrimaryKey("PK_Bodega", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Bodegas_Ubicaciones_UbicacionId",
+                        name: "FK_Bodega_Ubicacion_UbicacionId",
                         column: x => x.UbicacionId,
-                        principalTable: "Ubicaciones",
+                        principalTable: "Ubicacion",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Rutas",
+                name: "Ruta",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -969,39 +906,39 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     CostoPorCarga = table.Column<decimal>(type: "decimal(65,30)", nullable: true),
                     Status = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaInsert = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioInsert = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaUpdate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioUpdate = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Rutas", x => x.Id);
+                    table.PrimaryKey("PK_Ruta", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Rutas_TipoRutas_TipoRutaId",
+                        name: "FK_Ruta_TipoRuta_TipoRutaId",
                         column: x => x.TipoRutaId,
-                        principalTable: "TipoRutas",
+                        principalTable: "TipoRuta",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Rutas_Ubicaciones_UbicacionDestinoId",
+                        name: "FK_Ruta_Ubicacion_UbicacionDestinoId",
                         column: x => x.UbicacionDestinoId,
-                        principalTable: "Ubicaciones",
+                        principalTable: "Ubicacion",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Rutas_Ubicaciones_UbicacionOrigenId",
+                        name: "FK_Ruta_Ubicacion_UbicacionOrigenId",
                         column: x => x.UbicacionOrigenId,
-                        principalTable: "Ubicaciones",
+                        principalTable: "Ubicacion",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "SolicitudTransporteCargas",
+                name: "SolicitudTransporteCarga",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -1019,75 +956,75 @@ namespace seminario.Infrastructure.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SolicitudTransporteCargas", x => x.Id);
+                    table.PrimaryKey("PK_SolicitudTransporteCarga", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SolicitudTransporteCargas_AlgoritmosMinimizacion_AlgoritmoMi~",
+                        name: "FK_SolicitudTransporteCarga_AlgoritmoMinimizacion_AlgoritmoMini~",
                         column: x => x.AlgoritmoMinimizacionId,
-                        principalTable: "AlgoritmosMinimizacion",
+                        principalTable: "AlgoritmoMinimizacion",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_SolicitudTransporteCargas_Empresas_EmpresaId",
+                        name: "FK_SolicitudTransporteCarga_Empresa_EmpresaId",
                         column: x => x.EmpresaId,
-                        principalTable: "Empresas",
+                        principalTable: "Empresa",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_SolicitudTransporteCargas_EstadosSolicitiudTransporteCarga_E~",
+                        name: "FK_SolicitudTransporteCarga_EstadoSolicitudTransporteCarga_Esta~",
                         column: x => x.EstadoSolicitudTransporteCargaId,
-                        principalTable: "EstadosSolicitiudTransporteCarga",
+                        principalTable: "EstadoSolicitudTransporteCarga",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_SolicitudTransporteCargas_Ubicaciones_UbicacionDestinoId",
+                        name: "FK_SolicitudTransporteCarga_Ubicacion_UbicacionDestinoId",
                         column: x => x.UbicacionDestinoId,
-                        principalTable: "Ubicaciones",
+                        principalTable: "Ubicacion",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_SolicitudTransporteCargas_Ubicaciones_UbicacionOrigenId",
+                        name: "FK_SolicitudTransporteCarga_Ubicacion_UbicacionOrigenId",
                         column: x => x.UbicacionOrigenId,
-                        principalTable: "Ubicaciones",
+                        principalTable: "Ubicacion",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "UbicacionEmpresas",
+                name: "UbicacionEmpresa",
                 columns: table => new
                 {
                     UbicacionId = table.Column<int>(type: "int", nullable: false),
                     EmpresaId = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaInsert = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioInsert = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaUpdate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioUpdate = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UbicacionEmpresas", x => new { x.UbicacionId, x.EmpresaId });
+                    table.PrimaryKey("PK_UbicacionEmpresa", x => new { x.UbicacionId, x.EmpresaId });
                     table.ForeignKey(
-                        name: "FK_UbicacionEmpresas_Empresas_EmpresaId",
+                        name: "FK_UbicacionEmpresa_Empresa_EmpresaId",
                         column: x => x.EmpresaId,
-                        principalTable: "Empresas",
+                        principalTable: "Empresa",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_UbicacionEmpresas_Ubicaciones_UbicacionId",
+                        name: "FK_UbicacionEmpresa_Ubicacion_UbicacionId",
                         column: x => x.UbicacionId,
-                        principalTable: "Ubicaciones",
+                        principalTable: "Ubicacion",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "AdminBodegas",
+                name: "AdminBodega",
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "varchar(255)", nullable: false)
@@ -1095,33 +1032,33 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     BodegaId = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaInsert = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioInsert = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaUpdate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioUpdate = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AdminBodegas", x => new { x.UserId, x.BodegaId });
+                    table.PrimaryKey("PK_AdminBodega", x => new { x.UserId, x.BodegaId });
                     table.ForeignKey(
-                        name: "FK_AdminBodegas_AspNetUsers_UserId",
+                        name: "FK_AdminBodega_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_AdminBodegas_Bodegas_BodegaId",
+                        name: "FK_AdminBodega_Bodega_BodegaId",
                         column: x => x.BodegaId,
-                        principalTable: "Bodegas",
+                        principalTable: "Bodega",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "IngresoMaterials",
+                name: "IngresoMaterial",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -1132,39 +1069,39 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     Cantidad = table.Column<double>(type: "double", nullable: true),
                     Status = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaInsert = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioInsert = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaUpdate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioUpdate = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_IngresoMaterials", x => x.Id);
+                    table.PrimaryKey("PK_IngresoMaterial", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_IngresoMaterials_Bodegas_BodegaId",
+                        name: "FK_IngresoMaterial_Bodega_BodegaId",
                         column: x => x.BodegaId,
-                        principalTable: "Bodegas",
+                        principalTable: "Bodega",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_IngresoMaterials_Materiales_MaterialId",
+                        name: "FK_IngresoMaterial_Material_MaterialId",
                         column: x => x.MaterialId,
-                        principalTable: "Materiales",
+                        principalTable: "Material",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_IngresoMaterials_ProveedorMateriales_ProveedorMaterialId",
+                        name: "FK_IngresoMaterial_ProveedorMaterial_ProveedorMaterialId",
                         column: x => x.ProveedorMaterialId,
-                        principalTable: "ProveedorMateriales",
+                        principalTable: "ProveedorMaterial",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "InventarioBodegas",
+                name: "InventarioBodega",
                 columns: table => new
                 {
                     BodegaId = table.Column<int>(type: "int", nullable: false),
@@ -1173,33 +1110,33 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     CantidadReservada = table.Column<double>(type: "double", nullable: false, defaultValue: 0.0),
                     Status = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaInsert = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioInsert = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaUpdate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioUpdate = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_InventarioBodegas", x => new { x.BodegaId, x.MaterialId });
+                    table.PrimaryKey("PK_InventarioBodega", x => new { x.BodegaId, x.MaterialId });
                     table.ForeignKey(
-                        name: "FK_InventarioBodegas_Bodegas_BodegaId",
+                        name: "FK_InventarioBodega_Bodega_BodegaId",
                         column: x => x.BodegaId,
-                        principalTable: "Bodegas",
+                        principalTable: "Bodega",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_InventarioBodegas_Materiales_MaterialId",
+                        name: "FK_InventarioBodega_Material_MaterialId",
                         column: x => x.MaterialId,
-                        principalTable: "Materiales",
+                        principalTable: "Material",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "PedidoMateriales",
+                name: "PedidoMaterial",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -1215,39 +1152,39 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     FechaCompletado = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     Status = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaInsert = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioInsert = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaUpdate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioUpdate = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PedidoMateriales", x => x.Id);
+                    table.PrimaryKey("PK_PedidoMaterial", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PedidoMateriales_Bodegas_BodegaSolicitaId",
+                        name: "FK_PedidoMaterial_Bodega_BodegaSolicitaId",
                         column: x => x.BodegaSolicitaId,
-                        principalTable: "Bodegas",
+                        principalTable: "Bodega",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_PedidoMateriales_EstadosPedidoMaterial_EstadoPedidoMaterialId",
+                        name: "FK_PedidoMaterial_EstadoPedidoMaterial_EstadoPedidoMaterialId",
                         column: x => x.EstadoPedidoMaterialId,
-                        principalTable: "EstadosPedidoMaterial",
+                        principalTable: "EstadoPedidoMaterial",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_PedidoMateriales_Materiales_MaterialId",
+                        name: "FK_PedidoMaterial_Material_MaterialId",
                         column: x => x.MaterialId,
-                        principalTable: "Materiales",
+                        principalTable: "Material",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Plantas",
+                name: "Planta",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -1260,33 +1197,33 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     BodegaId = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaInsert = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioInsert = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaUpdate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioUpdate = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Plantas", x => x.Id);
+                    table.PrimaryKey("PK_Planta", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Plantas_Bodegas_BodegaId",
+                        name: "FK_Planta_Bodega_BodegaId",
                         column: x => x.BodegaId,
-                        principalTable: "Bodegas",
+                        principalTable: "Bodega",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Plantas_TipoPlantas_TipoPlantaId",
+                        name: "FK_Planta_TipoPlanta_TipoPlantaId",
                         column: x => x.TipoPlantaId,
-                        principalTable: "TipoPlantas",
+                        principalTable: "TipoPlanta",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "BitacoraEstadoSolicitudTransporteCargas",
+                name: "BitacoraEstadoSolicitudTransporteCarga",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -1295,33 +1232,33 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     EstadoSolicitudTransporteCargaId = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaInsert = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioInsert = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaUpdate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioUpdate = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BitacoraEstadoSolicitudTransporteCargas", x => x.Id);
+                    table.PrimaryKey("PK_BitacoraEstadoSolicitudTransporteCarga", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BitacoraEstadoSolicitudTransporteCargas_EstadosSolicitiudTra~",
+                        name: "FK_BitacoraEstadoSolicitudTransporteCarga_EstadoSolicitudTransp~",
                         column: x => x.EstadoSolicitudTransporteCargaId,
-                        principalTable: "EstadosSolicitiudTransporteCarga",
+                        principalTable: "EstadoSolicitudTransporteCarga",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_BitacoraEstadoSolicitudTransporteCargas_SolicitudTransporteC~",
+                        name: "FK_BitacoraEstadoSolicitudTransporteCarga_SolicitudTransporteCa~",
                         column: x => x.SolicitudTransporteCargaId,
-                        principalTable: "SolicitudTransporteCargas",
+                        principalTable: "SolicitudTransporteCarga",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "DetalleTransporteCargas",
+                name: "DetalleTransporteCarga",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -1337,51 +1274,51 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     ConductorId = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaInsert = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioInsert = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaUpdate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioUpdate = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DetalleTransporteCargas", x => x.Id);
+                    table.PrimaryKey("PK_DetalleTransporteCarga", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_DetalleTransporteCargas_Conductores_ConductorId",
+                        name: "FK_DetalleTransporteCarga_Conductor_ConductorId",
                         column: x => x.ConductorId,
-                        principalTable: "Conductores",
+                        principalTable: "Conductor",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_DetalleTransporteCargas_EstadosTransporteCarga_EstadoTranspo~",
+                        name: "FK_DetalleTransporteCarga_EstadoTransporteCarga_EstadoTransport~",
                         column: x => x.EstadoTransporteCargaId,
-                        principalTable: "EstadosTransporteCarga",
+                        principalTable: "EstadoTransporteCarga",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_DetalleTransporteCargas_Rutas_RutaId",
+                        name: "FK_DetalleTransporteCarga_Ruta_RutaId",
                         column: x => x.RutaId,
-                        principalTable: "Rutas",
+                        principalTable: "Ruta",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_DetalleTransporteCargas_SolicitudTransporteCargas_SolicitudT~",
+                        name: "FK_DetalleTransporteCarga_SolicitudTransporteCarga_SolicitudTra~",
                         column: x => x.SolicitudTransporteCargaId,
-                        principalTable: "SolicitudTransporteCargas",
+                        principalTable: "SolicitudTransporteCarga",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_DetalleTransporteCargas_Vehiculos_VehiculoId",
+                        name: "FK_DetalleTransporteCarga_Vehiculo_VehiculoId",
                         column: x => x.VehiculoId,
-                        principalTable: "Vehiculos",
+                        principalTable: "Vehiculo",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "BitacoraEstadoPedidoMateriales",
+                name: "BitacoraEstadoPedidoMaterial",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -1390,33 +1327,33 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     EstadoPedidoMaterialId = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaInsert = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioInsert = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaUpdate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioUpdate = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BitacoraEstadoPedidoMateriales", x => x.Id);
+                    table.PrimaryKey("PK_BitacoraEstadoPedidoMaterial", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BitacoraEstadoPedidoMateriales_EstadosPedidoMaterial_EstadoP~",
+                        name: "FK_BitacoraEstadoPedidoMaterial_EstadoPedidoMaterial_EstadoPedi~",
                         column: x => x.EstadoPedidoMaterialId,
-                        principalTable: "EstadosPedidoMaterial",
+                        principalTable: "EstadoPedidoMaterial",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_BitacoraEstadoPedidoMateriales_PedidoMateriales_PedidoMateri~",
+                        name: "FK_BitacoraEstadoPedidoMaterial_PedidoMaterial_PedidoMaterialId",
                         column: x => x.PedidoMaterialId,
-                        principalTable: "PedidoMateriales",
+                        principalTable: "PedidoMaterial",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "MovimientoBodegas",
+                name: "MovimientoBodega",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -1428,7 +1365,6 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     FechaInicioProgramado = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     FechaCargado = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     FechaDescargado = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    MaterialId = table.Column<int>(type: "int", nullable: false),
                     Cantidad = table.Column<double>(type: "double", nullable: false),
                     Detalle = table.Column<string>(type: "varchar(1024)", maxLength: 1024, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -1436,63 +1372,57 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     ConductorId = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaInsert = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioInsert = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaUpdate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioUpdate = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MovimientoBodegas", x => x.Id);
+                    table.PrimaryKey("PK_MovimientoBodega", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_MovimientoBodegas_Bodegas_BodegaDestinoId",
+                        name: "FK_MovimientoBodega_Bodega_BodegaDestinoId",
                         column: x => x.BodegaDestinoId,
-                        principalTable: "Bodegas",
+                        principalTable: "Bodega",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_MovimientoBodegas_Bodegas_BodegaOrigenId",
+                        name: "FK_MovimientoBodega_Bodega_BodegaOrigenId",
                         column: x => x.BodegaOrigenId,
-                        principalTable: "Bodegas",
+                        principalTable: "Bodega",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_MovimientoBodegas_Conductores_ConductorId",
+                        name: "FK_MovimientoBodega_Conductor_ConductorId",
                         column: x => x.ConductorId,
-                        principalTable: "Conductores",
+                        principalTable: "Conductor",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_MovimientoBodegas_EstadosMovimientoBodega_EstadoMovimientoBo~",
+                        name: "FK_MovimientoBodega_EstadoMovimientoBodega_EstadoMovimientoBode~",
                         column: x => x.EstadoMovimientoBodegaId,
-                        principalTable: "EstadosMovimientoBodega",
+                        principalTable: "EstadoMovimientoBodega",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_MovimientoBodegas_Materiales_MaterialId",
-                        column: x => x.MaterialId,
-                        principalTable: "Materiales",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_MovimientoBodegas_PedidoMateriales_PedidoMaterialId",
+                        name: "FK_MovimientoBodega_PedidoMaterial_PedidoMaterialId",
                         column: x => x.PedidoMaterialId,
-                        principalTable: "PedidoMateriales",
+                        principalTable: "PedidoMaterial",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_MovimientoBodegas_Vehiculos_VehiculoId",
+                        name: "FK_MovimientoBodega_Vehiculo_VehiculoId",
                         column: x => x.VehiculoId,
-                        principalTable: "Vehiculos",
+                        principalTable: "Vehiculo",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "AdminPlantas",
+                name: "AdminPlanta",
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "varchar(255)", nullable: false)
@@ -1500,33 +1430,33 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     PlantaId = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaInsert = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioInsert = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaUpdate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioUpdate = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AdminPlantas", x => new { x.UserId, x.PlantaId });
+                    table.PrimaryKey("PK_AdminPlanta", x => new { x.UserId, x.PlantaId });
                     table.ForeignKey(
-                        name: "FK_AdminPlantas_AspNetUsers_UserId",
+                        name: "FK_AdminPlanta_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_AdminPlantas_Plantas_PlantaId",
+                        name: "FK_AdminPlanta_Planta_PlantaId",
                         column: x => x.PlantaId,
-                        principalTable: "Plantas",
+                        principalTable: "Planta",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "BitacoraEstadoTransporteCargas",
+                name: "BitacoraEstadoTransporteCarga",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -1535,33 +1465,33 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     EstadoTransporteCargaId = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaInsert = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioInsert = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaUpdate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioUpdate = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BitacoraEstadoTransporteCargas", x => x.Id);
+                    table.PrimaryKey("PK_BitacoraEstadoTransporteCarga", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BitacoraEstadoTransporteCargas_DetalleTransporteCargas_Detal~",
+                        name: "FK_BitacoraEstadoTransporteCarga_DetalleTransporteCarga_Detalle~",
                         column: x => x.DetalleTransporteCargaId,
-                        principalTable: "DetalleTransporteCargas",
+                        principalTable: "DetalleTransporteCarga",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_BitacoraEstadoTransporteCargas_EstadosTransporteCarga_Estado~",
+                        name: "FK_BitacoraEstadoTransporteCarga_EstadoTransporteCarga_EstadoTr~",
                         column: x => x.EstadoTransporteCargaId,
-                        principalTable: "EstadosTransporteCarga",
+                        principalTable: "EstadoTransporteCarga",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "BitacoraEstadoMovimientoBodegas",
+                name: "BitacoraEstadoMovimientoBodega",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -1570,45 +1500,45 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     EstadoMovimientoBodegaId = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaInsert = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioInsert = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    LastModified = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "longtext", nullable: true)
+                    FechaUpdate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UsuarioUpdate = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BitacoraEstadoMovimientoBodegas", x => x.Id);
+                    table.PrimaryKey("PK_BitacoraEstadoMovimientoBodega", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BitacoraEstadoMovimientoBodegas_EstadosMovimientoBodega_Esta~",
+                        name: "FK_BitacoraEstadoMovimientoBodega_EstadoMovimientoBodega_Estado~",
                         column: x => x.EstadoMovimientoBodegaId,
-                        principalTable: "EstadosMovimientoBodega",
+                        principalTable: "EstadoMovimientoBodega",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_BitacoraEstadoMovimientoBodegas_MovimientoBodegas_Movimiento~",
+                        name: "FK_BitacoraEstadoMovimientoBodega_MovimientoBodega_MovimientoBo~",
                         column: x => x.MovimientoBodegaId,
-                        principalTable: "MovimientoBodegas",
+                        principalTable: "MovimientoBodega",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AdminBodegas_BodegaId",
-                table: "AdminBodegas",
+                name: "IX_AdminBodega_BodegaId",
+                table: "AdminBodega",
                 column: "BodegaId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_AdminEmpresas_EmpresaId",
-                table: "AdminEmpresas",
+                name: "IX_AdminEmpresa_EmpresaId",
+                table: "AdminEmpresa",
                 column: "EmpresaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AdminPlantas_PlantaId",
-                table: "AdminPlantas",
+                name: "IX_AdminPlanta_PlantaId",
+                table: "AdminPlanta",
                 column: "PlantaId",
                 unique: true);
 
@@ -1650,93 +1580,93 @@ namespace seminario.Infrastructure.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_BitacoraEstadoMovimientoBodegas_EstadoMovimientoBodegaId",
-                table: "BitacoraEstadoMovimientoBodegas",
+                name: "IX_BitacoraEstadoMovimientoBodega_EstadoMovimientoBodegaId",
+                table: "BitacoraEstadoMovimientoBodega",
                 column: "EstadoMovimientoBodegaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BitacoraEstadoMovimientoBodegas_MovimientoBodegaId_EstadoMov~",
-                table: "BitacoraEstadoMovimientoBodegas",
+                name: "IX_BitacoraEstadoMovimientoBodega_MovimientoBodegaId_EstadoMovi~",
+                table: "BitacoraEstadoMovimientoBodega",
                 columns: new[] { "MovimientoBodegaId", "EstadoMovimientoBodegaId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_BitacoraEstadoPedidoMateriales_EstadoPedidoMaterialId",
-                table: "BitacoraEstadoPedidoMateriales",
+                name: "IX_BitacoraEstadoPedidoMaterial_EstadoPedidoMaterialId",
+                table: "BitacoraEstadoPedidoMaterial",
                 column: "EstadoPedidoMaterialId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BitacoraEstadoPedidoMateriales_PedidoMaterialId_EstadoPedido~",
-                table: "BitacoraEstadoPedidoMateriales",
+                name: "IX_BitacoraEstadoPedidoMaterial_PedidoMaterialId_EstadoPedidoMa~",
+                table: "BitacoraEstadoPedidoMaterial",
                 columns: new[] { "PedidoMaterialId", "EstadoPedidoMaterialId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_BitacoraEstadoSolicitudTransporteCargas_EstadoSolicitudTrans~",
-                table: "BitacoraEstadoSolicitudTransporteCargas",
+                name: "IX_BitacoraEstadoSolicitudTransporteCarga_EstadoSolicitudTransp~",
+                table: "BitacoraEstadoSolicitudTransporteCarga",
                 column: "EstadoSolicitudTransporteCargaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BitacoraEstadoSolicitudTransporteCargas_SolicitudTransporteC~",
-                table: "BitacoraEstadoSolicitudTransporteCargas",
+                name: "IX_BitacoraEstadoSolicitudTransporteCarga_SolicitudTransporteCa~",
+                table: "BitacoraEstadoSolicitudTransporteCarga",
                 columns: new[] { "SolicitudTransporteCargaId", "EstadoSolicitudTransporteCargaId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_BitacoraEstadoTransporteCargas_DetalleTransporteCargaId_Esta~",
-                table: "BitacoraEstadoTransporteCargas",
+                name: "IX_BitacoraEstadoTransporteCarga_DetalleTransporteCargaId_Estad~",
+                table: "BitacoraEstadoTransporteCarga",
                 columns: new[] { "DetalleTransporteCargaId", "EstadoTransporteCargaId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_BitacoraEstadoTransporteCargas_EstadoTransporteCargaId",
-                table: "BitacoraEstadoTransporteCargas",
+                name: "IX_BitacoraEstadoTransporteCarga_EstadoTransporteCargaId",
+                table: "BitacoraEstadoTransporteCarga",
                 column: "EstadoTransporteCargaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Bodegas_UbicacionId",
-                table: "Bodegas",
+                name: "IX_Bodega_UbicacionId",
+                table: "Bodega",
                 column: "UbicacionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Conductores_NoLicencia",
-                table: "Conductores",
+                name: "IX_Conductor_NoLicencia",
+                table: "Conductor",
                 column: "NoLicencia");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Conductores_UserId",
-                table: "Conductores",
+                name: "IX_Conductor_UserId",
+                table: "Conductor",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Departamentos_Descripcion",
-                table: "Departamentos",
+                name: "IX_Departamento_Descripcion",
+                table: "Departamento",
                 column: "Descripcion");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Departamentos_PaisId",
-                table: "Departamentos",
+                name: "IX_Departamento_PaisId",
+                table: "Departamento",
                 column: "PaisId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DetalleTransporteCargas_ConductorId",
-                table: "DetalleTransporteCargas",
+                name: "IX_DetalleTransporteCarga_ConductorId",
+                table: "DetalleTransporteCarga",
                 column: "ConductorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DetalleTransporteCargas_EstadoTransporteCargaId",
-                table: "DetalleTransporteCargas",
+                name: "IX_DetalleTransporteCarga_EstadoTransporteCargaId",
+                table: "DetalleTransporteCarga",
                 column: "EstadoTransporteCargaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DetalleTransporteCargas_RutaId",
-                table: "DetalleTransporteCargas",
+                name: "IX_DetalleTransporteCarga_RutaId",
+                table: "DetalleTransporteCarga",
                 column: "RutaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DetalleTransporteCargas_SolicitudTransporteCargaId",
-                table: "DetalleTransporteCargas",
+                name: "IX_DetalleTransporteCarga_SolicitudTransporteCargaId",
+                table: "DetalleTransporteCarga",
                 column: "SolicitudTransporteCargaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DetalleTransporteCargas_VehiculoId",
-                table: "DetalleTransporteCargas",
+                name: "IX_DetalleTransporteCarga_VehiculoId",
+                table: "DetalleTransporteCarga",
                 column: "VehiculoId");
 
             migrationBuilder.CreateIndex(
@@ -1751,28 +1681,28 @@ namespace seminario.Infrastructure.Persistence.Migrations
                 column: "Expiration");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Empresas_TipoEmpresaId",
-                table: "Empresas",
+                name: "IX_Empresa_TipoEmpresaId",
+                table: "Empresa",
                 column: "TipoEmpresaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_IngresoMaterials_BodegaId",
-                table: "IngresoMaterials",
+                name: "IX_IngresoMaterial_BodegaId",
+                table: "IngresoMaterial",
                 column: "BodegaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_IngresoMaterials_MaterialId",
-                table: "IngresoMaterials",
+                name: "IX_IngresoMaterial_MaterialId",
+                table: "IngresoMaterial",
                 column: "MaterialId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_IngresoMaterials_ProveedorMaterialId",
-                table: "IngresoMaterials",
+                name: "IX_IngresoMaterial_ProveedorMaterialId",
+                table: "IngresoMaterial",
                 column: "ProveedorMaterialId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_InventarioBodegas_MaterialId",
-                table: "InventarioBodegas",
+                name: "IX_InventarioBodega_MaterialId",
+                table: "InventarioBodega",
                 column: "MaterialId");
 
             migrationBuilder.CreateIndex(
@@ -1781,79 +1711,74 @@ namespace seminario.Infrastructure.Persistence.Migrations
                 column: "Use");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Materiales_TipoMaterialId",
-                table: "Materiales",
+                name: "IX_Material_TipoMaterialId",
+                table: "Material",
                 column: "TipoMaterialId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Materiales_UnidadMedidaId",
-                table: "Materiales",
+                name: "IX_Material_UnidadMedidaId",
+                table: "Material",
                 column: "UnidadMedidaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MovimientoBodegas_BodegaDestinoId",
-                table: "MovimientoBodegas",
+                name: "IX_MovimientoBodega_BodegaDestinoId",
+                table: "MovimientoBodega",
                 column: "BodegaDestinoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MovimientoBodegas_BodegaOrigenId",
-                table: "MovimientoBodegas",
+                name: "IX_MovimientoBodega_BodegaOrigenId",
+                table: "MovimientoBodega",
                 column: "BodegaOrigenId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MovimientoBodegas_ConductorId",
-                table: "MovimientoBodegas",
+                name: "IX_MovimientoBodega_ConductorId",
+                table: "MovimientoBodega",
                 column: "ConductorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MovimientoBodegas_EstadoMovimientoBodegaId",
-                table: "MovimientoBodegas",
+                name: "IX_MovimientoBodega_EstadoMovimientoBodegaId",
+                table: "MovimientoBodega",
                 column: "EstadoMovimientoBodegaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MovimientoBodegas_MaterialId",
-                table: "MovimientoBodegas",
-                column: "MaterialId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_MovimientoBodegas_PedidoMaterialId",
-                table: "MovimientoBodegas",
+                name: "IX_MovimientoBodega_PedidoMaterialId",
+                table: "MovimientoBodega",
                 column: "PedidoMaterialId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MovimientoBodegas_VehiculoId",
-                table: "MovimientoBodegas",
+                name: "IX_MovimientoBodega_VehiculoId",
+                table: "MovimientoBodega",
                 column: "VehiculoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Municipios_DepartamentoId",
-                table: "Municipios",
+                name: "IX_Municipio_DepartamentoId",
+                table: "Municipio",
                 column: "DepartamentoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Municipios_Descripcion",
-                table: "Municipios",
+                name: "IX_Municipio_Descripcion",
+                table: "Municipio",
                 column: "Descripcion");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Paises_Descripcion",
-                table: "Paises",
+                name: "IX_Pais_Descripcion",
+                table: "Pais",
                 column: "Descripcion",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_PedidoMateriales_BodegaSolicitaId",
-                table: "PedidoMateriales",
+                name: "IX_PedidoMaterial_BodegaSolicitaId",
+                table: "PedidoMaterial",
                 column: "BodegaSolicitaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PedidoMateriales_EstadoPedidoMaterialId",
-                table: "PedidoMateriales",
+                name: "IX_PedidoMaterial_EstadoPedidoMaterialId",
+                table: "PedidoMaterial",
                 column: "EstadoPedidoMaterialId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PedidoMateriales_MaterialId",
-                table: "PedidoMateriales",
+                name: "IX_PedidoMaterial_MaterialId",
+                table: "PedidoMaterial",
                 column: "MaterialId");
 
             migrationBuilder.CreateIndex(
@@ -1877,86 +1802,81 @@ namespace seminario.Infrastructure.Persistence.Migrations
                 columns: new[] { "SubjectId", "SessionId", "Type" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Plantas_BodegaId",
-                table: "Plantas",
+                name: "IX_Planta_BodegaId",
+                table: "Planta",
                 column: "BodegaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Plantas_TipoPlantaId",
-                table: "Plantas",
+                name: "IX_Planta_TipoPlantaId",
+                table: "Planta",
                 column: "TipoPlantaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Rutas_TipoRutaId",
-                table: "Rutas",
+                name: "IX_Ruta_TipoRutaId",
+                table: "Ruta",
                 column: "TipoRutaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Rutas_UbicacionDestinoId",
-                table: "Rutas",
+                name: "IX_Ruta_UbicacionDestinoId",
+                table: "Ruta",
                 column: "UbicacionDestinoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Rutas_UbicacionOrigenId",
-                table: "Rutas",
+                name: "IX_Ruta_UbicacionOrigenId",
+                table: "Ruta",
                 column: "UbicacionOrigenId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SolicitudTransporteCargas_AlgoritmoMinimizacionId",
-                table: "SolicitudTransporteCargas",
+                name: "IX_SolicitudTransporteCarga_AlgoritmoMinimizacionId",
+                table: "SolicitudTransporteCarga",
                 column: "AlgoritmoMinimizacionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SolicitudTransporteCargas_EmpresaId",
-                table: "SolicitudTransporteCargas",
+                name: "IX_SolicitudTransporteCarga_EmpresaId",
+                table: "SolicitudTransporteCarga",
                 column: "EmpresaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SolicitudTransporteCargas_EstadoSolicitudTransporteCargaId",
-                table: "SolicitudTransporteCargas",
+                name: "IX_SolicitudTransporteCarga_EstadoSolicitudTransporteCargaId",
+                table: "SolicitudTransporteCarga",
                 column: "EstadoSolicitudTransporteCargaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SolicitudTransporteCargas_UbicacionDestinoId",
-                table: "SolicitudTransporteCargas",
+                name: "IX_SolicitudTransporteCarga_UbicacionDestinoId",
+                table: "SolicitudTransporteCarga",
                 column: "UbicacionDestinoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SolicitudTransporteCargas_UbicacionOrigenId",
-                table: "SolicitudTransporteCargas",
+                name: "IX_SolicitudTransporteCarga_UbicacionOrigenId",
+                table: "SolicitudTransporteCarga",
                 column: "UbicacionOrigenId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TodoItems_ListId",
-                table: "TodoItems",
-                column: "ListId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UbicacionEmpresas_EmpresaId",
-                table: "UbicacionEmpresas",
-                column: "EmpresaId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Ubicaciones_MunicipioId",
-                table: "Ubicaciones",
+                name: "IX_Ubicacion_MunicipioId",
+                table: "Ubicacion",
                 column: "MunicipioId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_VehiculoConductores_ConductorId",
-                table: "VehiculoConductores",
+                name: "IX_UbicacionEmpresa_EmpresaId",
+                table: "UbicacionEmpresa",
+                column: "EmpresaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_VehiculoConductor_ConductorId",
+                table: "VehiculoConductor",
                 column: "ConductorId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "AdminBodegas");
+                name: "AdminBodega");
 
             migrationBuilder.DropTable(
-                name: "AdminEmpresas");
+                name: "AdminEmpresa");
 
             migrationBuilder.DropTable(
-                name: "AdminPlantas");
+                name: "AdminPlanta");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
@@ -1974,25 +1894,25 @@ namespace seminario.Infrastructure.Persistence.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "BitacoraEstadoMovimientoBodegas");
+                name: "BitacoraEstadoMovimientoBodega");
 
             migrationBuilder.DropTable(
-                name: "BitacoraEstadoPedidoMateriales");
+                name: "BitacoraEstadoPedidoMaterial");
 
             migrationBuilder.DropTable(
-                name: "BitacoraEstadoSolicitudTransporteCargas");
+                name: "BitacoraEstadoSolicitudTransporteCarga");
 
             migrationBuilder.DropTable(
-                name: "BitacoraEstadoTransporteCargas");
+                name: "BitacoraEstadoTransporteCarga");
 
             migrationBuilder.DropTable(
                 name: "DeviceCodes");
 
             migrationBuilder.DropTable(
-                name: "IngresoMaterials");
+                name: "IngresoMaterial");
 
             migrationBuilder.DropTable(
-                name: "InventarioBodegas");
+                name: "InventarioBodega");
 
             migrationBuilder.DropTable(
                 name: "Keys");
@@ -2001,100 +1921,94 @@ namespace seminario.Infrastructure.Persistence.Migrations
                 name: "PersistedGrants");
 
             migrationBuilder.DropTable(
-                name: "TodoItems");
+                name: "UbicacionEmpresa");
 
             migrationBuilder.DropTable(
-                name: "UbicacionEmpresas");
+                name: "VehiculoConductor");
 
             migrationBuilder.DropTable(
-                name: "VehiculoConductores");
-
-            migrationBuilder.DropTable(
-                name: "Plantas");
+                name: "Planta");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "MovimientoBodegas");
+                name: "MovimientoBodega");
 
             migrationBuilder.DropTable(
-                name: "DetalleTransporteCargas");
+                name: "DetalleTransporteCarga");
 
             migrationBuilder.DropTable(
-                name: "ProveedorMateriales");
+                name: "ProveedorMaterial");
 
             migrationBuilder.DropTable(
-                name: "TodoLists");
+                name: "TipoPlanta");
 
             migrationBuilder.DropTable(
-                name: "TipoPlantas");
+                name: "EstadoMovimientoBodega");
 
             migrationBuilder.DropTable(
-                name: "EstadosMovimientoBodega");
+                name: "PedidoMaterial");
 
             migrationBuilder.DropTable(
-                name: "PedidoMateriales");
+                name: "Conductor");
 
             migrationBuilder.DropTable(
-                name: "Conductores");
+                name: "EstadoTransporteCarga");
 
             migrationBuilder.DropTable(
-                name: "EstadosTransporteCarga");
+                name: "Ruta");
 
             migrationBuilder.DropTable(
-                name: "Rutas");
+                name: "SolicitudTransporteCarga");
 
             migrationBuilder.DropTable(
-                name: "SolicitudTransporteCargas");
+                name: "Vehiculo");
 
             migrationBuilder.DropTable(
-                name: "Vehiculos");
+                name: "Bodega");
 
             migrationBuilder.DropTable(
-                name: "Bodegas");
+                name: "EstadoPedidoMaterial");
 
             migrationBuilder.DropTable(
-                name: "EstadosPedidoMaterial");
-
-            migrationBuilder.DropTable(
-                name: "Materiales");
+                name: "Material");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "TipoRutas");
+                name: "TipoRuta");
 
             migrationBuilder.DropTable(
-                name: "AlgoritmosMinimizacion");
+                name: "AlgoritmoMinimizacion");
 
             migrationBuilder.DropTable(
-                name: "Empresas");
+                name: "Empresa");
 
             migrationBuilder.DropTable(
-                name: "EstadosSolicitiudTransporteCarga");
+                name: "EstadoSolicitudTransporteCarga");
 
             migrationBuilder.DropTable(
-                name: "Ubicaciones");
+                name: "Ubicacion");
 
             migrationBuilder.DropTable(
-                name: "TipoMateriales");
+                name: "TipoMaterial");
 
             migrationBuilder.DropTable(
-                name: "UnidadMedidas");
+                name: "UnidadMedida");
 
             migrationBuilder.DropTable(
-                name: "TipoEmpresas");
+                name: "TipoEmpresa");
 
             migrationBuilder.DropTable(
-                name: "Municipios");
+                name: "Municipio");
 
             migrationBuilder.DropTable(
-                name: "Departamentos");
+                name: "Departamento");
 
             migrationBuilder.DropTable(
-                name: "Paises");
+                name: "Pais");
         }
     }
 }

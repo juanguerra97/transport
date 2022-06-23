@@ -27,7 +27,7 @@ public class EntregarMovimientoBodegaCommandHandler : IRequestHandler<EntregarMo
 
     public async Task<MovimientoBodegaDto> Handle(EntregarMovimientoBodegaCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _context.MovimientoBodegas
+        var entity = await _context.MovimientoBodega
             .Include(m => m.EstadoMovimientoBodega)
             .Include(m => m.PedidoMaterial.Material.UnidadMedida)
             .FirstOrDefaultAsync(m => m.Id == request.MovimientoBodegaId && m.Status != "X", cancellationToken);
@@ -42,7 +42,7 @@ public class EntregarMovimientoBodegaCommandHandler : IRequestHandler<EntregarMo
             throw new CustomValidationException($"Un movimiento en estado {entity.EstadoMovimientoBodega.Descripcion} no puede ser entregado.");
         }
 
-        var inventarioOrigen = await _context.InventarioBodegas
+        var inventarioOrigen = await _context.InventarioBodega
             .FirstOrDefaultAsync(iv => iv.BodegaId == entity.BodegaOrigenId && iv.MaterialId == entity.PedidoMaterial.MaterialId && iv.Status != "X", cancellationToken);
 
         if (inventarioOrigen == null)
@@ -55,7 +55,7 @@ public class EntregarMovimientoBodegaCommandHandler : IRequestHandler<EntregarMo
             throw new CustomValidationException("La cantidad reservada del inventario de origen no es suficiente para completar la entrega.");
         }
 
-        var inventario = await _context.InventarioBodegas
+        var inventario = await _context.InventarioBodega
             .FirstOrDefaultAsync(iv => iv.BodegaId == entity.BodegaDestinoId && iv.MaterialId == entity.PedidoMaterial.MaterialId && iv.Status != "X", cancellationToken);
 
         if (inventario == null)
@@ -67,7 +67,7 @@ public class EntregarMovimientoBodegaCommandHandler : IRequestHandler<EntregarMo
                 CantidadDisponible = entity.Cantidad,
                 CantidadReservada = 0
             };
-            await _context.InventarioBodegas.AddAsync(inventario, cancellationToken);
+            await _context.InventarioBodega.AddAsync(inventario, cancellationToken);
         } else
         {
             inventario.CantidadDisponible = inventario.CantidadDisponible + entity.Cantidad;
@@ -77,19 +77,19 @@ public class EntregarMovimientoBodegaCommandHandler : IRequestHandler<EntregarMo
 
         entity.EstadoMovimientoBodegaId = EstadosMovimientoBodegaConstants.ENTREGADO.Id;
 
-        await _context.BitacoraEstadoMovimientoBodegas.AddAsync(new BitacoraEstadoMovimientoBodega
+        await _context.BitacoraEstadoMovimientoBodega.AddAsync(new BitacoraEstadoMovimientoBodega
         {
             MovimientoBodegaId = entity.Id,
             EstadoMovimientoBodegaId = EstadosMovimientoBodegaConstants.ENTREGADO.Id
         }, cancellationToken);
 
-        if(true == (await _context.MovimientoBodegas
+        if(true == (await _context.MovimientoBodega
             .Where(m => m.Status != "X" && m.PedidoMaterialId == entity.PedidoMaterialId && m.Id != entity.Id && m.EstadoMovimientoBodegaId != EstadosMovimientoBodegaConstants.ANULADO.Id)
             .AllAsync(m => m.EstadoMovimientoBodegaId == EstadosMovimientoBodegaConstants.ENTREGADO.Id, cancellationToken)))
         {
             var pedido = entity.PedidoMaterial;
             pedido.EstadoPedidoMaterialId = EstadosPedidoMaterialConstants.COMPLETADO.Id;
-            await _context.BitacoraEstadoPedidoMateriales.AddAsync(new BitacoraEstadoPedidoMaterial
+            await _context.BitacoraEstadoPedidoMaterial.AddAsync(new BitacoraEstadoPedidoMaterial
             {
                 PedidoMaterialId = pedido.Id,
                 EstadoPedidoMaterialId = EstadosPedidoMaterialConstants.COMPLETADO.Id
@@ -98,7 +98,7 @@ public class EntregarMovimientoBodegaCommandHandler : IRequestHandler<EntregarMo
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        entity = await _context.MovimientoBodegas
+        entity = await _context.MovimientoBodega
             .Include(m => m.EstadoMovimientoBodega)
             .Include(m => m.PedidoMaterial.Material.UnidadMedida)
             .Include(m => m.BodegaOrigen.Ubicacion.Municipio.Departamento.Pais)

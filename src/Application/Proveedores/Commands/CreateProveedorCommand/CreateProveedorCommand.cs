@@ -33,7 +33,7 @@ public class CreateProveedorCommandHandler : IRequestHandler<CreateProveedorComm
             Direccion = request.Direccion
         };
 
-        await _context.ProveedorMateriales.AddAsync(entity);
+        await _context.ProveedorMaterial.AddAsync(entity);
         await _context.SaveChangesAsync(cancellationToken);
 
         return entity.Id;

@@ -35,7 +35,7 @@ public class GetMovimientosBodegaByConductorQueryHandler : IRequestHandler<GetMo
     {
 
         var userId = _currentUserService.UserId;
-        var conductor = await _context.Conductores
+        var conductor = await _context.Conductor
             .FirstOrDefaultAsync(c => c.UserId == userId && c.Status != "X", cancellationToken);
 
         if (conductor == null)
@@ -46,7 +46,7 @@ public class GetMovimientosBodegaByConductorQueryHandler : IRequestHandler<GetMo
         var descripcionLike = "%" + request.DescripcionMaterial?.Replace(" ", "%")?.ToUpper() + "%";
         var todayDate = DateTime.Now.Date;
         return await PaginatedList<MovimientoBodegaDto>.CreateAsync(
-            _context.MovimientoBodegas
+            _context.MovimientoBodega
             .Where(m => m.Status != "X" && m.ConductorId == conductor.Id
                 && (ESTADOS.Contains(m.EstadoMovimientoBodegaId))
                 && (request.DescripcionMaterial == null || EF.Functions.Like((m.PedidoMaterial.Material.Descripcion + " " + m.PedidoMaterial.Material.Detalle).ToUpper(), descripcionLike))

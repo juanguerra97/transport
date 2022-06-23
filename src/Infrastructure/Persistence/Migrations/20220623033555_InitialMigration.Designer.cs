@@ -11,7 +11,7 @@ using seminario.Infrastructure.Persistence;
 namespace seminario.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220619223828_InitialMigration")]
+    [Migration("20220623033555_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -302,19 +302,19 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     b.Property<int?>("BodegaId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTime?>("FechaInsert")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTime?>("FechaUpdate")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("longtext");
 
                     b.Property<string>("Status")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioInsert")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioUpdate")
                         .HasColumnType("longtext");
 
                     b.HasKey("UserId", "BodegaId");
@@ -322,7 +322,7 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     b.HasIndex("BodegaId")
                         .IsUnique();
 
-                    b.ToTable("AdminBodegas");
+                    b.ToTable("AdminBodega");
                 });
 
             modelBuilder.Entity("seminario.Domain.Entities.AdminEmpresa", b =>
@@ -333,26 +333,26 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     b.Property<int?>("EmpresaId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTime?>("FechaInsert")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTime?>("FechaUpdate")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("longtext");
 
                     b.Property<string>("Status")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioInsert")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioUpdate")
                         .HasColumnType("longtext");
 
                     b.HasKey("UserId", "EmpresaId");
 
                     b.HasIndex("EmpresaId");
 
-                    b.ToTable("AdminEmpresas");
+                    b.ToTable("AdminEmpresa");
                 });
 
             modelBuilder.Entity("seminario.Domain.Entities.AdminPlanta", b =>
@@ -363,19 +363,19 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     b.Property<int?>("PlantaId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTime?>("FechaInsert")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTime?>("FechaUpdate")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("longtext");
 
                     b.Property<string>("Status")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioInsert")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioUpdate")
                         .HasColumnType("longtext");
 
                     b.HasKey("UserId", "PlantaId");
@@ -383,7 +383,7 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     b.HasIndex("PlantaId")
                         .IsUnique();
 
-                    b.ToTable("AdminPlantas");
+                    b.ToTable("AdminPlanta");
                 });
 
             modelBuilder.Entity("seminario.Domain.Entities.AlgoritmoMinimizacion", b =>
@@ -392,29 +392,29 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext");
-
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("varchar(64)");
 
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTime?>("FechaInsert")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("longtext");
+                    b.Property<DateTime?>("FechaUpdate")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Status")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("UsuarioInsert")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioUpdate")
+                        .HasColumnType("longtext");
+
                     b.HasKey("Id");
 
-                    b.ToTable("AlgoritmosMinimizacion");
+                    b.ToTable("AlgoritmoMinimizacion");
                 });
 
             modelBuilder.Entity("seminario.Domain.Entities.ApplicationUser", b =>
@@ -497,21 +497,15 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext");
-
                     b.Property<int?>("EstadoMovimientoBodegaId")
                         .IsRequired()
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTime?>("FechaInsert")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("longtext");
+                    b.Property<DateTime?>("FechaUpdate")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<int?>("MovimientoBodegaId")
                         .IsRequired()
@@ -520,13 +514,19 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     b.Property<string>("Status")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("UsuarioInsert")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioUpdate")
+                        .HasColumnType("longtext");
+
                     b.HasKey("Id");
 
                     b.HasIndex("EstadoMovimientoBodegaId");
 
                     b.HasIndex("MovimientoBodegaId", "EstadoMovimientoBodegaId");
 
-                    b.ToTable("BitacoraEstadoMovimientoBodegas");
+                    b.ToTable("BitacoraEstadoMovimientoBodega");
                 });
 
             modelBuilder.Entity("seminario.Domain.Entities.BitacoraEstadoPedidoMaterial", b =>
@@ -535,21 +535,15 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext");
-
                     b.Property<int?>("EstadoPedidoMaterialId")
                         .IsRequired()
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTime?>("FechaInsert")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("longtext");
+                    b.Property<DateTime?>("FechaUpdate")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<int?>("PedidoMaterialId")
                         .IsRequired()
@@ -558,13 +552,19 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     b.Property<string>("Status")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("UsuarioInsert")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioUpdate")
+                        .HasColumnType("longtext");
+
                     b.HasKey("Id");
 
                     b.HasIndex("EstadoPedidoMaterialId");
 
                     b.HasIndex("PedidoMaterialId", "EstadoPedidoMaterialId");
 
-                    b.ToTable("BitacoraEstadoPedidoMateriales");
+                    b.ToTable("BitacoraEstadoPedidoMaterial");
                 });
 
             modelBuilder.Entity("seminario.Domain.Entities.BitacoraEstadoSolicitudTransporteCarga", b =>
@@ -573,21 +573,15 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext");
-
                     b.Property<int?>("EstadoSolicitudTransporteCargaId")
                         .IsRequired()
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTime?>("FechaInsert")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("longtext");
+                    b.Property<DateTime?>("FechaUpdate")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<int?>("SolicitudTransporteCargaId")
                         .IsRequired()
@@ -596,13 +590,19 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     b.Property<string>("Status")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("UsuarioInsert")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioUpdate")
+                        .HasColumnType("longtext");
+
                     b.HasKey("Id");
 
                     b.HasIndex("EstadoSolicitudTransporteCargaId");
 
                     b.HasIndex("SolicitudTransporteCargaId", "EstadoSolicitudTransporteCargaId");
 
-                    b.ToTable("BitacoraEstadoSolicitudTransporteCargas");
+                    b.ToTable("BitacoraEstadoSolicitudTransporteCarga");
                 });
 
             modelBuilder.Entity("seminario.Domain.Entities.BitacoraEstadoTransporteCarga", b =>
@@ -610,12 +610,6 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    b.Property<DateTime?>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext");
 
                     b.Property<int?>("DetalleTransporteCargaId")
                         .IsRequired()
@@ -625,13 +619,19 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTime?>("FechaInsert")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("longtext");
+                    b.Property<DateTime?>("FechaUpdate")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Status")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioInsert")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioUpdate")
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
@@ -640,7 +640,7 @@ namespace seminario.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("DetalleTransporteCargaId", "EstadoTransporteCargaId");
 
-                    b.ToTable("BitacoraEstadoTransporteCargas");
+                    b.ToTable("BitacoraEstadoTransporteCarga");
                 });
 
             modelBuilder.Entity("seminario.Domain.Entities.Bodega", b =>
@@ -648,12 +648,6 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    b.Property<DateTime?>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext");
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
@@ -664,11 +658,11 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .HasMaxLength(1024)
                         .HasColumnType("varchar(1024)");
 
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTime?>("FechaInsert")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("longtext");
+                    b.Property<DateTime?>("FechaUpdate")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Status")
                         .HasColumnType("longtext");
@@ -680,11 +674,17 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("int");
 
+                    b.Property<string>("UsuarioInsert")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioUpdate")
+                        .HasColumnType("longtext");
+
                     b.HasKey("Id");
 
                     b.HasIndex("UbicacionId");
 
-                    b.ToTable("Bodegas");
+                    b.ToTable("Bodega");
                 });
 
             modelBuilder.Entity("seminario.Domain.Entities.Conductor", b =>
@@ -693,17 +693,11 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTime?>("FechaInsert")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTime?>("FechaUpdate")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("longtext");
 
                     b.Property<string>("NoLicencia")
                         .IsRequired()
@@ -717,13 +711,19 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(255)");
 
+                    b.Property<string>("UsuarioInsert")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioUpdate")
+                        .HasColumnType("longtext");
+
                     b.HasKey("Id");
 
                     b.HasIndex("NoLicencia");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Conductores");
+                    b.ToTable("Conductor");
                 });
 
             modelBuilder.Entity("seminario.Domain.Entities.Departamento", b =>
@@ -731,22 +731,16 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     b.Property<int?>("Id")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext");
-
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("varchar(256)");
 
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTime?>("FechaInsert")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("longtext");
+                    b.Property<DateTime?>("FechaUpdate")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<int?>("PaisId")
                         .IsRequired()
@@ -755,13 +749,19 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     b.Property<string>("Status")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("UsuarioInsert")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioUpdate")
+                        .HasColumnType("longtext");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Descripcion");
 
                     b.HasIndex("PaisId");
 
-                    b.ToTable("Departamentos");
+                    b.ToTable("Departamento");
                 });
 
             modelBuilder.Entity("seminario.Domain.Entities.DetalleTransporteCarga", b =>
@@ -773,12 +773,6 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     b.Property<int?>("ConductorId")
                         .IsRequired()
                         .HasColumnType("int");
-
-                    b.Property<DateTime?>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext");
 
                     b.Property<int?>("EstadoTransporteCargaId")
                         .IsRequired()
@@ -795,14 +789,14 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("datetime(6)");
 
+                    b.Property<DateTime?>("FechaInsert")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<DateTime?>("FechaTerminado")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTime?>("FechaUpdate")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("longtext");
 
                     b.Property<int?>("RutaId")
                         .IsRequired()
@@ -813,6 +807,12 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioInsert")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioUpdate")
                         .HasColumnType("longtext");
 
                     b.Property<int?>("VehiculoId")
@@ -831,7 +831,7 @@ namespace seminario.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("VehiculoId");
 
-                    b.ToTable("DetalleTransporteCargas");
+                    b.ToTable("DetalleTransporteCarga");
                 });
 
             modelBuilder.Entity("seminario.Domain.Entities.Empresa", b =>
@@ -839,12 +839,6 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    b.Property<DateTime?>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext");
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
@@ -855,11 +849,11 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .HasMaxLength(1024)
                         .HasColumnType("varchar(1024)");
 
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTime?>("FechaInsert")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("longtext");
+                    b.Property<DateTime?>("FechaUpdate")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Nit")
                         .HasMaxLength(32)
@@ -872,73 +866,77 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("int");
 
+                    b.Property<string>("UsuarioInsert")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioUpdate")
+                        .HasColumnType("longtext");
+
                     b.HasKey("Id");
 
                     b.HasIndex("TipoEmpresaId");
 
-                    b.ToTable("Empresas");
+                    b.ToTable("Empresa");
                 });
 
             modelBuilder.Entity("seminario.Domain.Entities.EstadoMovimientoBodega", b =>
                 {
                     b.Property<int?>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    b.Property<DateTime?>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext");
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("varchar(64)");
 
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTime?>("FechaInsert")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("longtext");
+                    b.Property<DateTime?>("FechaUpdate")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Status")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("UsuarioInsert")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioUpdate")
+                        .HasColumnType("longtext");
+
                     b.HasKey("Id");
 
-                    b.ToTable("EstadosMovimientoBodega");
+                    b.ToTable("EstadoMovimientoBodega");
                 });
 
             modelBuilder.Entity("seminario.Domain.Entities.EstadoPedidoMaterial", b =>
                 {
                     b.Property<int?>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    b.Property<DateTime?>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext");
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("varchar(64)");
 
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTime?>("FechaInsert")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("longtext");
+                    b.Property<DateTime?>("FechaUpdate")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Status")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("UsuarioInsert")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioUpdate")
+                        .HasColumnType("longtext");
+
                     b.HasKey("Id");
 
-                    b.ToTable("EstadosPedidoMaterial");
+                    b.ToTable("EstadoPedidoMaterial");
                 });
 
             modelBuilder.Entity("seminario.Domain.Entities.EstadoSolicitudTransporteCarga", b =>
@@ -947,29 +945,29 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext");
-
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("varchar(64)");
 
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTime?>("FechaInsert")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("longtext");
+                    b.Property<DateTime?>("FechaUpdate")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Status")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("UsuarioInsert")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioUpdate")
+                        .HasColumnType("longtext");
+
                     b.HasKey("Id");
 
-                    b.ToTable("EstadosSolicitiudTransporteCarga");
+                    b.ToTable("EstadoSolicitudTransporteCarga");
                 });
 
             modelBuilder.Entity("seminario.Domain.Entities.EstadoTransporteCarga", b =>
@@ -978,29 +976,29 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext");
-
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("varchar(64)");
 
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTime?>("FechaInsert")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("longtext");
+                    b.Property<DateTime?>("FechaUpdate")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Status")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("UsuarioInsert")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioUpdate")
+                        .HasColumnType("longtext");
+
                     b.HasKey("Id");
 
-                    b.ToTable("EstadosTransporteCarga");
+                    b.ToTable("EstadoTransporteCarga");
                 });
 
             modelBuilder.Entity("seminario.Domain.Entities.IngresoMaterial", b =>
@@ -1016,17 +1014,11 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     b.Property<double?>("Cantidad")
                         .HasColumnType("double");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTime?>("FechaInsert")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTime?>("FechaUpdate")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("longtext");
 
                     b.Property<int?>("MaterialId")
                         .IsRequired()
@@ -1039,6 +1031,12 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     b.Property<string>("Status")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("UsuarioInsert")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioUpdate")
+                        .HasColumnType("longtext");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BodegaId");
@@ -1047,7 +1045,7 @@ namespace seminario.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("ProveedorMaterialId");
 
-                    b.ToTable("IngresoMaterials");
+                    b.ToTable("IngresoMaterial");
                 });
 
             modelBuilder.Entity("seminario.Domain.Entities.InventarioBodega", b =>
@@ -1070,26 +1068,26 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .HasColumnType("double")
                         .HasDefaultValue(0.0);
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTime?>("FechaInsert")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTime?>("FechaUpdate")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("longtext");
 
                     b.Property<string>("Status")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioInsert")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioUpdate")
                         .HasColumnType("longtext");
 
                     b.HasKey("BodegaId", "MaterialId");
 
                     b.HasIndex("MaterialId");
 
-                    b.ToTable("InventarioBodegas");
+                    b.ToTable("InventarioBodega");
                 });
 
             modelBuilder.Entity("seminario.Domain.Entities.Material", b =>
@@ -1097,12 +1095,6 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    b.Property<DateTime?>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext");
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
@@ -1113,11 +1105,11 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .HasMaxLength(4096)
                         .HasColumnType("varchar(4096)");
 
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTime?>("FechaInsert")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("longtext");
+                    b.Property<DateTime?>("FechaUpdate")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<double?>("Peso")
                         .HasColumnType("double");
@@ -1133,13 +1125,19 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("int");
 
+                    b.Property<string>("UsuarioInsert")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioUpdate")
+                        .HasColumnType("longtext");
+
                     b.HasKey("Id");
 
                     b.HasIndex("TipoMaterialId");
 
                     b.HasIndex("UnidadMedidaId");
 
-                    b.ToTable("Materiales");
+                    b.ToTable("Material");
                 });
 
             modelBuilder.Entity("seminario.Domain.Entities.MovimientoBodega", b =>
@@ -1164,12 +1162,6 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext");
-
                     b.Property<string>("Detalle")
                         .HasMaxLength(1024)
                         .HasColumnType("varchar(1024)");
@@ -1187,21 +1179,23 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     b.Property<DateTime?>("FechaInicioProgramado")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTime?>("FechaInsert")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("longtext");
-
-                    b.Property<int?>("MaterialId")
-                        .IsRequired()
-                        .HasColumnType("int");
+                    b.Property<DateTime?>("FechaUpdate")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<int?>("PedidoMaterialId")
                         .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioInsert")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioUpdate")
                         .HasColumnType("longtext");
 
                     b.Property<int?>("VehiculoId")
@@ -1218,25 +1212,17 @@ namespace seminario.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("EstadoMovimientoBodegaId");
 
-                    b.HasIndex("MaterialId");
-
                     b.HasIndex("PedidoMaterialId");
 
                     b.HasIndex("VehiculoId");
 
-                    b.ToTable("MovimientoBodegas");
+                    b.ToTable("MovimientoBodega");
                 });
 
             modelBuilder.Entity("seminario.Domain.Entities.Municipio", b =>
                 {
                     b.Property<int?>("Id")
                         .HasColumnType("int");
-
-                    b.Property<DateTime?>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext");
 
                     b.Property<int?>("DepartamentoId")
                         .IsRequired()
@@ -1247,13 +1233,19 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("varchar(256)");
 
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTime?>("FechaInsert")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("longtext");
+                    b.Property<DateTime?>("FechaUpdate")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Status")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioInsert")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioUpdate")
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
@@ -1262,7 +1254,7 @@ namespace seminario.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("Descripcion");
 
-                    b.ToTable("Municipios");
+                    b.ToTable("Municipio");
                 });
 
             modelBuilder.Entity("seminario.Domain.Entities.Pais", b =>
@@ -1270,24 +1262,24 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     b.Property<int?>("Id")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext");
-
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("varchar(256)");
 
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTime?>("FechaInsert")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("longtext");
+                    b.Property<DateTime?>("FechaUpdate")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Status")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioInsert")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioUpdate")
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
@@ -1295,7 +1287,7 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     b.HasIndex("Descripcion")
                         .IsUnique();
 
-                    b.ToTable("Paises");
+                    b.ToTable("Pais");
                 });
 
             modelBuilder.Entity("seminario.Domain.Entities.PedidoMaterial", b =>
@@ -1312,12 +1304,6 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("double");
 
-                    b.Property<DateTime?>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext");
-
                     b.Property<string>("Detalle")
                         .HasMaxLength(1024)
                         .HasColumnType("varchar(1024)");
@@ -1332,20 +1318,26 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     b.Property<DateTime?>("FechaCompletado")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<DateTime?>("FechaInsert")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<DateTime?>("FechaSolicitado")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTime?>("FechaUpdate")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("longtext");
 
                     b.Property<int?>("MaterialId")
                         .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioInsert")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioUpdate")
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
@@ -1356,7 +1348,7 @@ namespace seminario.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("MaterialId");
 
-                    b.ToTable("PedidoMateriales");
+                    b.ToTable("PedidoMaterial");
                 });
 
             modelBuilder.Entity("seminario.Domain.Entities.Planta", b =>
@@ -1369,12 +1361,6 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext");
-
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasMaxLength(256)
@@ -1384,11 +1370,11 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .HasMaxLength(1024)
                         .HasColumnType("varchar(1024)");
 
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTime?>("FechaInsert")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("longtext");
+                    b.Property<DateTime?>("FechaUpdate")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Status")
                         .HasColumnType("longtext");
@@ -1397,13 +1383,19 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("int");
 
+                    b.Property<string>("UsuarioInsert")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioUpdate")
+                        .HasColumnType("longtext");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BodegaId");
 
                     b.HasIndex("TipoPlantaId");
 
-                    b.ToTable("Plantas");
+                    b.ToTable("Planta");
                 });
 
             modelBuilder.Entity("seminario.Domain.Entities.ProveedorMaterial", b =>
@@ -1411,12 +1403,6 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    b.Property<DateTime?>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext");
 
                     b.Property<string>("Direccion")
                         .IsRequired()
@@ -1428,11 +1414,11 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("varchar(256)");
 
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTime?>("FechaInsert")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("longtext");
+                    b.Property<DateTime?>("FechaUpdate")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Nit")
                         .IsRequired()
@@ -1452,9 +1438,15 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .HasMaxLength(16)
                         .HasColumnType("varchar(16)");
 
+                    b.Property<string>("UsuarioInsert")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioUpdate")
+                        .HasColumnType("longtext");
+
                     b.HasKey("Id");
 
-                    b.ToTable("ProveedorMateriales");
+                    b.ToTable("ProveedorMaterial");
                 });
 
             modelBuilder.Entity("seminario.Domain.Entities.Ruta", b =>
@@ -1466,20 +1458,14 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     b.Property<decimal?>("CostoPorCarga")
                         .HasColumnType("decimal(65,30)");
 
-                    b.Property<DateTime?>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext");
-
                     b.Property<double?>("Distancia")
                         .HasColumnType("double");
 
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTime?>("FechaInsert")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("longtext");
+                    b.Property<DateTime?>("FechaUpdate")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Status")
                         .HasColumnType("longtext");
@@ -1499,6 +1485,12 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("int");
 
+                    b.Property<string>("UsuarioInsert")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioUpdate")
+                        .HasColumnType("longtext");
+
                     b.HasKey("Id");
 
                     b.HasIndex("TipoRutaId");
@@ -1507,7 +1499,7 @@ namespace seminario.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("UbicacionOrigenId");
 
-                    b.ToTable("Rutas");
+                    b.ToTable("Ruta");
                 });
 
             modelBuilder.Entity("seminario.Domain.Entities.SolicitudTransporteCarga", b =>
@@ -1564,7 +1556,7 @@ namespace seminario.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("UbicacionOrigenId");
 
-                    b.ToTable("SolicitudTransporteCargas");
+                    b.ToTable("SolicitudTransporteCarga");
                 });
 
             modelBuilder.Entity("seminario.Domain.Entities.TipoEmpresa", b =>
@@ -1573,60 +1565,59 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext");
-
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("varchar(64)");
 
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTime?>("FechaInsert")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("longtext");
+                    b.Property<DateTime?>("FechaUpdate")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Status")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("UsuarioInsert")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioUpdate")
+                        .HasColumnType("longtext");
+
                     b.HasKey("Id");
 
-                    b.ToTable("TipoEmpresas");
+                    b.ToTable("TipoEmpresa");
                 });
 
             modelBuilder.Entity("seminario.Domain.Entities.TipoMaterial", b =>
                 {
                     b.Property<int?>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    b.Property<DateTime?>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext");
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("varchar(64)");
 
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTime?>("FechaInsert")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("longtext");
+                    b.Property<DateTime?>("FechaUpdate")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Status")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("UsuarioInsert")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioUpdate")
+                        .HasColumnType("longtext");
+
                     b.HasKey("Id");
 
-                    b.ToTable("TipoMateriales");
+                    b.ToTable("TipoMaterial");
                 });
 
             modelBuilder.Entity("seminario.Domain.Entities.TipoPlanta", b =>
@@ -1634,29 +1625,29 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     b.Property<int?>("Id")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext");
-
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("varchar(64)");
 
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTime?>("FechaInsert")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("longtext");
+                    b.Property<DateTime?>("FechaUpdate")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Status")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("UsuarioInsert")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioUpdate")
+                        .HasColumnType("longtext");
+
                     b.HasKey("Id");
 
-                    b.ToTable("TipoPlantas");
+                    b.ToTable("TipoPlanta");
                 });
 
             modelBuilder.Entity("seminario.Domain.Entities.TipoRuta", b =>
@@ -1664,12 +1655,6 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    b.Property<DateTime?>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext");
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
@@ -1681,97 +1666,24 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .HasMaxLength(1024)
                         .HasColumnType("varchar(1024)");
 
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTime?>("FechaInsert")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Status")
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TipoRutas");
-                });
-
-            modelBuilder.Entity("seminario.Domain.Entities.TodoItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext");
-
-                    b.Property<bool>("Done")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("ListId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Note")
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("Priority")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("Reminder")
+                    b.Property<DateTime?>("FechaUpdate")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Status")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("varchar(200)");
+                    b.Property<string>("UsuarioInsert")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioUpdate")
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ListId");
-
-                    b.ToTable("TodoItems");
-                });
-
-            modelBuilder.Entity("seminario.Domain.Entities.TodoList", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Status")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("varchar(200)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TodoLists");
+                    b.ToTable("TipoRuta");
                 });
 
             modelBuilder.Entity("seminario.Domain.Entities.Ubicacion", b =>
@@ -1779,12 +1691,6 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    b.Property<DateTime?>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext");
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
@@ -1800,11 +1706,11 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("varchar(256)");
 
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTime?>("FechaInsert")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("longtext");
+                    b.Property<DateTime?>("FechaUpdate")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<double?>("Latitud")
                         .HasColumnType("double");
@@ -1822,11 +1728,17 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     b.Property<int>("TipoUbicacion")
                         .HasColumnType("int");
 
+                    b.Property<string>("UsuarioInsert")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioUpdate")
+                        .HasColumnType("longtext");
+
                     b.HasKey("Id");
 
                     b.HasIndex("MunicipioId");
 
-                    b.ToTable("Ubicaciones");
+                    b.ToTable("Ubicacion");
                 });
 
             modelBuilder.Entity("seminario.Domain.Entities.UbicacionEmpresa", b =>
@@ -1837,26 +1749,26 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     b.Property<int?>("EmpresaId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTime?>("FechaInsert")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTime?>("FechaUpdate")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("longtext");
 
                     b.Property<string>("Status")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioInsert")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioUpdate")
                         .HasColumnType("longtext");
 
                     b.HasKey("UbicacionId", "EmpresaId");
 
                     b.HasIndex("EmpresaId");
 
-                    b.ToTable("UbicacionEmpresas");
+                    b.ToTable("UbicacionEmpresa");
                 });
 
             modelBuilder.Entity("seminario.Domain.Entities.UnidadMedida", b =>
@@ -1864,12 +1776,6 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    b.Property<DateTime?>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext");
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
@@ -1886,18 +1792,24 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .HasMaxLength(128)
                         .HasColumnType("varchar(128)");
 
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTime?>("FechaInsert")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("longtext");
+                    b.Property<DateTime?>("FechaUpdate")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Status")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("UsuarioInsert")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioUpdate")
+                        .HasColumnType("longtext");
+
                     b.HasKey("Id");
 
-                    b.ToTable("UnidadMedidas");
+                    b.ToTable("UnidadMedida");
                 });
 
             modelBuilder.Entity("seminario.Domain.Entities.Vehiculo", b =>
@@ -1913,12 +1825,6 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     b.Property<string>("Codigo")
                         .HasMaxLength(128)
                         .HasColumnType("varchar(128)");
-
-                    b.Property<DateTime?>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext");
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
@@ -1936,11 +1842,11 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .HasColumnType("tinyint(1)")
                         .HasDefaultValue(false);
 
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTime?>("FechaInsert")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("longtext");
+                    b.Property<DateTime?>("FechaUpdate")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Placa")
                         .HasMaxLength(64)
@@ -1949,9 +1855,15 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     b.Property<string>("Status")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("UsuarioInsert")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioUpdate")
+                        .HasColumnType("longtext");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Vehiculos");
+                    b.ToTable("Vehiculo");
                 });
 
             modelBuilder.Entity("seminario.Domain.Entities.VehiculoConductor", b =>
@@ -1962,26 +1874,26 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     b.Property<int?>("ConductorId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTime?>("FechaInsert")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTime?>("FechaUpdate")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("longtext");
 
                     b.Property<string>("Status")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioInsert")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioUpdate")
                         .HasColumnType("longtext");
 
                     b.HasKey("VehiculoId", "ConductorId");
 
                     b.HasIndex("ConductorId");
 
-                    b.ToTable("VehiculoConductores");
+                    b.ToTable("VehiculoConductor");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -2346,12 +2258,6 @@ namespace seminario.Infrastructure.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("seminario.Domain.Entities.Material", "Material")
-                        .WithMany()
-                        .HasForeignKey("MaterialId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("seminario.Domain.Entities.PedidoMaterial", "PedidoMaterial")
                         .WithMany()
                         .HasForeignKey("PedidoMaterialId")
@@ -2371,8 +2277,6 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     b.Navigation("Conductor");
 
                     b.Navigation("EstadoMovimientoBodega");
-
-                    b.Navigation("Material");
 
                     b.Navigation("PedidoMaterial");
 
@@ -2506,39 +2410,6 @@ namespace seminario.Infrastructure.Persistence.Migrations
                     b.Navigation("UbicacionOrigen");
                 });
 
-            modelBuilder.Entity("seminario.Domain.Entities.TodoItem", b =>
-                {
-                    b.HasOne("seminario.Domain.Entities.TodoList", "List")
-                        .WithMany("Items")
-                        .HasForeignKey("ListId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("List");
-                });
-
-            modelBuilder.Entity("seminario.Domain.Entities.TodoList", b =>
-                {
-                    b.OwnsOne("seminario.Domain.ValueObjects.Colour", "Colour", b1 =>
-                        {
-                            b1.Property<int>("TodoListId")
-                                .HasColumnType("int");
-
-                            b1.Property<string>("Code")
-                                .IsRequired()
-                                .HasColumnType("longtext");
-
-                            b1.HasKey("TodoListId");
-
-                            b1.ToTable("TodoLists");
-
-                            b1.WithOwner()
-                                .HasForeignKey("TodoListId");
-                        });
-
-                    b.Navigation("Colour");
-                });
-
             modelBuilder.Entity("seminario.Domain.Entities.Ubicacion", b =>
                 {
                     b.HasOne("seminario.Domain.Entities.Municipio", "Municipio")
@@ -2598,11 +2469,6 @@ namespace seminario.Infrastructure.Persistence.Migrations
                 {
                     b.Navigation("AdminPlanta")
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("seminario.Domain.Entities.TodoList", b =>
-                {
-                    b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
         }

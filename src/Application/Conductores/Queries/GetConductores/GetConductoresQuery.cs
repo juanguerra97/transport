@@ -28,7 +28,7 @@ public class GetConductoresQueryHandler : IRequestHandler<GetConductoresQuery, P
     {
         var nombreLike = "%" + request.Nombre?.Replace(" ", "%")?.ToUpper() + "%";
         return await PaginatedList<ConductorDto>.CreateAsync(
-            _context.Conductores
+            _context.Conductor
             .Include(c => c.User)
             .Where(c => c.Status != "X" 
                 && (request.Nombre == null || EF.Functions.Like((c.User.FirstName + " " + c.User.LastName).ToUpper(), nombreLike)))

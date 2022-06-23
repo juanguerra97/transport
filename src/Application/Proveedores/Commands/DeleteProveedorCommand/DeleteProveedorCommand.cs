@@ -25,7 +25,7 @@ public class DeleteProveedorCommandHandler : IRequestHandler<DeleteProveedorComm
 
     public async Task<ProveedorDto> Handle(DeleteProveedorCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _context.ProveedorMateriales
+        var entity = await _context.ProveedorMaterial
             .FirstOrDefaultAsync(p => p.Id == request.ProveedorId && p.Status == "A", cancellationToken);
         
         if(entity == null)

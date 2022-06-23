@@ -24,7 +24,7 @@ public class DeleteUnidadMedidaCommandHandler : IRequestHandler<DeleteUnidadMedi
     }
     public  async Task<UnidadMedidaDto> Handle(DeleteUnidadMedidaCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _context.UnidadMedidas
+        var entity = await _context.UnidadMedida
             .FirstOrDefaultAsync(u => u.Id == request.UnidadMedidaId, cancellationToken);
 
         if (entity == null)

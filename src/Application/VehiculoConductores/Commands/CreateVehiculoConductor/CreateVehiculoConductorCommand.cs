@@ -23,14 +23,14 @@ public class CreateVehiculoConductorCommandHandler : IRequestHandler<CreateVehic
 
     public async Task<Unit> Handle(CreateVehiculoConductorCommand request, CancellationToken cancellationToken)
     {
-        var vehiculo = await _context.Vehiculos
+        var vehiculo = await _context.Vehiculo
             .FirstOrDefaultAsync(v => v.Id == request.VehiculoId && v.Status != "X");
         if (vehiculo == null)
         {
             throw new NotFoundException(nameof(Vehiculo), request.VehiculoId);
         }
 
-        var conductor = await _context.Conductores
+        var conductor = await _context.Conductor
             .Include(c => c.User)
             .FirstOrDefaultAsync(c => c.Id == request.ConductorId && c.Status != "X");
         if (conductor == null)
@@ -38,7 +38,7 @@ public class CreateVehiculoConductorCommandHandler : IRequestHandler<CreateVehic
             throw new NotFoundException(nameof(Conductor), request.ConductorId);
         }
 
-        VehiculoConductor? entity = await _context.VehiculoConductores
+        VehiculoConductor? entity = await _context.VehiculoConductor
             .Include(vc => vc.Conductor)
             .Include(vc => vc.Vehiculo)
             .FirstOrDefaultAsync(vc => vc.VehiculoId == request.VehiculoId && vc.ConductorId == request.ConductorId, cancellationToken);
@@ -59,7 +59,7 @@ public class CreateVehiculoConductorCommandHandler : IRequestHandler<CreateVehic
                 Vehiculo = vehiculo,
                 Conductor = conductor
             };
-            await _context.VehiculoConductores.AddAsync(entity);
+            await _context.VehiculoConductor.AddAsync(entity);
         }
 
         await _context.SaveChangesAsync(cancellationToken);

@@ -33,7 +33,7 @@ public class CreateVehiculoCommandHandler : IRequestHandler<CreateVehiculoComman
             Detalle = request.Detalle,
             CapacidadCarga = request.CapacidadCarga,
         };
-        await _context.Vehiculos.AddAsync(entity, cancellationToken);
+        await _context.Vehiculo.AddAsync(entity, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 
         return entity.Id;

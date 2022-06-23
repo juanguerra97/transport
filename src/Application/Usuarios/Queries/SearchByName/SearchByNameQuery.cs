@@ -29,7 +29,7 @@ public class SearchByNameQueryHandler : IRequestHandler<SearchByNameQuery, List<
     {
         string name = "%" + request.Name?.Replace(" ", "%").ToUpper() + "%";
 
-        return await _context.ApplicationUsers
+        return await _context.ApplicationUser
             .Where(u => EF.Functions.Like(u.FirstName.ToUpper() + " " + u.LastName.ToUpper(), name))
             .Take(request.MaxResults)
             .ProjectTo<UsuarioDto>(_mapper.ConfigurationProvider)

@@ -25,7 +25,7 @@ public class GetPedidoByIdQueryHandler : IRequestHandler<GetPedidoByIdQuery, Ped
     public async Task<PedidoMaterialDto> Handle(GetPedidoByIdQuery request, CancellationToken cancellationToken)
     {
 
-        var entity = await _context.PedidoMateriales
+        var entity = await _context.PedidoMaterial
             .Include(pm => pm.EstadoPedidoMaterial)
             .Include(pm => pm.Material)
             .ThenInclude(m => m.TipoMaterial)

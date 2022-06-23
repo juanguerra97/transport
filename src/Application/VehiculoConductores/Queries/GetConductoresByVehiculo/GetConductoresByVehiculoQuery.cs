@@ -25,7 +25,7 @@ public class GetConductoresByVehiculoQueryHandler : IRequestHandler<GetConductor
 
     public async Task<List<ConductorDto>> Handle(GetConductoresByVehiculoQuery request, CancellationToken cancellationToken)
     {
-        return await _context.VehiculoConductores
+        return await _context.VehiculoConductor
             .Where(vc => vc.VehiculoId == request.VehiculoId && vc.Status == "A")
             .Select(vc => vc.Conductor)
             .ProjectTo<ConductorDto>(_mapper.ConfigurationProvider)

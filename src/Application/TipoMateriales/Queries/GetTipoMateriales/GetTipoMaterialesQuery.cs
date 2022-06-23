@@ -22,7 +22,7 @@ public class GetTipoMaterialesQueryHandler : IRequestHandler<GetTipoMaterialesQu
 
     public async Task<List<TipoMaterialDto>> Handle(GetTipoMaterialesQuery request, CancellationToken cancellationToken)
     {
-        return await _context.TipoMateriales
+        return await _context.TipoMaterial
             .Where(tm => tm.Status == "A")
             .OrderBy(tm => tm.Id)
             .ProjectTo<TipoMaterialDto>(_mapper.ConfigurationProvider)

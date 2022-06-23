@@ -25,7 +25,7 @@ public class GetMaterialByIdQueryHandler : IRequestHandler<GetMaterialByIdQuery,
 
     public async Task<MaterialDto> Handle(GetMaterialByIdQuery request, CancellationToken cancellationToken)
     {
-        var entity = await _context.Materiales
+        var entity = await _context.Material
             .Include(m => m.UnidadMedida)
             .Include(m => m.TipoMaterial)
             .FirstOrDefaultAsync(m => m.Id == request.MaterialId, cancellationToken);

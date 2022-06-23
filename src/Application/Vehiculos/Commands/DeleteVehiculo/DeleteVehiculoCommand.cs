@@ -26,7 +26,7 @@ public class DeleteVehiculoCommandHandler : IRequestHandler<DeleteVehiculoComman
 
     public async Task<VehiculoDto> Handle(DeleteVehiculoCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _context.Vehiculos
+        var entity = await _context.Vehiculo
             .FirstOrDefaultAsync(v => v.Id == request.VehiculoId && v.Status != "X", cancellationToken);
 
         if (entity == null)
@@ -35,7 +35,7 @@ public class DeleteVehiculoCommandHandler : IRequestHandler<DeleteVehiculoComman
         }
 
         entity.Status = "X";
-        foreach (var vc in _context.VehiculoConductores.Where(vc => vc.VehiculoId == request.VehiculoId))
+        foreach (var vc in _context.VehiculoConductor.Where(vc => vc.VehiculoId == request.VehiculoId))
         {
             vc.Status = "X";
         }

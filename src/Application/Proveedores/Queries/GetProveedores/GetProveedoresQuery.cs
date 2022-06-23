@@ -33,7 +33,7 @@ public class GetProveedoresQueryHandler : IRequestHandler<GetProveedoresQuery, P
 
         string? nombreLike = "%" + request.Nombre?.Replace(" ", "%")?.ToUpper() + "%";
         return await PaginatedList<ProveedorDto>.CreateAsync(
-            _context.ProveedorMateriales
+            _context.ProveedorMaterial
             .Where(p => p.Status == "A" && (request.Nombre == null || EF.Functions.Like(p.Nombre, nombreLike))
                 && (request.Nit == null || p.Nit == request.Nit)
                 && (request.Telefono == null || p.Telefono == request.Telefono)

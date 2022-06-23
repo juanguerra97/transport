@@ -25,7 +25,7 @@ public class DeletePlantaCommandHandler : IRequestHandler<DeletePlantaCommand, P
 
     public async Task<PlantaDto> Handle(DeletePlantaCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _context.Plantas
+        var entity = await _context.Planta
             .Include(p => p.TipoPlanta)
             .Include(p => p.Bodega)
             .ThenInclude(b => b.Ubicacion)

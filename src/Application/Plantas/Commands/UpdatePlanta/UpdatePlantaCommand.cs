@@ -35,7 +35,7 @@ public class UpdatePlantaCommandHandler : IRequestHandler<UpdatePlantaCommand, P
 
     public async Task<PlantaDto> Handle(UpdatePlantaCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _context.Plantas
+        var entity = await _context.Planta
             .Include(p => p.AdminPlanta)
             .ThenInclude(ad => ad.User)
             .Include(p => p.TipoPlanta)
@@ -72,7 +72,7 @@ public class UpdatePlantaCommandHandler : IRequestHandler<UpdatePlantaCommand, P
             var oldAdminPlanta = entity.AdminPlanta;
             var oldAdminBodega = entity.Bodega.AdminBodega;
 
-            if ((await _context.AdminPlantas.CountAsync(ad => ad.Status == "A" && ad.UserId == oldAdminPlanta.UserId, cancellationToken)) <= 1)
+            if ((await _context.AdminPlanta.CountAsync(ad => ad.Status == "A" && ad.UserId == oldAdminPlanta.UserId, cancellationToken)) <= 1)
             {
                 if ((await _userManager.IsInRoleAsync(oldAdminPlanta.User, "AdminPlanta")))
                 {
@@ -80,7 +80,7 @@ public class UpdatePlantaCommandHandler : IRequestHandler<UpdatePlantaCommand, P
                 }
             }
 
-            if ((await _context.AdminBodegas.CountAsync(ad => ad.Status == "A" && ad.UserId == oldAdminBodega.UserId, cancellationToken)) <= 1)
+            if ((await _context.AdminBodega.CountAsync(ad => ad.Status == "A" && ad.UserId == oldAdminBodega.UserId, cancellationToken)) <= 1)
             {
                 if ((await _userManager.IsInRoleAsync(oldAdminBodega.User, "AdminBodega")))
                 {
@@ -89,7 +89,7 @@ public class UpdatePlantaCommandHandler : IRequestHandler<UpdatePlantaCommand, P
             }
 
 
-            var user = await _context.ApplicationUsers
+            var user = await _context.ApplicationUser
                 .FirstOrDefaultAsync(u => u.Id == request.EncargadoId, cancellationToken);
 
             if (!(await _userManager.IsInRoleAsync(user, "AdminPlanta")))

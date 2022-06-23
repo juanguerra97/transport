@@ -27,7 +27,7 @@ public class AnularPedidoMaterialCommandHandler : IRequestHandler<AnularPedidoMa
 
     public async Task<PedidoMaterialDto> Handle(AnularPedidoMaterialCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _context.PedidoMateriales
+        var entity = await _context.PedidoMaterial
             .Include(pm => pm.EstadoPedidoMaterial)
             .Include(pm => pm.Material)
             .ThenInclude(pm => pm.UnidadMedida)
@@ -44,7 +44,7 @@ public class AnularPedidoMaterialCommandHandler : IRequestHandler<AnularPedidoMa
         }
 
         entity.EstadoPedidoMaterialId = EstadosPedidoMaterialConstants.ANULADO.Id;
-        await _context.BitacoraEstadoPedidoMateriales.AddAsync(new BitacoraEstadoPedidoMaterial
+        await _context.BitacoraEstadoPedidoMaterial.AddAsync(new BitacoraEstadoPedidoMaterial
         {
             PedidoMaterial = entity,
             EstadoPedidoMaterialId = EstadosPedidoMaterialConstants.ANULADO.Id

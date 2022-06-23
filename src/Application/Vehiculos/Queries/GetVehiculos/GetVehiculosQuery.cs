@@ -31,7 +31,7 @@ public class GetVehiculosQueryHandler : IRequestHandler<GetVehiculosQuery, Pagin
     {
         var descripcionLike = "%" + request.Descripcion?.Replace(" ", "%")?.ToUpper() + "%";
         return await PaginatedList<VehiculoDto>.CreateAsync(
-            _context.Vehiculos
+            _context.Vehiculo
             .Where(v => v.Status != "X" && (request.Descripcion == null || EF.Functions.Like((v.Descripcion + " " + v.Detalle).ToUpper(), descripcionLike))
                 && (request.Codigo == null || v.Codigo == request.Codigo)
                 && (request.Placa == null || v.Placa == request.Placa)

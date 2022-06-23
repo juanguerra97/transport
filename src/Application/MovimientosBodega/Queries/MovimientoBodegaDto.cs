@@ -18,7 +18,6 @@ public class MovimientoBodegaDto : IMapFrom<MovimientoBodega>
     public DateTime? FechaInicioProgramado { get; set; }
     public DateTime? FechaCargado { get; set; }
     public DateTime? FechaDescargado { get; set; }
-    public MaterialDto? Material { get; set; }
     public double? Cantidad { get; set; }
     public string? Detalle { get; set; }
     public VehiculoDto? Vehiculo { get; set; }

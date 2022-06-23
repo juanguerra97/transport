@@ -5369,7 +5369,6 @@ export class MovimientoBodegaDto implements IMovimientoBodegaDto {
     fechaInicioProgramado?: Date | undefined;
     fechaCargado?: Date | undefined;
     fechaDescargado?: Date | undefined;
-    material?: MaterialDto | undefined;
     cantidad?: number | undefined;
     detalle?: string | undefined;
     vehiculo?: VehiculoDto | undefined;
@@ -5394,7 +5393,6 @@ export class MovimientoBodegaDto implements IMovimientoBodegaDto {
             this.fechaInicioProgramado = _data["fechaInicioProgramado"] ? new Date(_data["fechaInicioProgramado"].toString()) : <any>undefined;
             this.fechaCargado = _data["fechaCargado"] ? new Date(_data["fechaCargado"].toString()) : <any>undefined;
             this.fechaDescargado = _data["fechaDescargado"] ? new Date(_data["fechaDescargado"].toString()) : <any>undefined;
-            this.material = _data["material"] ? MaterialDto.fromJS(_data["material"]) : <any>undefined;
             this.cantidad = _data["cantidad"];
             this.detalle = _data["detalle"];
             this.vehiculo = _data["vehiculo"] ? VehiculoDto.fromJS(_data["vehiculo"]) : <any>undefined;
@@ -5419,7 +5417,6 @@ export class MovimientoBodegaDto implements IMovimientoBodegaDto {
         data["fechaInicioProgramado"] = this.fechaInicioProgramado ? this.fechaInicioProgramado.toISOString() : <any>undefined;
         data["fechaCargado"] = this.fechaCargado ? this.fechaCargado.toISOString() : <any>undefined;
         data["fechaDescargado"] = this.fechaDescargado ? this.fechaDescargado.toISOString() : <any>undefined;
-        data["material"] = this.material ? this.material.toJSON() : <any>undefined;
         data["cantidad"] = this.cantidad;
         data["detalle"] = this.detalle;
         data["vehiculo"] = this.vehiculo ? this.vehiculo.toJSON() : <any>undefined;
@@ -5437,7 +5434,6 @@ export interface IMovimientoBodegaDto {
     fechaInicioProgramado?: Date | undefined;
     fechaCargado?: Date | undefined;
     fechaDescargado?: Date | undefined;
-    material?: MaterialDto | undefined;
     cantidad?: number | undefined;
     detalle?: string | undefined;
     vehiculo?: VehiculoDto | undefined;

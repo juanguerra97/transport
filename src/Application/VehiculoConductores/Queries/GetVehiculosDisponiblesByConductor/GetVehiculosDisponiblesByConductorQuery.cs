@@ -25,11 +25,11 @@ public class GetVehiculosDisponiblesByConductorQueryHandler : IRequestHandler<Ge
 
     public async Task<List<VehiculoDto>> Handle(GetVehiculosDisponiblesByConductorQuery request, CancellationToken cancellationToken)
     {
-        var vehiculosAgregados = _context.VehiculoConductores
+        var vehiculosAgregados = _context.VehiculoConductor
             .Where(vc => vc.ConductorId == request.ConductorId && vc.Status == "A")
             .Select(vc => vc.VehiculoId);
 
-        return await _context.Vehiculos
+        return await _context.Vehiculo
             .Where(v => !vehiculosAgregados.Contains(v.Id))
             .ProjectTo<VehiculoDto>(_mapper.ConfigurationProvider)
             .ToListAsync(cancellationToken);

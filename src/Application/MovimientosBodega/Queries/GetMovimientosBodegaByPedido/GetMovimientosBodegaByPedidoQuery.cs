@@ -24,7 +24,7 @@ public class GetMovimientosBodegaByPedidoQueryHandler : IRequestHandler<GetMovim
 
     public async Task<List<MovimientoBodegaDto>> Handle(GetMovimientosBodegaByPedidoQuery request, CancellationToken cancellationToken)
     {
-        return await _context.MovimientoBodegas
+        return await _context.MovimientoBodega
             .Where(m => m.PedidoMaterialId == request.PedidoMaterialId && m.Status == "A")
             .OrderBy(m => m.Id)
             .ProjectTo<MovimientoBodegaDto>(_mapper.ConfigurationProvider)

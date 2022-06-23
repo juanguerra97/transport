@@ -25,7 +25,7 @@ public class SearchProveedorByNameQueryHandler : IRequestHandler<SearchProveedor
     public async Task<List<ProveedorDto>> Handle(SearchProveedorByNameQuery request, CancellationToken cancellationToken)
     {
         string nameLike = "%" + request.Name?.Replace(" ", "%").ToUpper() + "%";
-        return await _context.ProveedorMateriales
+        return await _context.ProveedorMaterial
             .Where(p => EF.Functions.Like(p.Nombre, nameLike))
             .Take(request.MaxResults)
             .ProjectTo<ProveedorDto>(_mapper.ConfigurationProvider)

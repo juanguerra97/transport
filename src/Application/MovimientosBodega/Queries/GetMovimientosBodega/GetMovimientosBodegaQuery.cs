@@ -36,7 +36,7 @@ public class GetMovimientosBodegaQueryHandler : IRequestHandler<GetMovimientosBo
         var descripcionLike = "%" + request.DescripcionMaterial?.Replace(" ", "%")?.ToUpper() + "%";
 
         return await PaginatedList<MovimientoBodegaDto>.CreateAsync(
-            _context.MovimientoBodegas
+            _context.MovimientoBodega
             .Where(m => m.Status != "X"
                 && (ESTADOS.Contains(m.EstadoMovimientoBodegaId))
                 && (request.DescripcionMaterial == null || EF.Functions.Like((m.PedidoMaterial.Material.Descripcion + " " + m.PedidoMaterial.Material.Detalle).ToUpper(), descripcionLike))

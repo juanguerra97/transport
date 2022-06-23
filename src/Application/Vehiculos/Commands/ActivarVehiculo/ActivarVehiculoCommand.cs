@@ -25,7 +25,7 @@ public class ActivarVehiculoCommandHandler : IRequestHandler<ActivarVehiculoComm
 
     public async Task<VehiculoDto> Handle(ActivarVehiculoCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _context.Vehiculos
+        var entity = await _context.Vehiculo
             .FirstOrDefaultAsync(v => v.Id == request.VehiculoId && v.Status == "I", cancellationToken);
 
         if (entity == null)

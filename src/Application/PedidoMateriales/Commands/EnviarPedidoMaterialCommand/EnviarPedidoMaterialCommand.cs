@@ -27,7 +27,7 @@ public class EnviarPedidoMaterialCommandHandler : IRequestHandler<EnviarPedidoMa
 
     public async Task<PedidoMaterialDto> Handle(EnviarPedidoMaterialCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _context.PedidoMateriales
+        var entity = await _context.PedidoMaterial
             .Include(pm => pm.EstadoPedidoMaterial)
             .Include(pm => pm.Material)
             .ThenInclude(pm => pm.UnidadMedida)
@@ -43,7 +43,7 @@ public class EnviarPedidoMaterialCommandHandler : IRequestHandler<EnviarPedidoMa
         }
 
         entity.EstadoPedidoMaterialId = EstadosPedidoMaterialConstants.PENDIENTE.Id;
-        await _context.BitacoraEstadoPedidoMateriales.AddAsync(new BitacoraEstadoPedidoMaterial
+        await _context.BitacoraEstadoPedidoMaterial.AddAsync(new BitacoraEstadoPedidoMaterial
         {
             PedidoMaterial = entity,
             EstadoPedidoMaterialId = EstadosPedidoMaterialConstants.PENDIENTE.Id

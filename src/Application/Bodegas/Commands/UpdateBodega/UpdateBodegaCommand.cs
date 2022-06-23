@@ -35,7 +35,7 @@ public class UpdateBodegaCommandHandler : IRequestHandler<UpdateBodegaCommand, B
 
     public async Task<BodegaDto> Handle(UpdateBodegaCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _context.Bodegas
+        var entity = await _context.Bodega
             .Include(b => b.AdminBodega)
             .ThenInclude(ad => ad.User)
             .Include(b => b.Ubicacion)
@@ -63,7 +63,7 @@ public class UpdateBodegaCommandHandler : IRequestHandler<UpdateBodegaCommand, B
         if (request.EncargadoId != entity.AdminBodega?.UserId)
         {
             var oldAdmin = entity.AdminBodega;
-            if ((await _context.AdminBodegas.CountAsync(ad => ad.Status == "A" && ad.UserId == oldAdmin.UserId, cancellationToken)) <= 1)
+            if ((await _context.AdminBodega.CountAsync(ad => ad.Status == "A" && ad.UserId == oldAdmin.UserId, cancellationToken)) <= 1)
             {
                 if ((await _userManager.IsInRoleAsync(oldAdmin.User, "AdminBodega")))
                 {
@@ -71,7 +71,7 @@ public class UpdateBodegaCommandHandler : IRequestHandler<UpdateBodegaCommand, B
                 }
             }
 
-            var user = await _context.ApplicationUsers
+            var user = await _context.ApplicationUser
                 .FirstOrDefaultAsync(u => u.Id == request.EncargadoId, cancellationToken);
 
             if (!(await _userManager.IsInRoleAsync(user, "AdminBodega")))

@@ -10,7 +10,7 @@ public class TipoMaterialConfiguration : IEntityTypeConfiguration<TipoMaterial>
         builder.HasKey(t => t.Id);
 
         builder.Property(t => t.Id)
-            .ValueGeneratedOnAdd();
+            .ValueGeneratedNever();
 
         builder.Property(t => t.Descripcion)
             .HasMaxLength(TipoMaterial.MAX_DESCRIPCION_LENGTH)

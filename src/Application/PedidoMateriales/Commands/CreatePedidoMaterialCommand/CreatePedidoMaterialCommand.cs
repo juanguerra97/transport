@@ -28,21 +28,21 @@ public class CreatePedidoMaterialCommandHandler : IRequestHandler<CreatePedidoMa
     public async Task<int?> Handle(CreatePedidoMaterialCommand request, CancellationToken cancellationToken)
     {
 
-        var bodega = await _context.Bodegas
+        var bodega = await _context.Bodega
             .FirstOrDefaultAsync(b => b.Id == request.BodegaSolicitaId && b.Status == "A", cancellationToken);
         if (bodega == null)
         {
             throw new NotFoundException(nameof(Bodega), request.BodegaSolicitaId);
         }
 
-        var material = await _context.Materiales
+        var material = await _context.Material
             .FirstOrDefaultAsync(m => m.Id == request.MaterialId && m.Status == "A", cancellationToken);
         if (material == null)
         {
             throw new NotFoundException(nameof(Bodega), request.MaterialId);
         }
 
-        if (true == (await _context.PedidoMateriales.AnyAsync(pm => pm.Status == "A"
+        if (true == (await _context.PedidoMaterial.AnyAsync(pm => pm.Status == "A"
             && (pm.BodegaSolicitaId == request.BodegaSolicitaId)
             && (pm.EstadoPedidoMaterialId == EstadosPedidoMaterialConstants.CREADO.Id || pm.EstadoPedidoMaterialId == EstadosPedidoMaterialConstants.PENDIENTE.Id),cancellationToken)))
         {
@@ -58,14 +58,14 @@ public class CreatePedidoMaterialCommandHandler : IRequestHandler<CreatePedidoMa
             Cantidad = request.Cantidad,
             FechaSolicitado = DateTime.Now,
         };
-        await _context.PedidoMateriales.AddAsync(entity, cancellationToken);
+        await _context.PedidoMaterial.AddAsync(entity, cancellationToken);
 
         var bitacora = new BitacoraEstadoPedidoMaterial
         {
             PedidoMaterial = entity,
             EstadoPedidoMaterialId = EstadosPedidoMaterialConstants.CREADO.Id,
         };
-        await _context.BitacoraEstadoPedidoMateriales.AddAsync(bitacora, cancellationToken);
+        await _context.BitacoraEstadoPedidoMaterial.AddAsync(bitacora, cancellationToken);
 
         await _context.SaveChangesAsync(cancellationToken);
 

@@ -29,7 +29,7 @@ public class DeleteConductorCommandHandler : IRequestHandler<DeleteConductorComm
 
     public async Task<ConductorDto> Handle(DeleteConductorCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _context.Conductores
+        var entity = await _context.Conductor
             .Include(c => c.User)
             .FirstOrDefaultAsync(c => c.Id == request.ConductorId && c.Status != "X", cancellationToken);
 
@@ -44,7 +44,7 @@ public class DeleteConductorCommandHandler : IRequestHandler<DeleteConductorComm
         }
 
         entity.Status = "X";
-        foreach(var vc in _context.VehiculoConductores.Where(vc => vc.ConductorId == request.ConductorId && vc.Status != "X"))
+        foreach(var vc in _context.VehiculoConductor.Where(vc => vc.ConductorId == request.ConductorId && vc.Status != "X"))
         {
             vc.Status = "X";
         }

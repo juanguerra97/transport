@@ -37,7 +37,7 @@ public class CreateMaterialCommandHandler : IRequestHandler<CreateMaterialComman
             UnidadMedidaId = request.UnidadMedidaId
         };
 
-        await _context.Materiales.AddAsync(entity, cancellationToken);
+        await _context.Material.AddAsync(entity, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 
         return entity.Id;

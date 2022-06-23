@@ -26,7 +26,7 @@ public class ActivarConductorCommandHandler : IRequestHandler<ActivarConductorCo
 
     public async Task<ConductorDto> Handle(ActivarConductorCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _context.Conductores
+        var entity = await _context.Conductor
             .Include(c => c.User)
             .FirstOrDefaultAsync(c => c.Id == request.ConductorId && c.Status == "I", cancellationToken);
 

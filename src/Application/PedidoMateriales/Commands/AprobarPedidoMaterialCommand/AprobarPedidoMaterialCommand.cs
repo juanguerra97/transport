@@ -27,7 +27,7 @@ public class AprobarPedidoMaterialCommandHandler : IRequestHandler<AprobarPedido
 
     public async Task<PedidoMaterialDto> Handle(AprobarPedidoMaterialCommand request, CancellationToken cancellationToken)
     {
-        var pedido = await _context.PedidoMateriales
+        var pedido = await _context.PedidoMaterial
             .Include(p => p.EstadoPedidoMaterial)
             .Include(p => p.Material)
             .ThenInclude(m => m.UnidadMedida)
@@ -50,7 +50,7 @@ public class AprobarPedidoMaterialCommandHandler : IRequestHandler<AprobarPedido
 
         var pesoTotalPedido =pedido.Cantidad * pedido.Material.Peso;
 
-        var bodegaExistencias = await _context.InventarioBodegas
+        var bodegaExistencias = await _context.InventarioBodega
             .Include(v => v.Bodega)
             .Include(v => v.Material)
             .Where(v => v.Status == "A" && v.BodegaId != pedido.BodegaSolicitaId
@@ -65,7 +65,7 @@ public class AprobarPedidoMaterialCommandHandler : IRequestHandler<AprobarPedido
 
         var dateProgramado = DateTime.Now.Date.AddDays(1);
 
-        var pedidosVigentes = _context.MovimientoBodegas
+        var pedidosVigentes = _context.MovimientoBodega
             .Include(m => m.EstadoMovimientoBodega)
             .Include(m => m.Vehiculo)
             .Include(m => m.Conductor)
@@ -85,7 +85,7 @@ public class AprobarPedidoMaterialCommandHandler : IRequestHandler<AprobarPedido
 
         do
         {
-            var candidato = await _context.VehiculoConductores
+            var candidato = await _context.VehiculoConductor
                 .Include(vc => vc.Conductor)
                 .Include(vc => vc.Vehiculo)
                 .Where(vc => vc.Status == "A" && vc.Conductor.Status == "A" && vc.Vehiculo.Status == "A"
@@ -115,19 +115,18 @@ public class AprobarPedidoMaterialCommandHandler : IRequestHandler<AprobarPedido
                 BodegaOrigenId = bodegaExistencias.BodegaId,
                 BodegaDestinoId = pedido.BodegaSolicitaId,
                 FechaInicioProgramado = dateProgramado,
-                MaterialId = pedido.MaterialId,
                 Cantidad = cantidadAsignar,
                 VehiculoId = candidato.VehiculoId,
                 ConductorId = candidato.ConductorId,
             };
 
-            await _context.MovimientoBodegas.AddAsync(movimiento, cancellationToken);
-            await _context.BitacoraEstadoMovimientoBodegas.AddAsync(new BitacoraEstadoMovimientoBodega
+            await _context.MovimientoBodega.AddAsync(movimiento, cancellationToken);
+            await _context.BitacoraEstadoMovimientoBodega.AddAsync(new BitacoraEstadoMovimientoBodega
             {
                 EstadoMovimientoBodegaId = EstadosMovimientoBodegaConstants.PENDIENTE.Id,
                 MovimientoBodega = movimiento
             }, cancellationToken);
-            await _context.BitacoraEstadoMovimientoBodegas.AddAsync(new BitacoraEstadoMovimientoBodega
+            await _context.BitacoraEstadoMovimientoBodega.AddAsync(new BitacoraEstadoMovimientoBodega
             {
                 EstadoMovimientoBodegaId = EstadosMovimientoBodegaConstants.PROGRAMADO.Id,
                 MovimientoBodega = movimiento
@@ -146,14 +145,14 @@ public class AprobarPedidoMaterialCommandHandler : IRequestHandler<AprobarPedido
         bodegaExistencias.CantidadReservada = bodegaExistencias.CantidadReservada + pedido.Cantidad;
 
         pedido.EstadoPedidoMaterialId = EstadosPedidoMaterialConstants.APROBADO.Id;
-        await _context.BitacoraEstadoPedidoMateriales.AddAsync(new BitacoraEstadoPedidoMaterial
+        await _context.BitacoraEstadoPedidoMaterial.AddAsync(new BitacoraEstadoPedidoMaterial
         {
             EstadoPedidoMaterialId = EstadosPedidoMaterialConstants.APROBADO.Id,
             PedidoMaterial = pedido
         }, cancellationToken);
 
         pedido.EstadoPedidoMaterialId = EstadosPedidoMaterialConstants.PROGRAMADO.Id;
-        await _context.BitacoraEstadoPedidoMateriales.AddAsync(new BitacoraEstadoPedidoMaterial
+        await _context.BitacoraEstadoPedidoMaterial.AddAsync(new BitacoraEstadoPedidoMaterial
         {
             EstadoPedidoMaterialId = EstadosPedidoMaterialConstants.PROGRAMADO.Id,
             PedidoMaterial = pedido
@@ -161,7 +160,7 @@ public class AprobarPedidoMaterialCommandHandler : IRequestHandler<AprobarPedido
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        pedido = await _context.PedidoMateriales
+        pedido = await _context.PedidoMaterial
             .Include(p => p.EstadoPedidoMaterial)
             .Include(p => p.Material)
             .ThenInclude(m => m.UnidadMedida)

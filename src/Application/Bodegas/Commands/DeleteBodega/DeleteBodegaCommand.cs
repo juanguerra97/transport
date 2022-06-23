@@ -25,7 +25,7 @@ public class DeleteBodegaCommandHandler : IRequestHandler<DeleteBodegaCommand, B
 
     public async Task<BodegaDto> Handle(DeleteBodegaCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _context.Bodegas
+        var entity = await _context.Bodega
             .Include(b => b.Ubicacion)
             .ThenInclude(u => u.Municipio)
             .ThenInclude(m => m.Departamento)

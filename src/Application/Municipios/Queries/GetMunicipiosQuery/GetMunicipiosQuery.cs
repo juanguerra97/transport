@@ -25,7 +25,7 @@ public class GetMunicipiosQueryHandler : IRequestHandler<GetMunicipiosQuery, Lis
 
     public async Task<List<MunicipioDto>> Handle(GetMunicipiosQuery request, CancellationToken cancellationToken)
     {
-        return await _context.Municipios
+        return await _context.Municipio
             .Where(m => m.Status == "A" 
                 && (request.PaisId == null || m.Departamento.PaisId == request.PaisId)
                 && (request.DepartamentoId == null || m.DepartamentoId == request.DepartamentoId))
