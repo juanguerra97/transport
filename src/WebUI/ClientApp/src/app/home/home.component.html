@@ -1,14 +1,56 @@
-<h1>Hello, world!</h1>
-<p>Welcome to your new single-page application, built with:</p>
-<ul>
-  <li><a href='https://get.asp.net/'>ASP.NET Core</a> and <a href='https://msdn.microsoft.com/en-us/library/67ef8sbd.aspx'>C#</a> for cross-platform server-side code</li>
-  <li><a href='https://angular.io/'>Angular</a> and <a href='http://www.typescriptlang.org/'>TypeScript</a> for client-side code</li>
-  <li><a href='http://getbootstrap.com/'>Bootstrap</a> for layout and styling</li>
-</ul>
-<p>To help you get started, we've also set up:</p>
-<ul>
-  <li><strong>Client-side navigation</strong>. For example, click <em>Counter</em> then <em>Back</em> to return here.</li>
-  <li><strong>Angular CLI integration</strong>. In development mode, there's no need to run <code>ng serve</code>. It runs in the background automatically, so your client-side resources are dynamically built on demand and the page refreshes when you modify any file.</li>
-  <li><strong>Efficient production builds</strong>. In production mode, development-time features are disabled, and your <code>dotnet publish</code> configuration automatically invokes <code>ng build</code> to produce minified, ahead-of-time compiled JavaScript files.</li>
-</ul>
-<p>The <code>ClientApp</code> subdirectory is a standard Angular CLI application. If you open a command prompt in that directory, you can run any <code>ng</code> command (e.g., <code>ng test</code>), or use <code>npm</code> to install extra packages into it.</p>
+
+<section class="main-section d-flex p-3">
+
+  <div class="flex-fill d-flex flex-column justify-content-end">
+    <h1 style="font-size: 3rem; font-family: 'Oswald', sans-serif;" class="text-light">TransPort</h1>
+    <p class="p-0 m-0" style="font-size: 1.5rem; " class="text-light">El mejor servicio de transporte de Guatemala.</p>
+  </div>
+</section>
+
+<h3 class="p-card-title text-center mt-3">Nuestros productos y servicios</h3>
+
+<section class="seccion-servicios d-flex justify-content-center flex-wrap p-2 gap-3 mt-2">
+
+  <p-card header="Transporte"[style]="{width: '360px', height: '430px', cursor: 'pointer'}" styleClass="card-servicio">
+    <ng-template pTemplate="header">
+      <img alt="Transporte" src="assets/img/transporte.jpg">
+    </ng-template>
+    <p>Transporte y almacenamiento de productos y materia prima.</p>
+  </p-card>
+
+  <p-card header="Maquinaria de Construcci&oacute;n"[style]="{width: '360px', height: '430px', cursor: 'pointer'}" styleClass="card-servicio">
+    <ng-template pTemplate="header">
+      <img alt="Maquinaria de construcci&oacute;n" src="assets/img/maquinaria.jpg">
+    </ng-template>
+    <p>Venta y alquiler de maquinaria de construcci&oacute;n.</p>
+  </p-card>
+
+  <p-card header="Servicios de Construcci&oacute;n"[style]="{width: '360px', height: '430px', cursor: 'pointer'}" styleClass="card-servicio">
+    <ng-template pTemplate="header">
+      <img alt="Construcci&oacute;n" src="assets/img/construccion.jpg">
+    </ng-template>
+    <p>Servicios de construcci&oacute;n en general como puentes, carreteras y edificios.</p>
+  </p-card>
+
+  <p-card header="Miner&iacute;a" [style]="{width: '360px', height: '430px', cursor: 'pointer'}" styleClass="card-servicio">
+    <ng-template pTemplate="header">
+      <img alt="Miner&iacute;a" src="assets/img/mineria.jpg">
+    </ng-template>
+    <p>Extracci&oacute;n y procesamiento de materia prima.</p>
+  </p-card>
+
+
+</section>
+
+<footer class="mt-3 d-flex flex-column flex-md-row bg-dark container-fluid pt-2 pb-2 pl-4 pr-4" style="min-height: 48px; gap: 5px;">
+  <div class="d-flex align-items-center flex-fill justify-content-center justify-content-md-start">
+    <div class="d-flex flex-column justify-content-center align-items-center align-items-md-start">
+      <p class="p-0 m-0 text-light" style="font-size: 0.85rem;"><i class="fa-solid fa-location-dot"></i>&nbsp;Edificio Sixtino Zona 10, Ciudad de Guatemala</p>
+      <p class="p-0 m-0 text-light" style="font-size: 0.85rem;"><i class="fa-solid fa-phone"></i>&nbsp;8888-8888</p>
+      <p class="p-0 m-0 text-light" style="font-size: 0.85rem;"><i class="fa-solid fa-envelope"></i>&nbsp;contacto@transport.com.gt</p>
+    </div>
+  </div>
+  <div class="m-0 p-0 flex-fill d-flex align-items-center justify-content-center justify-content-md-end text-dark">
+    <small class="text-light">&copy;&nbsp;2022&nbsp;TransPort.&nbsp;Todos los derechos reservados.</small>
+  </div>
+</footer>
