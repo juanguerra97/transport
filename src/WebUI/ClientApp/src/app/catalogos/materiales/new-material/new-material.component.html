@@ -1,56 +1,61 @@
-<form [formGroup]="form">
-  <div class="row">
-    <div class="col-12 col-lg-6">
-      <div class="d-flex flex-column gap-2">
-        <div class="form-group">
-          <label for="tipoMaterial">Tipo de Material</label>
-          <p-dropdown formControlName="tipoMaterial" [options]="tiposMaterial" optionLabel="descripcion" inputId="tipoMaterial" styleClass="w-100" placeholder="Seleccionar"></p-dropdown>
-          <ng-container *ngIf="tipoMaterial?.invalid && (tipoMaterial?.touched || tipoMaterial?.dirty)">
-            <small *ngIf="tipoMaterial?.hasError('required')" class="text-error">Campo requerido.</small>
-          </ng-container>
-        </div>
-        <div class="form-group">
-          <label for="descripcion">Descripci&oacute;n</label>
-          <textarea formControlName="descripcion" pInputTextarea id="descripcion" class="form-control" rows="1"></textarea>
-          <ng-container *ngIf="descripcion?.invalid && (descripcion?.touched || descripcion?.dirty)">
-            <small *ngIf="descripcion?.hasError('required')" class="text-error">Campo requerido.</small>
-            <small *ngIf="descripcion?.hasError('maxlength')" class="text-error">El m&aacute;ximo de caracteres permitido es 256.</small>
-          </ng-container>
-        </div>
-        <div class="form-group">
-          <label for="detalle">Detalle</label>
-          <textarea formControlName="detalle" pInputTextarea id="detalle" class="form-control" rows="2"></textarea>
-          <ng-container *ngIf="detalle?.invalid && (detalle?.touched || detalle?.dirty)">
-            <small *ngIf="detalle?.hasError('required')" class="text-error">Campo requerido.</small>
-            <small *ngIf="detalle?.hasError('maxlength')" class="text-error">El m&aacute;ximo de caracteres permitido es 4096.</small>
-          </ng-container>
-        </div>
-
-        <div class="row">
-          <div class="col-12 col-md-4">
-            <div class="form-group">
-              <label for="peso">Peso</label>
-              <input pInputText formControlName="peso" pKeyFilter="pnum" type="text" id="peso" class="w-100">
-              <ng-container *ngIf="peso?.invalid && (peso?.touched || peso?.dirty)">
-                <small *ngIf="peso?.hasError('required')" class="text-error">Campo requerido.</small>
-                <small *ngIf="peso?.hasError('min')" class="text-error">No se permiten numeros negativos.</small>
-              </ng-container>
-            </div>
+<div class="container-fluid">
+  <p class="m-0 p-0">NUEVO MATERIAL</p>
+  <hr>
+  <form [formGroup]="form">
+    <div class="row">
+      <div class="col-12 col-lg-6">
+        <div class="d-flex flex-column gap-2">
+          <div class="form-group">
+            <label for="tipoMaterial">Tipo de Material</label>
+            <p-dropdown formControlName="tipoMaterial" [options]="tiposMaterial" optionLabel="descripcion" inputId="tipoMaterial" styleClass="w-100" placeholder="Seleccionar"></p-dropdown>
+            <ng-container *ngIf="tipoMaterial?.invalid && (tipoMaterial?.touched || tipoMaterial?.dirty)">
+              <small *ngIf="tipoMaterial?.hasError('required')" class="text-error">Campo requerido.</small>
+            </ng-container>
           </div>
-          <div class="col-12 col-md-8">
-            <div class="form-group">
-              <label for="unidadMedida">Unidad de Medida</label>
-              <p-dropdown formControlName="unidadMedida" [options]="unidadesMedida" [filter]="true" filterBy="descripcion" optionLabel="descripcion" inputId="unidadMedida" styleClass="w-100" placeholder="Seleccionar"></p-dropdown>
-              <ng-container *ngIf="unidadMedida?.invalid && (unidadMedida?.touched || unidadMedida?.dirty)">
-                <small *ngIf="unidadMedida?.hasError('required')" class="text-error">Campo requerido.</small>
-              </ng-container>
+          <div class="form-group">
+            <label for="descripcion">Descripci&oacute;n</label>
+            <textarea formControlName="descripcion" pInputTextarea id="descripcion" class="form-control" rows="1"></textarea>
+            <ng-container *ngIf="descripcion?.invalid && (descripcion?.touched || descripcion?.dirty)">
+              <small *ngIf="descripcion?.hasError('required')" class="text-error">Campo requerido.</small>
+              <small *ngIf="descripcion?.hasError('maxlength')" class="text-error">El m&aacute;ximo de caracteres permitido es 256.</small>
+            </ng-container>
+          </div>
+          <div class="form-group">
+            <label for="detalle">Detalle</label>
+            <textarea formControlName="detalle" pInputTextarea id="detalle" class="form-control" rows="2"></textarea>
+            <ng-container *ngIf="detalle?.invalid && (detalle?.touched || detalle?.dirty)">
+              <small *ngIf="detalle?.hasError('required')" class="text-error">Campo requerido.</small>
+              <small *ngIf="detalle?.hasError('maxlength')" class="text-error">El m&aacute;ximo de caracteres permitido es 4096.</small>
+            </ng-container>
+          </div>
+
+          <div class="row">
+            <div class="col-12 col-md-4">
+              <div class="form-group">
+                <label for="peso">Peso</label>
+                <input pInputText formControlName="peso" pKeyFilter="pnum" type="text" id="peso" class="w-100">
+                <ng-container *ngIf="peso?.invalid && (peso?.touched || peso?.dirty)">
+                  <small *ngIf="peso?.hasError('required')" class="text-error">Campo requerido.</small>
+                  <small *ngIf="peso?.hasError('min')" class="text-error">No se permiten numeros negativos.</small>
+                </ng-container>
+              </div>
+            </div>
+            <div class="col-12 col-md-8">
+              <div class="form-group">
+                <label for="unidadMedida">Unidad de Medida</label>
+                <p-dropdown formControlName="unidadMedida" [options]="unidadesMedida" [filter]="true" filterBy="descripcion" optionLabel="descripcion" inputId="unidadMedida" styleClass="w-100" placeholder="Seleccionar"></p-dropdown>
+                <ng-container *ngIf="unidadMedida?.invalid && (unidadMedida?.touched || unidadMedida?.dirty)">
+                  <small *ngIf="unidadMedida?.hasError('required')" class="text-error">Campo requerido.</small>
+                </ng-container>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="d-flex gap-2 mt-2">
-    <button (click)="guardar()" [disabled]="guardando" pButton type="button" label="Guardar" [icon]="guardando ? 'pi pi-spin pi-spinner' : 'pi pi-save'" class="p-button-sm p-button-raised"></button>
-  </div>
-</form>
+    <div class="d-flex gap-2 mt-2">
+      <button (click)="guardar()" [disabled]="guardando" pButton type="button" label="Guardar" [icon]="guardando ? 'pi pi-spin pi-spinner' : 'pi pi-save'" class="p-button-sm p-button-raised"></button>
+    </div>
+  </form>
+
+</div>

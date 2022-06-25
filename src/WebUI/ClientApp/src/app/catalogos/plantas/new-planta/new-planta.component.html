@@ -1,82 +1,87 @@
-<form [formGroup]="form">
-  <div class="row">
-    <div class="col-12 col-lg-6">
-      <div class="d-flex flex-column gap-2">
-        <div class="form-group">
-          <label for="tipoPlanta">Tipo de Planta</label>
-          <p-dropdown formControlName="tipoPlanta" [options]="tiposPlanta" optionLabel="descripcion" inputId="tipoPlanta" styleClass="w-100" placeholder="Seleccionar"></p-dropdown>
-          <ng-container *ngIf="tipoPlanta?.invalid && (tipoPlanta?.touched || tipoPlanta?.dirty)">
-            <small *ngIf="tipoPlanta?.hasError('required')" class="text-error">Campo requerido.</small>
-          </ng-container>
-        </div>
-        <div class="form-group">
-          <label for="descripcion">Descripci&oacute;n</label>
-          <textarea formControlName="descripcion" pInputTextarea id="descripcion" class="form-control" rows="1"></textarea>
-          <ng-container *ngIf="descripcion?.invalid && (descripcion?.touched || descripcion?.dirty)">
-            <small *ngIf="descripcion?.hasError('required')" class="text-error">Campo requerido.</small>
-            <small *ngIf="descripcion?.hasError('maxlength')" class="text-error">El m&aacute;ximo de caracteres permitido es 256.</small>
-          </ng-container>
-        </div>
-        <div class="form-group">
-          <label for="detalle">Detalle</label>
-          <textarea formControlName="detalle" pInputTextarea id="detalle" class="form-control" rows="2"></textarea>
-          <ng-container *ngIf="detalle?.invalid && (detalle?.touched || detalle?.dirty)">
-            <small *ngIf="detalle?.hasError('required')" class="text-error">Campo requerido.</small>
-            <small *ngIf="detalle?.hasError('maxlength')" class="text-error">El m&aacute;ximo de caracteres permitido es 1024.</small>
-          </ng-container>
-        </div>
-      </div>
-    </div>
-    <div class="col-12 col-lg-6 mt-2 mt-lg-0">
-      <div class="form-group">
-        <label for="direccion">Direcci&oacute;n</label>
-        <textarea formControlName="direccion" pInputTextarea id="direccion" class="form-control" rows="1"></textarea>
-        <ng-container *ngIf="direccion?.invalid && (direccion?.touched || direccion?.dirty)">
-          <small *ngIf="direccion?.hasError('required')" class="text-error">Campo requerido.</small>
-          <small *ngIf="direccion?.hasError('maxlength')" class="text-error">El m&aacute;ximo de caracteres permitido es 256.</small>
-        </ng-container>
-      </div>
-      <div class="row mt-md-2">
-        <div class="col-12 col-md-6 mt-2 mt-md-0">
+<div class="container-fluid">
+  <p class="m-0 p-0">INGRESO DE PLANTA</p>
+  <hr>
+  <form [formGroup]="form">
+    <div class="row">
+      <div class="col-12 col-lg-6">
+        <div class="d-flex flex-column gap-2">
           <div class="form-group">
-            <label for="departamento">Departamento</label>
-            <p-dropdown formControlName="departamento" (onChange)="onChangeDepartamento($event)" [options]="departamentos" optionLabel="descripcion" inputId="departamento" styleClass="w-100" placeholder="Seleccionar" [filter]="true" filterBy="descripcion"></p-dropdown>
-            <ng-container *ngIf="departamento?.invalid && (departamento?.touched || departamento?.dirty)">
-              <small *ngIf="departamento?.hasError('required')" class="text-error">Campo requerido.</small>
+            <label for="tipoPlanta">Tipo de Planta</label>
+            <p-dropdown formControlName="tipoPlanta" [options]="tiposPlanta" optionLabel="descripcion" inputId="tipoPlanta" styleClass="w-100" placeholder="Seleccionar"></p-dropdown>
+            <ng-container *ngIf="tipoPlanta?.invalid && (tipoPlanta?.touched || tipoPlanta?.dirty)">
+              <small *ngIf="tipoPlanta?.hasError('required')" class="text-error">Campo requerido.</small>
             </ng-container>
           </div>
-        </div>
-        <div class="col-12 col-md-6 mt-2 mt-md-0">
           <div class="form-group">
-            <label for="municipio">Municipio</label>
-            <p-dropdown formControlName="municipio" [options]="municipios" optionLabel="descripcion" inputId="municipio" styleClass="w-100" placeholder="Seleccionar" [filter]="true" filterBy="descripcion"></p-dropdown>
-            <ng-container *ngIf="municipio?.invalid && (municipio?.touched || municipio?.dirty)">
-              <small *ngIf="municipio?.hasError('required')" class="text-error">Campo requerido.</small>
+            <label for="descripcion">Descripci&oacute;n</label>
+            <textarea formControlName="descripcion" pInputTextarea id="descripcion" class="form-control" rows="1"></textarea>
+            <ng-container *ngIf="descripcion?.invalid && (descripcion?.touched || descripcion?.dirty)">
+              <small *ngIf="descripcion?.hasError('required')" class="text-error">Campo requerido.</small>
+              <small *ngIf="descripcion?.hasError('maxlength')" class="text-error">El m&aacute;ximo de caracteres permitido es 256.</small>
+            </ng-container>
+          </div>
+          <div class="form-group">
+            <label for="detalle">Detalle</label>
+            <textarea formControlName="detalle" pInputTextarea id="detalle" class="form-control" rows="2"></textarea>
+            <ng-container *ngIf="detalle?.invalid && (detalle?.touched || detalle?.dirty)">
+              <small *ngIf="detalle?.hasError('required')" class="text-error">Campo requerido.</small>
+              <small *ngIf="detalle?.hasError('maxlength')" class="text-error">El m&aacute;ximo de caracteres permitido es 1024.</small>
             </ng-container>
           </div>
         </div>
       </div>
-      <div class="form-group">
-        <label for="encargado">Encargado</label>
-        <div class="flex-grow-1">
-          <p-autoComplete formControlName="encargado" [suggestions]="suggestionsEncargado"
-                          (completeMethod)="searchEncargado($event)"
-                          [field]="getEncargado" [forceSelection]="true"
-                          styleClass="w-100" inputStyleClass="w-100" inputId="encargado">
-            <ng-template let-usuario pTemplate="item">
-              <div style="font-size: 0.8rem;">
-                <p class="m-0 p-0">{{ usuario.firstName }}&nbsp;{{ usuario.lastName }}&nbsp;({{usuario.userName}})</p>
-              </div>
-            </ng-template>
-          </p-autoComplete>
-          <ng-container *ngIf="encargado?.invalid && (encargado?.touched || encargado?.dirty)">
-            <small *ngIf="encargado?.hasError('required')" class="text-error">Campo requerido.</small>
+      <div class="col-12 col-lg-6 mt-2 mt-lg-0">
+        <div class="form-group">
+          <label for="direccion">Direcci&oacute;n</label>
+          <textarea formControlName="direccion" pInputTextarea id="direccion" class="form-control" rows="1"></textarea>
+          <ng-container *ngIf="direccion?.invalid && (direccion?.touched || direccion?.dirty)">
+            <small *ngIf="direccion?.hasError('required')" class="text-error">Campo requerido.</small>
+            <small *ngIf="direccion?.hasError('maxlength')" class="text-error">El m&aacute;ximo de caracteres permitido es 256.</small>
           </ng-container>
+        </div>
+        <div class="row mt-md-2">
+          <div class="col-12 col-md-6 mt-2 mt-md-0">
+            <div class="form-group">
+              <label for="departamento">Departamento</label>
+              <p-dropdown formControlName="departamento" (onChange)="onChangeDepartamento($event)" [options]="departamentos" optionLabel="descripcion" inputId="departamento" styleClass="w-100" placeholder="Seleccionar" [filter]="true" filterBy="descripcion"></p-dropdown>
+              <ng-container *ngIf="departamento?.invalid && (departamento?.touched || departamento?.dirty)">
+                <small *ngIf="departamento?.hasError('required')" class="text-error">Campo requerido.</small>
+              </ng-container>
+            </div>
+          </div>
+          <div class="col-12 col-md-6 mt-2 mt-md-0">
+            <div class="form-group">
+              <label for="municipio">Municipio</label>
+              <p-dropdown formControlName="municipio" [options]="municipios" optionLabel="descripcion" inputId="municipio" styleClass="w-100" placeholder="Seleccionar" [filter]="true" filterBy="descripcion"></p-dropdown>
+              <ng-container *ngIf="municipio?.invalid && (municipio?.touched || municipio?.dirty)">
+                <small *ngIf="municipio?.hasError('required')" class="text-error">Campo requerido.</small>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="encargado">Encargado</label>
+          <div class="flex-grow-1">
+            <p-autoComplete formControlName="encargado" [suggestions]="suggestionsEncargado"
+                            (completeMethod)="searchEncargado($event)"
+                            [field]="getEncargado" [forceSelection]="true"
+                            styleClass="w-100" inputStyleClass="w-100" inputId="encargado">
+              <ng-template let-usuario pTemplate="item">
+                <div style="font-size: 0.8rem;">
+                  <p class="m-0 p-0">{{ usuario.firstName }}&nbsp;{{ usuario.lastName }}&nbsp;({{usuario.userName}})</p>
+                </div>
+              </ng-template>
+            </p-autoComplete>
+            <ng-container *ngIf="encargado?.invalid && (encargado?.touched || encargado?.dirty)">
+              <small *ngIf="encargado?.hasError('required')" class="text-error">Campo requerido.</small>
+            </ng-container>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="d-flex gap-2 mt-2">
-    <button (click)="guardar()" [disabled]="guardando" pButton type="button" label="Guardar" [icon]="guardando ? 'pi pi-spin pi-spinner' : 'pi pi-save'" class="p-button-sm p-button-raised"></button>
-  </div>
-</form>
+    <div class="d-flex gap-2 mt-2">
+      <button (click)="guardar()" [disabled]="guardando" pButton type="button" label="Guardar" [icon]="guardando ? 'pi pi-spin pi-spinner' : 'pi pi-save'" class="p-button-sm p-button-raised"></button>
+    </div>
+  </form>
+
+</div>

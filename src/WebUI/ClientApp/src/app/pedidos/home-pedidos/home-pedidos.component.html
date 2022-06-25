@@ -1,58 +1,65 @@
-<app-filtro-pedidos [filtrando]="loadingPedidos" (onFiltrar)="filtrar($event)" (onLimpiar)="filtrar($event)">
-</app-filtro-pedidos>
+<div class="container-fluid">
 
-<hr>
+  <p class="m-0 p-0">PEDIDOS</p>
+  <hr>
 
-<p-table [value]="pedidos?.items" [loading]="loadingPedidos" [paginator]="false" [rows]="pedidos?.pageSize" responsiveLayout="scroll">
-  <ng-template pTemplate="header">
-    <tr class="tp-font-small">
-      <th>Fecha</th>
-      <th>Solicitante</th>
-      <th>Material</th>
-      <th>Detalle</th>
-      <th>Cantidad</th>
-      <th class="text-center">Estado</th>
-      <th></th>
-    </tr>
-    <!--<tr>
-      <th></th>
-      <th>
-        <input pInputText type="text" class="form-control">
-      </th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>-->
-  </ng-template>
-  <ng-template pTemplate="body" let-pedido>
-    <tr>
-      <td>{{pedido.fechaSolicitado|date:'dd/MM/yyyy'}}</td>
-      <td>{{pedido.bodegaSolicita?.descripcion}}
-        <span class="d-block"><i class="fa-solid fa-location-dot"></i>&nbsp;{{pedido.bodegaSolicita?.ubicacion?.municipio?.descripcion}}
-          ,&nbsp;{{pedido.bodegaSolicita.ubicacion?.municipio?.departamento?.descripcion}}</span>
-      </td>
-      <td>{{pedido.material?.descripcion}}</td>
-      <td>{{pedido.detalle}}</td>
-      <td>{{pedido.cantidad}}&nbsp;{{ pedido.cantidad == 1 ? pedido.material?.unidadMedida?.descripcion : pedido.material?.unidadMedida?.descripcionPlural }}</td>
-      <td>
-        <div class="d-flex justify-content-center align-items-center">
-          <span class="p-badge ESTADO-PEDIDO-{{pedido.estadoPedidoMaterial?.descripcion}}">{{pedido.estadoPedidoMaterial?.descripcion}}</span>
-        </div>
-      </td>
-      <td>
-        <div class="d-flex justify-content-center align-items-center">
-          <button [routerLink]="[pedido.id]" pButton type="button" icon="pi pi-sliders-v" class="p-button-rounded p-button-info p-button-text"></button>
-        </div>
-      </td>
-    </tr>
-  </ng-template>
-  <ng-template pTemplate="emptymessage">
-    <tr>
-      <td colspan="7" class="tp-font-small">
-        No se encontraron pedidos.
-      </td>
-    </tr>
-  </ng-template>
-</p-table>
-<p-paginator (onPageChange)="paginar($event)" [rows]="pedidos?.pageSize" [first]="(pedidos?.pageNumber - 1) * pedidos?.pageSize" [totalRecords]="pedidos?.totalCount" [rowsPerPageOptions]="[10, 15, 25]"></p-paginator>
+  <app-filtro-pedidos [filtrando]="loadingPedidos" (onFiltrar)="filtrar($event)" (onLimpiar)="filtrar($event)">
+  </app-filtro-pedidos>
+
+  <hr>
+
+  <p-table [value]="pedidos?.items" [loading]="loadingPedidos" [paginator]="false" [rows]="pedidos?.pageSize" responsiveLayout="scroll">
+    <ng-template pTemplate="header">
+      <tr class="tp-font-small">
+        <th>Fecha</th>
+        <th>Solicitante</th>
+        <th>Material</th>
+        <th>Detalle</th>
+        <th>Cantidad</th>
+        <th class="text-center">Estado</th>
+        <th></th>
+      </tr>
+      <!--<tr>
+        <th></th>
+        <th>
+          <input pInputText type="text" class="form-control">
+        </th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>-->
+    </ng-template>
+    <ng-template pTemplate="body" let-pedido>
+      <tr>
+        <td>{{pedido.fechaSolicitado|date:'dd/MM/yyyy'}}</td>
+        <td>{{pedido.bodegaSolicita?.descripcion}}
+          <span class="d-block"><i class="fa-solid fa-location-dot"></i>&nbsp;{{pedido.bodegaSolicita?.ubicacion?.municipio?.descripcion}}
+            ,&nbsp;{{pedido.bodegaSolicita.ubicacion?.municipio?.departamento?.descripcion}}</span>
+        </td>
+        <td>{{pedido.material?.descripcion}}</td>
+        <td>{{pedido.detalle}}</td>
+        <td>{{pedido.cantidad}}&nbsp;{{ pedido.cantidad == 1 ? pedido.material?.unidadMedida?.descripcion : pedido.material?.unidadMedida?.descripcionPlural }}</td>
+        <td>
+          <div class="d-flex justify-content-center align-items-center">
+            <span class="p-badge ESTADO-PEDIDO-{{pedido.estadoPedidoMaterial?.descripcion}}">{{pedido.estadoPedidoMaterial?.descripcion}}</span>
+          </div>
+        </td>
+        <td>
+          <div class="d-flex justify-content-center align-items-center">
+            <button [routerLink]="[pedido.id]" pButton type="button" icon="pi pi-sliders-v" class="p-button-rounded p-button-info p-button-text"></button>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="7" class="tp-font-small">
+          No se encontraron pedidos.
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <p-paginator (onPageChange)="paginar($event)" [rows]="pedidos?.pageSize" [first]="(pedidos?.pageNumber - 1) * pedidos?.pageSize" [totalRecords]="pedidos?.totalCount" [rowsPerPageOptions]="[10, 15, 25]"></p-paginator>
+
+</div>
