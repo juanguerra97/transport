@@ -135,7 +135,7 @@ public class AprobarPedidoMaterialCommandHandler : IRequestHandler<AprobarPedido
             conductoresVigentes.Add(candidato.ConductorId);
             vehiculosVigentes.Add(candidato.VehiculoId);
 
-            pesoFaltanteAsignar = pesoFaltanteAsignar - cantidadAsignar;
+            pesoFaltanteAsignar = pesoFaltanteAsignar - (cantidadAsignar * (double)pedido.Material.Peso);
 
         }
         while (pesoFaltanteAsignar > 0);
