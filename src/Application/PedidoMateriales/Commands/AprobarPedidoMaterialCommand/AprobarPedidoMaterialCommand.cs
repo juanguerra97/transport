@@ -101,11 +101,11 @@ public class AprobarPedidoMaterialCommandHandler : IRequestHandler<AprobarPedido
             double cantidadAsignar = 0;
             if (candidato.Vehiculo.CapacidadCarga >= pesoFaltanteAsignar)
             {
-                cantidadAsignar = pesoFaltanteAsignar;
+                cantidadAsignar = pesoFaltanteAsignar / (double)pedido.Material.Peso;
             }
             else
             {
-                cantidadAsignar = (double)candidato.Vehiculo.CapacidadCarga;
+                cantidadAsignar = (double)candidato.Vehiculo.CapacidadCarga / (double)pedido.Material.Peso;
             }
 
             var movimiento = new MovimientoBodega
